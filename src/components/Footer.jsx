@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
 // Importamos las redes desde react-icons
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const footerLinks = {
     club: [
@@ -26,10 +26,11 @@ const footerLinks = {
 
 // Actualizamos los nombres de los íconos acá
 const socialLinks = [
-    { name: "Facebook", href: "https://facebook.com/casanmartintucuman", icon: FaFacebook },
-    { name: "Instagram", href: "https://instagram.com/sanmartindetucuman", icon: FaInstagram },
-    { name: "Twitter", href: "https://twitter.com/sanmartinok", icon: FaTwitter },
-    { name: "YouTube", href: "https://youtube.com/sanmartindetucuman", icon: FaYoutube },
+    { name: "Facebook", href: "https://www.facebook.com/CASMoficial", icon: FaFacebook },
+    { name: "Instagram", href: "https://www.instagram.com/casmoficialok/?hl=es-la", icon: FaInstagram },
+    { name: "Twitter", href: "https://x.com/CASMOficial", icon: FaTwitter },
+    { name: "YouTube", href: "https://www.youtube.com/@CASMOFICIALOK/videos", icon: FaYoutube },
+    { name: "TikTok", href: "https://www.tiktok.com/@casmoficial", icon: FaTiktok },
 ];
 
 const Footer = () => {
