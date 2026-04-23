@@ -1,25 +1,145 @@
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, ChevronDown, User, ShoppingBag } from "lucide-react";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-const Navbar = () => {
-    return (
-        <nav className="bg-red-700 text-white shadow-lg">
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                {/* Logo / Título */}
-                <Link to="/" className="text-2xl font-black tracking-wider uppercase">
-                    San Martín
-                </Link>
-
-                {/* Enlaces de navegación */}
-                <div className="space-x-6 font-semibold">
-                    <Link to="/" className="hover:text-red-200 transition-colors">Inicio</Link>
-                    <Link to="/plantel" className="hover:text-red-200 transition-colors">Plantel</Link>
-                    <Link to="/login" className="bg-white text-red-700 px-4 py-2 rounded shadow hover:bg-gray-100 transition-colors">
-                        Ingresar
-                    </Link>
-                </div>
-            </div>
-        </nav>
-    )
+function cn(...inputs) {
+    return twMerge(clsx(inputs));
 }
 
-export default Navbar
+const navigation = [
+    { name: "Inicio", href: "/" },
+    {
+        name: "El Club", href: "/club",
+        children: [
+            { name: "Historia", href: "/club/historia" },
+            { name: "Estadio", href: "/club/estadio" },
+            { name: "Autoridades", href: "/club/autoridades" },
+        ],
+    },
+    {
+        name: "Plantel", href: "/plantel",
+        children: [
+            { name: "Primer Equipo", href: "/plantel" },
+            { name: "Cuerpo Técnico", href: "/plantel/cuerpo-tecnico" },
+            { name: "Juveniles", href: "/plantel/juveniles" },
+        ],
+    },
+    { name: "Noticias", href: "/noticias" },
+    { name: "Fixtures", href: "/fixtures" },
+    { name: "Tienda", href: "/tienda" },
+];
+
+const Navbar = () => {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    return (
+        <header className="sticky top-0 z-50 w-full shadow-md">
+            {/* Top bar (Barrita roja fina arriba) */}
+            <div className="bg-red-800 text-white">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-sm font-semibold uppercase tracking-wider">
+                    <div className="hidden items-center gap-4 md:flex">
+                        <span>Fundado el 6 de Octubre de 1909</span>
+                    </div>
+                    <div className="flex items-center gap-6 ml-auto">
+                        <Link to="/socios" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
+                            <User className="h-4 w-4" />
+                            <span>Hacete Socio</span>
+                        </Link>
+                        <Link to="/tienda" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
+                            <ShoppingBag className="h-4 w-4" />
+                            <span>Tienda</span>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
+            {/* Main navigation (Barra principal blanca) */}
+            <nav className="bg-white border-b border-gray-200">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <div className="relative h-20 w-20 flex items-center justify-center p-0 transition-transform group-hover:scale-105 duration-300">
+                            <img src="/images/escudo.png" alt="Escudo San Martín" className="w-full h-full object-contain" />
+                        </div>
+                        <div className="hidden flex-col sm:flex">
+                            <span className="text-2xl font-black leading-tight text-red-700 uppercase tracking-wide">San Martín</span>
+                            <span className="text-sm text-gray-500 font-bold uppercase tracking-widest">de Tucumán</span>
+                        </div>
+                    </Link>
+
+                    {/* Menú de Escritorio - Texto Agrandado a text-base */}
+                    <div className="hidden items-center gap-3 lg:flex">
+                        {navigation.map((item) =>
+                            item.children ? (
+                                <div key={item.name} className="relative group">
+                                    <button className="flex items-center gap-1 rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 hover:text-red-700 transition-colors focus:outline-none">
+                                        {item.name}
+                                        <ChevronDown className="h-5 w-5 transition-transform group-hover:rotate-180" />
+                                    </button>
+                                    <div className="absolute left-0 top-full hidden w-56 bg-white shadow-xl border border-gray-100 rounded-b-md py-3 group-hover:block z-50 mt-[-5px]">
+                                        {item.children.map((child) => (
+                                            <Link key={child.name} to={child.href} className="block px-5 py-2 text-base font-semibold text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                                                {child.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <Link key={item.name} to={item.href} className="rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 transition-colors hover:text-red-700">
+                                    {item.name}
+                                </Link>
+                            )
+                        )}
+                    </div>
+
+                    {/* Botón Ingresar */}
+                    <div className="hidden items-center gap-2 lg:flex">
+                        <Link to="/login" className="border-2 border-gray-200 text-gray-700 hover:border-red-700 hover:text-red-700 font-black text-base px-5 py-2.5 rounded-md transition-all uppercase tracking-wider">
+                            Ingresar
+                        </Link>
+                    </div>
+
+                    {/* Botón Menú Celular */}
+                    <button
+                        className="lg:hidden p-2 text-gray-600 hover:text-red-700"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    >
+                        {mobileMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+                    </button>
+                </div>
+
+                {/* Menú Celular Desplegable */}
+                <div className={cn("overflow-hidden transition-all duration-300 lg:hidden bg-gray-50", mobileMenuOpen ? "max-h-[600px] border-b" : "max-h-0")}>
+                    <div className="space-y-1 px-4 py-6">
+                        {navigation.map((item) => (
+                            <div key={item.name}>
+                                <Link to={item.href} className="block rounded-md px-3 py-2 text-lg font-bold text-gray-800 hover:bg-red-100 hover:text-red-700 uppercase" onClick={() => setMobileMenuOpen(false)}>
+                                    {item.name}
+                                </Link>
+                                {item.children && (
+                                    <div className="ml-4 border-l-2 border-red-200 pl-4 space-y-2 mt-2 mb-4">
+                                        {item.children.map((child) => (
+                                            <Link key={child.name} to={child.href} className="block rounded-md px-3 py-1 text-base font-medium text-gray-600 hover:text-red-700" onClick={() => setMobileMenuOpen(false)}>
+                                                {child.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        <div className="pt-6 mt-4 border-t border-gray-200">
+                            <Link to="/login" className="block w-full text-center bg-red-700 text-white font-black py-4 rounded-md uppercase tracking-wider text-lg" onClick={() => setMobileMenuOpen(false)}>
+                                Ingresar
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    );
+};
+
+export default Navbar;
