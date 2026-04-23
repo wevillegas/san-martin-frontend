@@ -121,10 +121,10 @@ const SquadPreview = () => {
                         </div>
                     </div>
 
-                    {/* Flechas de navegación (Aparecen al pasar el mouse en PC) */}
+                    {/* Flechas de navegación (Ajustadas para mayor separación) */}
                     <button
                         onClick={scrollPrev}
-                        className="absolute -left-5 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10"
+                        className="absolute -left-6 md:-left-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Anterior"
                     >
                         <ChevronLeft className="h-7 w-7 pr-1" />
@@ -132,7 +132,7 @@ const SquadPreview = () => {
 
                     <button
                         onClick={scrollNext}
-                        className="absolute -right-5 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10"
+                        className="absolute -right-6 md:-right-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Siguiente"
                     >
                         <ChevronRight className="h-7 w-7 pl-1" />
