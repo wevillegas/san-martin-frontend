@@ -111,15 +111,15 @@ const Footer = () => {
                 <div className="mt-10 flex flex-wrap gap-6 border-t border-red-700 pt-8 text-sm text-red-100/80">
                     <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
-                        <span>Estadio La Ciudadela - San Miguel de Tucumán</span>
+                        <a href="https://maps.app.goo.gl/uFvAx33peRGt5DLMA" target="_blank">Estadio La Ciudadela - San Miguel de Tucumán</a>
                     </div>
                     <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4" />
-                        <span>(0381) 431-5000</span>
+                        <span>+54 (0381) 4247817</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4" />
-                        <span>info@sanmartindetucuman.com.ar</span>
+                        <span>institucional@clubatleticosanmartin.com.ar</span>
                     </div>
                 </div>
             </div>
