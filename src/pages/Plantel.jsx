@@ -33,7 +33,7 @@ const PlayerCard = ({ player, onSelectPlayer }) => (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1">
             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                 <img
-                    src={imagenPlaceholder}
+                    src={player.imagenUrl || imagenPlaceholder}
                     alt={`${player.nombre} ${player.apellido}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -107,7 +107,7 @@ const Plantel = () => {
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20 relative">
             <section className="bg-red-800 py-12 border-b-4 border-red-900">
                 <div className="mx-auto max-w-7xl px-4">
-                    <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider shadow-sm">Plantel Profesional</h1>
+                    <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider">Plantel Profesional</h1>
                     <p className="mt-3 text-red-100 font-medium text-lg">
                         Conocé a los jugadores que defienden la camiseta del Santo esta temporada
                     </p>

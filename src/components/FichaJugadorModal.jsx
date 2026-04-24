@@ -39,7 +39,12 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         <div className="relative z-10 flex flex-col items-center">
                             {/* Espacio para futura foto del jugador */}
                             <div className="w-48 h-48 bg-white/10 border-4 border-white/20 rounded-full flex items-center justify-center mb-6 overflow-hidden backdrop-blur-sm shadow-xl">
-                                <UserSilhouette />
+                                {/* CAMBIAMOS EL INTERIOR POR ESTO: */}
+                                {jugador.imagenUrl ? (
+                                    <img src={jugador.imagenUrl} alt={jugador.nombre} className="w-full h-full object-cover" />
+                                ) : (
+                                    <UserSilhouette />
+                                )}
                             </div>
 
                             <h2 className="text-3xl font-black uppercase text-center tracking-tight mb-1">

@@ -84,9 +84,9 @@ const SquadPreview = ({ onSelectPlayer }) => {
                                     >
                                         <div className="relative aspect-[3/4] overflow-hidden rounded-xl border border-red-500 bg-red-800 transition-all hover:shadow-2xl">
                                             <img
-                                                src={imagenPlaceholder}
+                                                src={player.imagenUrl || imagenPlaceholder}
                                                 alt={`${player.nombre} ${player.apellido}`}
-                                                className="w-full h-full object-cover grayscale opacity-80 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-105"
+                                                className="w-full h-full object-cover transition-all duration-500 group-hover/card:opacity-100 group-hover/card:scale-105"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-red-950 via-black/20 to-transparent" />
 

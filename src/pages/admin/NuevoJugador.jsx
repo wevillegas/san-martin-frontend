@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, UserPlus, AlertCircle } from "lucide-react";
+import { ArrowLeft, UserPlus, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { crearJugador } from "../../services/jugadorService";
 
 const NuevoJugador = () => {
@@ -8,11 +8,15 @@ const NuevoJugador = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState("");
 
+    // ESTADO PARA LA IMAGEN Y SU VISTA PREVIA
+    const [imagen, setImagen] = useState(null);
+    const [preview, setPreview] = useState(null);
+
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
         numeroCamiseta: "",
-        posicion: "Delantero", // Asegurate de que coincida con tu enum
+        posicion: "Delantero",
         fechaNacimiento: "",
         lugarNacimiento: "",
         altura: "",
@@ -24,17 +28,41 @@ const NuevoJugador = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // FUNCIÓN PARA CAPTURAR LA FOTO CUANDO LA ELIGEN
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImagen(file);
+            // Creamos una URL temporal para mostrar la vista previa en pantalla
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setCargando(true);
         setError("");
 
+        // LA MAGIA: Creamos un "Paquete" (FormData) para poder enviar archivos
+        const submitData = new FormData();
+
+        // Metemos todos los textos adentro del paquete
+        Object.keys(formData).forEach(key => {
+            submitData.append(key, formData[key]);
+        });
+
+        // Metemos la imagen en el paquete (el nombre 'imagen' debe coincidir con el del backend)
+        if (imagen) {
+            submitData.append("imagen", imagen);
+        }
+
         try {
-            await crearJugador(formData);
+            // Mandamos el paquete completo
+            await crearJugador(submitData);
             navigate("/admin/plantel");
         } catch (err) {
             console.error(err);
-            const errorBack = err.response?.data?.mensaje || "Error al registrar el jugador.";
+            const errorBack = err.response?.data?.mensaje || "Error al registrar el jugador. Revisá los datos.";
             setError(errorBack);
             setCargando(false);
         }
@@ -48,7 +76,7 @@ const NuevoJugador = () => {
                         <ArrowLeft className="w-4 h-4" /> Volver al Plantel
                     </Link>
                     <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">Nuevo Jugador</h1>
-                    <p className="text-gray-500 font-medium">Completá la ficha técnica del nuevo refuerzo.</p>
+                    <p className="text-gray-500 font-medium">Completá la ficha técnica y subí la foto del refuerzo.</p>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -60,7 +88,34 @@ const NuevoJugador = () => {
                             </div>
                         )}
 
-                        {/* SECCIÓN 1: Datos Básicos */}
+                        {/* --- SECCIÓN NUEVA: FOTO DEL JUGADOR --- */}
+                        <div className="flex flex-col md:flex-row gap-6 items-center bg-red-50/30 p-6 rounded-lg border border-red-100">
+
+                            {/* Círculo de Vista Previa */}
+                            <div className="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-full border-4 border-white shadow-lg flex items-center justify-center overflow-hidden relative group">
+                                {preview ? (
+                                    <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
+                                ) : (
+                                    <ImageIcon className="w-10 h-10 text-gray-400" />
+                                )}
+                            </div>
+
+                            {/* Input para subir archivo */}
+                            <div className="flex-1 w-full text-center md:text-left">
+                                <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Foto Oficial</h3>
+                                <p className="text-sm text-gray-500 mb-4">Elegí una imagen en formato JPG, PNG o WEBP. Intentá que sea cuadrada para que se vea mejor.</p>
+
+                                <label className="cursor-pointer bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2">
+                                    <Upload className="w-4 h-4" />
+                                    Seleccionar Imagen
+                                    {/* El input real está oculto porque es feo, usamos el label como botón */}
+                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                </label>
+                                {imagen && <p className="text-xs text-green-600 font-bold mt-2">Imagen seleccionada: {imagen.name}</p>}
+                            </div>
+                        </div>
+
+                        {/* SECCIÓN 1: Datos Principales */}
                         <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                             <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-4 border-b pb-2">Datos Principales</h3>
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -113,7 +168,7 @@ const NuevoJugador = () => {
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Procedencia</label>
-                                    <input type="text" name="procedencia" value={formData.procedencia} onChange={handleChange} placeholder="Ej: Inferiores / Agropecuario" className="w-full px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none font-bold" />
+                                    <input type="text" name="procedencia" value={formData.procedencia} onChange={handleChange} placeholder="Ej: Inferiores" className="w-full px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none font-bold" />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Debut en San Martín</label>
@@ -124,7 +179,7 @@ const NuevoJugador = () => {
 
                         <div className="pt-4 flex justify-end">
                             <button type="submit" disabled={cargando} className="bg-red-700 hover:bg-red-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest flex items-center gap-2 transition-all shadow active:scale-95 disabled:opacity-50">
-                                {cargando ? "Guardando..." : <><UserPlus className="w-5 h-5" /> Fichar Jugador</>}
+                                {cargando ? "Guardando y Subiendo Foto..." : <><UserPlus className="w-5 h-5" /> Fichar Jugador</>}
                             </button>
                         </div>
                     </form>
