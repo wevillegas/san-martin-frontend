@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown, User, ShoppingBag } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, ChevronDown, User, ShoppingBag, Settings } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -34,13 +34,19 @@ const navigation = [
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // El "radar" que avisa cuando cambiamos de página
+    const location = useLocation();
+
+    // Verificación de token (se actualiza gracias a que location cambia)
+    const isLoggedIn = !!localStorage.getItem("token");
+
     return (
         <header className="sticky top-0 z-50 w-full shadow-md">
             {/* Top bar (Barrita roja fina arriba) */}
             <div className="bg-red-800 text-white">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-sm font-semibold uppercase tracking-wider">
                     <div className="hidden items-center gap-4 md:flex">
-                        <span>Fundado el 6 de Octubre de 1909</span>
+                        <span>02 de Noviembre de 1909</span>
                     </div>
                     <div className="flex items-center gap-6 ml-auto">
                         <Link to="/socios" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
@@ -70,7 +76,7 @@ const Navbar = () => {
                         </div>
                     </Link>
 
-                    {/* Menú de Escritorio - Texto Agrandado a text-base */}
+                    {/* Menú de Escritorio */}
                     <div className="hidden items-center gap-3 lg:flex">
                         {navigation.map((item) =>
                             item.children ? (
@@ -95,11 +101,14 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Botón Ingresar */}
+                    {/* Botón Ingresar (Condicional para Administradores) */}
                     <div className="hidden items-center gap-2 lg:flex">
-                        <Link to="/login" className="border-2 border-gray-200 text-gray-700 hover:border-red-700 hover:text-red-700 font-black text-base px-5 py-2.5 rounded-md transition-all uppercase tracking-wider">
-                            Ingresar
-                        </Link>
+                        {isLoggedIn && (
+                            <Link to="/admin" className="flex items-center gap-2 border-2 border-red-600 text-red-700 hover:bg-red-600 hover:text-white font-black text-sm px-5 py-2.5 rounded-md transition-all uppercase tracking-wider shadow-sm">
+                                <Settings className="w-4 h-4" />
+                                Panel Admin
+                            </Link>
+                        )}
                     </div>
 
                     {/* Botón Menú Celular */}
@@ -130,11 +139,16 @@ const Navbar = () => {
                                 )}
                             </div>
                         ))}
-                        <div className="pt-6 mt-4 border-t border-gray-200">
-                            <Link to="/login" className="block w-full text-center bg-red-700 text-white font-black py-4 rounded-md uppercase tracking-wider text-lg" onClick={() => setMobileMenuOpen(false)}>
-                                Ingresar
-                            </Link>
-                        </div>
+
+                        {/* Botón Celular Condicional */}
+                        {isLoggedIn && (
+                            <div className="pt-6 mt-4 border-t border-gray-200">
+                                <Link to="/admin" className="flex items-center justify-center gap-2 w-full bg-red-700 text-white font-black py-4 rounded-md uppercase tracking-wider text-lg" onClick={() => setMobileMenuOpen(false)}>
+                                    <Settings className="w-5 h-5" />
+                                    Panel Admin
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </nav>

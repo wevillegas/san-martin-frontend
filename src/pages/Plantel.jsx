@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
+// Ya no necesitamos 'Link' porque abriremos un modal, pero lo dejamos por si lo usas en el navbar
 import { Link } from "react-router-dom";
-import { obtenerJugadores } from "../services/jugadorService"; // Asegurate de que la ruta sea correcta
+import { obtenerJugadores } from "../services/jugadorService";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+// IMPORTAMOS EL MODAL DE LA FICHA TÉCNICA
+import FichaJugadorModal from "../components/FichaJugadorModal";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
-// Datos estáticos temporales para el Cuerpo Técnico (Hasta que lo agreguemos al Backend)
+// Datos estáticos temporales para el Cuerpo Técnico
 const cuerpoTecnico = [
     { id: 100, name: "Roberto Sosa", role: "Director Técnico" },
     { id: 101, name: "Marcelo Vega", role: "Ayudante de Campo" },
@@ -19,8 +23,13 @@ const cuerpoTecnico = [
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
 // --- COMPONENTES VISUALES DE LAS TARJETAS ---
-const PlayerCard = ({ player }) => (
-    <Link to={`/plantel/${player._id}`} className="group block">
+// Ahora PlayerCard recibe la función onSelectPlayer
+const PlayerCard = ({ player, onSelectPlayer }) => (
+    // Cambiamos el <Link> por un <button> que ejecuta la función al hacer clic
+    <button
+        onClick={() => onSelectPlayer(player)}
+        className="group block w-full text-left"
+    >
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1">
             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                 <img
@@ -28,15 +37,12 @@ const PlayerCard = ({ player }) => (
                     alt={`${player.nombre} ${player.apellido}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                {/* Degradado oscuro sobre la foto */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-                {/* Círculo con el número de camiseta */}
                 <div className="absolute right-3 top-3 flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-xl font-black text-white shadow-lg border-2 border-red-800">
                     {player.numeroCamiseta || "-"}
                 </div>
 
-                {/* Información del jugador */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                     <h3 className="text-xl font-black text-white uppercase tracking-wide leading-tight">
                         {player.nombre} <br /> {player.apellido}
@@ -45,7 +51,7 @@ const PlayerCard = ({ player }) => (
                 </div>
             </div>
         </div>
-    </Link>
+    </button>
 );
 
 const StaffCard = ({ staff }) => (
@@ -69,7 +75,10 @@ const StaffCard = ({ staff }) => (
 const Plantel = () => {
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
-    const [activeTab, setActiveTab] = useState("jugadores"); // "jugadores" o "cuerpo-tecnico"
+    const [activeTab, setActiveTab] = useState("jugadores");
+
+    // NUEVO ESTADO: Controla qué jugador está seleccionado para mostrar el Modal
+    const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
     useEffect(() => {
         const cargarJugadores = async () => {
@@ -85,7 +94,6 @@ const Plantel = () => {
         cargarJugadores();
     }, []);
 
-    // Filtramos a los jugadores por su posición real de la base de datos
     const arqueros = jugadores.filter(j => j.posicion.toLowerCase().includes("arquero"));
     const defensores = jugadores.filter(j => j.posicion.toLowerCase().includes("defensor") || j.posicion.toLowerCase().includes("defensa"));
     const mediocampistas = jugadores.filter(j => j.posicion.toLowerCase().includes("medio") || j.posicion.toLowerCase().includes("volante"));
@@ -96,8 +104,7 @@ const Plantel = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
-            {/* Cabecera de la página */}
+        <div className="flex flex-col min-h-screen bg-gray-50 pb-20 relative">
             <section className="bg-red-800 py-12 border-b-4 border-red-900">
                 <div className="mx-auto max-w-7xl px-4">
                     <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider shadow-sm">Plantel Profesional</h1>
@@ -110,7 +117,6 @@ const Plantel = () => {
             <section className="py-10">
                 <div className="mx-auto max-w-7xl px-4">
 
-                    {/* Sistema de Pestañas (Tabs) nativo */}
                     <div className="flex space-x-2 border-b border-gray-300 mb-8 overflow-x-auto">
                         <button
                             onClick={() => setActiveTab("jugadores")}
@@ -136,14 +142,12 @@ const Plantel = () => {
                         </button>
                     </div>
 
-                    {/* Contenido: Jugadores */}
                     {activeTab === "jugadores" && (
-                        <div className="space-y-12">
+                        <div className="space-y-12 relative z-0">
                             {jugadores.length === 0 && (
                                 <p className="text-gray-500 text-center py-10">Todavía no hay jugadores cargados en la base de datos.</p>
                             )}
 
-                            {/* Sección Arqueros */}
                             {arqueros.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
@@ -151,12 +155,14 @@ const Plantel = () => {
                                         Arqueros
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                        {arqueros.map((player) => <PlayerCard key={player._id} player={player} />)}
+                                        {/* Pasamos la función setJugadorSeleccionado al componente de la tarjeta */}
+                                        {arqueros.map((player) => (
+                                            <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
+                                        ))}
                                     </div>
                                 </div>
                             )}
 
-                            {/* Sección Defensores */}
                             {defensores.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
@@ -164,12 +170,13 @@ const Plantel = () => {
                                         Defensores
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                        {defensores.map((player) => <PlayerCard key={player._id} player={player} />)}
+                                        {defensores.map((player) => (
+                                            <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
+                                        ))}
                                     </div>
                                 </div>
                             )}
 
-                            {/* Sección Mediocampistas */}
                             {mediocampistas.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
@@ -177,12 +184,13 @@ const Plantel = () => {
                                         Mediocampistas
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                        {mediocampistas.map((player) => <PlayerCard key={player._id} player={player} />)}
+                                        {mediocampistas.map((player) => (
+                                            <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
+                                        ))}
                                     </div>
                                 </div>
                             )}
 
-                            {/* Sección Delanteros */}
                             {delanteros.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
@@ -190,14 +198,15 @@ const Plantel = () => {
                                         Delanteros
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                        {delanteros.map((player) => <PlayerCard key={player._id} player={player} />)}
+                                        {delanteros.map((player) => (
+                                            <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
+                                        ))}
                                     </div>
                                 </div>
                             )}
                         </div>
                     )}
 
-                    {/* Contenido: Cuerpo Técnico */}
                     {activeTab === "cuerpo-tecnico" && (
                         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                             {cuerpoTecnico.map((staff) => (
@@ -208,6 +217,14 @@ const Plantel = () => {
 
                 </div>
             </section>
+
+            {/* --- RENDERIZAMOS EL MODAL AL FINAL (SÓLO SI HAY SELECCIONADO) --- */}
+            {jugadorSeleccionado && (
+                <FichaJugadorModal
+                    jugador={jugadorSeleccionado}
+                    onClose={() => setJugadorSeleccionado(null)}
+                />
+            )}
         </div>
     );
 }

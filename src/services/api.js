@@ -7,7 +7,7 @@ const api = axios.create({
 // "Interceptor": Este código se ejecuta automáticamente ANTES de que salga cualquier petición
 api.interceptors.request.use((config) => {
     // Buscamos si tenemos un token guardado en la memoria del navegador
-    const token = localStorage.getItem('tokenSanto');
+    const token = localStorage.getItem('token');
     
     // Si hay token, se lo pegamos en la cabecera (Header) a la petición
     if (token) {

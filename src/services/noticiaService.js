@@ -1,22 +1,45 @@
-import api from './api';
+import axios from "axios";
 
+const API_URL = "http://localhost:5000/api/noticias";
+
+// Traer todas las noticias
 export const obtenerNoticias = async () => {
-    try {
-        const respuesta = await api.get('/noticias');
-        return respuesta.data;
-    } catch (error) {
-        console.error('Error al obtener noticias:', error);
-        throw error;
-    }
+    const response = await axios.get(API_URL);
+    return response.data;
 };
 
-// NUEVA FUNCIÓN: Trae una sola noticia buscando por su ID
+// Traer UNA sola noticia por su ID (La que borramos sin querer)
 export const obtenerNoticiaPorId = async (id) => {
-    try {
-        const respuesta = await api.get(`/noticias/${id}`);
-        return respuesta.data;
-    } catch (error) {
-        console.error('Error al obtener la noticia:', error);
-        throw error;
-    }
+    const response = await axios.get(`${API_URL}/${id}`);
+    return response.data;
+};
+
+// Crear nueva noticia (Requiere Token)
+export const crearNoticia = async (datosNoticia) => {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(API_URL, datosNoticia, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+};
+
+// Actualizar noticia existente (Requiere Token)
+export const actualizarNoticia = async (id, datosNoticia) => {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${API_URL}/${id}`, datosNoticia, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+};
+
+// Borrar una noticia (Requiere Token)
+export const eliminarNoticia = async (id) => {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(`${API_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
 };

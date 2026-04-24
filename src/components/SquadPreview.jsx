@@ -4,7 +4,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { obtenerJugadores } from "../services/jugadorService";
 
-// Función para darle un "peso" numérico a cada posición y poder ordenarlos
 const getPesoPosicion = (posicion) => {
     const pos = posicion.toLowerCase();
     if (pos.includes("arquero")) return 1;
@@ -14,14 +13,13 @@ const getPesoPosicion = (posicion) => {
     return 5;
 };
 
-const SquadPreview = () => {
+// AHORA RECIBE LA FUNCIÓN POR PROPS
+const SquadPreview = ({ onSelectPlayer }) => {
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
 
-    // Configuración del slider (alineado al inicio, sin loop infinito)
     const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });
 
-    // Funciones para los botones de las flechas
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev();
     }, [emblaApi]);
@@ -34,12 +32,9 @@ const SquadPreview = () => {
         const cargarPlantel = async () => {
             try {
                 const datos = await obtenerJugadores();
-
-                // Ordenamos los jugadores según el peso de su posición
                 const jugadoresOrdenados = datos.sort((a, b) => {
                     return getPesoPosicion(a.posicion) - getPesoPosicion(b.posicion);
                 });
-
                 setJugadores(jugadoresOrdenados);
                 setCargando(false);
             } catch (error) {
@@ -50,16 +45,14 @@ const SquadPreview = () => {
         cargarPlantel();
     }, []);
 
-    if (cargando || jugadores.length === 0) return null; // No mostramos nada si no hay datos
+    if (cargando || jugadores.length === 0) return null;
 
-    // Imagen genérica hasta que agregues fotos reales
     const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=800&auto=format&fit=crop";
 
     return (
         <section className="bg-red-700 py-16 overflow-hidden">
             <div className="mx-auto max-w-7xl px-4">
 
-                {/* Encabezado de la sección */}
                 <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
                     <div>
                         <h2 className="text-3xl font-black text-white md:text-4xl uppercase tracking-wider">
@@ -78,50 +71,43 @@ const SquadPreview = () => {
                     </Link>
                 </div>
 
-                {/* Contenedor del Slider con Flechas */}
                 <div className="relative group">
-
-                    {/* Viewport del Slider (oculta lo que se sale de la pantalla) */}
                     <div className="overflow-hidden rounded-xl" ref={emblaRef}>
-                        {/* Contenedor de las tarjetas */}
                         <div className="flex gap-4 touch-pan-y">
                             {jugadores.map((player) => (
-                                // Cada tarjeta ocupa distinto porcentaje según la pantalla (1 en cel, 2 en tablet, 4 en PC)
                                 <div key={player._id} className="relative min-w-0 flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
 
-                                    <Link to={`/plantel/${player._id}`} className="block h-full group/card">
+                                    {/* ACÁ ESTÁ LA MAGIA: Cambiamos Link por button */}
+                                    <button
+                                        onClick={() => onSelectPlayer(player)}
+                                        className="block h-full group/card w-full text-left"
+                                    >
                                         <div className="relative aspect-[3/4] overflow-hidden rounded-xl border border-red-500 bg-red-800 transition-all hover:shadow-2xl">
-
                                             <img
                                                 src={imagenPlaceholder}
                                                 alt={`${player.nombre} ${player.apellido}`}
                                                 className="w-full h-full object-cover grayscale opacity-80 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-105"
                                             />
-
                                             <div className="absolute inset-0 bg-gradient-to-t from-red-950 via-black/20 to-transparent" />
 
-                                            {/* Número de camiseta flotante */}
                                             <div className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-lg font-black text-white shadow-lg border-2 border-red-400">
                                                 {player.numeroCamiseta || "-"}
                                             </div>
 
-                                            {/* Textos */}
                                             <div className="absolute bottom-0 left-0 right-0 p-5">
                                                 <p className="text-xs font-bold text-red-300 mb-1 uppercase tracking-widest">{player.posicion}</p>
                                                 <h3 className="text-xl font-black text-white uppercase tracking-wide leading-none">
                                                     {player.nombre} <br /> {player.apellido}
                                                 </h3>
                                             </div>
-
                                         </div>
-                                    </Link>
+                                    </button>
 
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Flechas de navegación (Ajustadas para mayor separación) */}
                     <button
                         onClick={scrollPrev}
                         className="absolute -left-6 md:-left-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"

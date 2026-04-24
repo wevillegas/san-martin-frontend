@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
-// Importamos las redes desde react-icons
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const footerLinks = {
@@ -24,7 +23,6 @@ const footerLinks = {
     ],
 };
 
-// Actualizamos los nombres de los íconos acá
 const socialLinks = [
     { name: "Facebook", href: "https://www.facebook.com/CASMoficial", icon: FaFacebook },
     { name: "Instagram", href: "https://www.instagram.com/casmoficialok/?hl=es-la", icon: FaInstagram },
@@ -34,6 +32,12 @@ const socialLinks = [
 ];
 
 const Footer = () => {
+    // 1. Agregamos el radar de rutas
+    const location = useLocation(); 
+
+    // 2. Verificamos si hay un administrador activo
+    const isLoggedIn = !!localStorage.getItem("token");
+
     return (
         <footer className="bg-red-800 text-white mt-auto">
             <div className="mx-auto max-w-7xl px-4 py-12">
@@ -111,7 +115,7 @@ const Footer = () => {
                 <div className="mt-10 flex flex-wrap gap-6 border-t border-red-700 pt-8 text-sm text-red-100/80">
                     <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
-                        <a href="https://maps.app.goo.gl/uFvAx33peRGt5DLMA" target="_blank">Estadio La Ciudadela - San Miguel de Tucumán</a>
+                        <a href="https://maps.app.goo.gl/uFvAx33peRGt5DLMA" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Estadio La Ciudadela - San Miguel de Tucumán</a>
                     </div>
                     <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4" />
@@ -127,11 +131,20 @@ const Footer = () => {
             <div className="border-t border-red-900 bg-red-950">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-4 text-sm md:flex-row text-red-200/60">
                     <p>
-                        &copy; {new Date().getFullYear()} Club Atlético San Martín de Tucumán. Todos los derechos reservados.
+                        © {new Date().getFullYear()} Club Atlético San Martín de Tucumán. Todos los derechos reservados.
                     </p>
                     <div className="flex gap-4">
                         <Link to="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
                         <Link to="/terminos" className="hover:text-white transition-colors">Términos y Condiciones</Link>
+                        
+                        {/* 3. ENLACE INTELIGENTE */}
+                        <span className="text-red-900/30">|</span>
+                        <Link 
+                            to={isLoggedIn ? "/admin" : "/login"} 
+                            className="hover:text-red-400 transition-colors font-medium"
+                        >
+                            {isLoggedIn ? "Panel Admin" : "Acceso Staff"}
+                        </Link>
                     </div>
                 </div>
             </div>
