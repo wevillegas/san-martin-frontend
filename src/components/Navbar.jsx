@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, User, ShoppingBag, Settings } from "lucide-react";
 import { clsx } from "clsx";
@@ -23,7 +23,6 @@ const navigation = [
         children: [
             { name: "Primer Equipo", href: "/plantel" },
             { name: "Cuerpo Técnico", href: "/plantel/cuerpo-tecnico" },
-            { name: "Juveniles", href: "/plantel/juveniles" },
         ],
     },
     { name: "Noticias", href: "/noticias" },
@@ -33,12 +32,30 @@ const navigation = [
 
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    // El "radar" que avisa cuando cambiamos de página
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const location = useLocation();
 
-    // Verificación de token (se actualiza gracias a que location cambia)
-    const isLoggedIn = !!localStorage.getItem("token");
+    // Verificación inteligente que se ejecuta cada vez que cambiamos de página
+    useEffect(() => {
+        const checkToken = () => {
+            const token = localStorage.getItem("token");
+            if (!token) return false;
+
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                // Si el token venció
+                if (payload.exp && payload.exp * 1000 < Date.now()) {
+                    localStorage.removeItem("token"); // Limpiamos el token fantasma
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                return false;
+            }
+        };
+
+        setIsLoggedIn(checkToken());
+    }, [location]); // Al poner 'location' acá, re-evaluamos el login cada vez que navegás
 
     return (
         <header className="sticky top-0 z-50 w-full shadow-md">
@@ -72,7 +89,7 @@ const Navbar = () => {
                         </div>
                         <div className="hidden flex-col sm:flex">
                             <span className="text-2xl font-black leading-tight text-red-700 uppercase tracking-wide">San Martín</span>
-                            <span className="text-sm text-gray-500 font-bold uppercase tracking-widest">de Tucumán</span>
+                            <span className="text-sm text-gray-500 font-bold uppercase tracking-widest">Tucumán</span>
                         </div>
                     </Link>
 

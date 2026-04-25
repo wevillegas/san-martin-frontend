@@ -120,7 +120,7 @@ const EditarJugador = () => {
                             <div className="flex-1 w-full text-center md:text-left">
                                 <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Foto del Jugador</h3>
                                 <p className="text-sm text-gray-500 mb-4">Elegí una nueva imagen si querés actualizar la actual.</p>
-                                <label className="cursor-pointer bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2">
+                                <label className="cursor-pointer bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2">
                                     <Upload className="w-4 h-4" />
                                     Cambiar Imagen
                                     <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
@@ -192,7 +192,7 @@ const EditarJugador = () => {
                         </div>
 
                         <div className="pt-4 flex justify-end">
-                            <button type="submit" disabled={guardando} className="bg-blue-700 hover:bg-blue-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest flex items-center gap-2 transition-all shadow active:scale-95 disabled:opacity-50">
+                            <button type="submit" disabled={guardando} className="bg-red-700 hover:bg-red-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest flex items-center gap-2 transition-all shadow active:scale-95 disabled:opacity-50">
                                 {guardando ? "Guardando..." : <><Save className="w-5 h-5" /> Guardar Cambios</>}
                             </button>
                         </div>

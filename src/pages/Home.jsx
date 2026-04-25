@@ -4,13 +4,11 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { obtenerNoticias } from "../services/noticiaService";
 import HeroSection from "../components/HeroSection";
 import SquadPreview from "../components/SquadPreview";
-// IMPORTAMOS EL MODAL
 import FichaJugadorModal from "../components/FichaJugadorModal";
 
 const Home = () => {
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
-    // ESTADO PARA EL MODAL DE JUGADORES
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
     useEffect(() => {
@@ -32,7 +30,16 @@ const Home = () => {
     }
 
     if (noticias.length === 0) {
-        return <div className="text-center mt-20 text-gray-500">No hay noticias publicadas.</div>;
+        return (
+            <div className="relative">
+                <HeroSection noticiasHero={[]} />
+                <div className="text-center mt-20 text-gray-500">No hay noticias publicadas.</div>
+                <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
+                {jugadorSeleccionado && (
+                    <FichaJugadorModal jugador={jugadorSeleccionado} onClose={() => setJugadorSeleccionado(null)} />
+                )}
+            </div>
+        );
     }
 
     const noticiaDestacada = noticias[0];
@@ -62,10 +69,15 @@ const Home = () => {
                     </div>
 
                     <div className="grid gap-6 lg:grid-cols-2">
+                        {/* Noticia Destacada */}
                         <Link to={`/noticias/${noticiaDestacada._id}`} className="group">
                             <div className="h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-xl flex flex-col">
                                 <div className="relative aspect-[16/10] overflow-hidden">
-                                    <img src={imagenPlaceholder} alt={noticiaDestacada.titulo} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                    <img
+                                        src={noticiaDestacada.imagenUrl ? `${noticiaDestacada.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
+                                        alt={noticiaDestacada.titulo}
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                                     <div className="absolute bottom-4 left-4 right-4">
                                         <span className="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full uppercase">{noticiaDestacada.etiqueta}</span>
@@ -73,7 +85,8 @@ const Home = () => {
                                     </div>
                                 </div>
                                 <div className="p-6 flex-1 flex flex-col justify-between">
-                                    <p className="mb-4 line-clamp-3 text-gray-600">{noticiaDestacada.cuerpo}</p>
+                                    {/* ACÁ USAMOS EL NUEVO RESUMEN */}
+                                    <p className="mb-4 line-clamp-3 text-gray-600">{noticiaDestacada.resumen || noticiaDestacada.cuerpo}</p>
                                     <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
                                         <Calendar className="h-4 w-4" />
                                         <span>{new Date(noticiaDestacada.createdAt).toLocaleDateString('es-AR')}</span>
@@ -82,13 +95,18 @@ const Home = () => {
                             </div>
                         </Link>
 
+                        {/* Lista de Noticias Secundarias */}
                         <div className="flex flex-col gap-4">
                             {ultimasNoticias.map((noticia) => (
                                 <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group">
                                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
                                         <div className="flex gap-4 p-4">
                                             <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg">
-                                                <img src={imagenPlaceholder} alt={noticia.titulo} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                                                <img
+                                                    src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
+                                                    alt={noticia.titulo}
+                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
                                             </div>
                                             <div className="flex flex-1 flex-col justify-center">
                                                 <span className="mb-2 inline-block bg-gray-100 text-gray-800 text-xs font-bold px-2 py-0.5 rounded-full w-fit uppercase">{noticia.etiqueta}</span>
@@ -107,10 +125,8 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* LE PASAMOS LA FUNCIÓN AL CARRUSEL */}
             <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
 
-            {/* RENDERIZAMOS EL MODAL AL FINAL DE LA PANTALLA INICIO */}
             {jugadorSeleccionado && (
                 <FichaJugadorModal
                     jugador={jugadorSeleccionado}

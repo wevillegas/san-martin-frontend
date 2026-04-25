@@ -1,3 +1,6 @@
+import NuevoMiembro from './pages/admin/NuevoMiembro';
+import EditarMiembro from './pages/admin/EditarMiembro';
+import CuerpoTecnicoAdmin from './pages/admin/CuerpoTecnicoAdmin';
 import NuevoJugador from './pages/admin/NuevoJugador';
 import EditarJugador from './pages/admin/EditarJugador';
 import PlantelAdmin from './pages/admin/PlantelAdmin';
@@ -35,6 +38,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/plantel" element={<Plantel />} />
+            <Route path="/plantel/cuerpo-tecnico" element={<Plantel />} />
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/noticias/:id" element={<NoticiaDetalle />} />
@@ -92,6 +96,30 @@ function App() {
                 <RutaProtegida>
                   <NuevoJugador />
                 </RutaProtegida>} />
+            <Route
+              path="/admin/cuerpo-tecnico"
+              element={
+                <RutaProtegida>
+                  <CuerpoTecnicoAdmin />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/cuerpo-tecnico/nuevo"
+              element={
+                <RutaProtegida>
+                  <NuevoMiembro />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/cuerpo-tecnico/editar/:id"
+              element={
+                <RutaProtegida>
+                  <EditarMiembro />
+                </RutaProtegida>
+              }
+            />
           </Routes>
         </main>
 

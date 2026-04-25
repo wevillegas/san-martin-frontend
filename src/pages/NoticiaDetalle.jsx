@@ -4,7 +4,6 @@ import { ArrowLeft, Calendar, User } from "lucide-react";
 import { obtenerNoticiaPorId } from "../services/noticiaService";
 
 const NoticiaDetalle = () => {
-    // useParams extrae el ":id" que vamos a configurar en la ruta
     const { id } = useParams();
 
     const [noticia, setNoticia] = useState(null);
@@ -29,15 +28,15 @@ const NoticiaDetalle = () => {
     if (cargando) return <div className="text-center mt-32 text-xl font-bold text-red-700">Cargando nota...</div>;
     if (error || !noticia) return <div className="text-center mt-32 text-xl text-gray-500">No se encontró la noticia.</div>;
 
-    // Imagen genérica hasta que tengas imágenes reales
     const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=2000&auto=format&fit=crop";
 
     return (
         <article className="min-h-screen bg-white pb-20">
             {/* Cabecera con Imagen */}
-            <div className="relative w-full h-[400px] md:h-[500px]">
+            <div className="relative w-full h-[450px] md:h-[550px]">
+                {/* ACÁ CARGAMOS LA IMAGEN REAL */}
                 <img
-                    src={imagenPlaceholder}
+                    src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
                     alt={noticia.titulo}
                     className="w-full h-full object-cover"
                 />
@@ -66,7 +65,7 @@ const NoticiaDetalle = () => {
 
             {/* Cuerpo de la noticia */}
             <div className="max-w-4xl mx-auto px-4 mt-8 md:mt-12">
-                {/* Metadatos (Autor y Fecha) */}
+                {/* Metadatos */}
                 <div className="flex flex-wrap items-center gap-6 py-6 border-y border-gray-100 mb-10 text-gray-500 font-medium">
                     <div className="flex items-center gap-2">
                         <User className="w-5 h-5 text-red-600" />
@@ -80,9 +79,9 @@ const NoticiaDetalle = () => {
 
                 {/* Texto principal */}
                 <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                    <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed mb-8">
-                        {/* Si tuviéramos un resumen, iría acá. Por ahora usamos la primera parte del cuerpo como "bajada" */}
-                        {noticia.cuerpo.substring(0, 150)}...
+                    {/* ACÁ USAMOS EL RESUMEN COMO LA "BAJADA" DE LA NOTICIA */}
+                    <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-red-600 pl-4 italic">
+                        {noticia.resumen || noticia.cuerpo.substring(0, 150) + "..."}
                     </p>
                     <p className="whitespace-pre-line">
                         {noticia.cuerpo}

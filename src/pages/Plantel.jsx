@@ -1,39 +1,31 @@
 import { useState, useEffect } from "react";
-// Ya no necesitamos 'Link' porque abriremos un modal, pero lo dejamos por si lo usas en el navbar
-import { Link } from "react-router-dom";
+// Importamos useLocation para poder "leer" la URL
+import { Link, useLocation } from "react-router-dom";
 import { obtenerJugadores } from "../services/jugadorService";
+// IMPORTAMOS EL SERVICIO DEL CUERPO TÉCNICO
+import { obtenerCuerpoTecnico } from "../services/cuerpoTecnicoService";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-// IMPORTAMOS EL MODAL DE LA FICHA TÉCNICA
 import FichaJugadorModal from "../components/FichaJugadorModal";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
-// Datos estáticos temporales para el Cuerpo Técnico
-const cuerpoTecnico = [
-    { id: 100, name: "Roberto Sosa", role: "Director Técnico" },
-    { id: 101, name: "Marcelo Vega", role: "Ayudante de Campo" },
-    { id: 102, name: "Daniel Acosta", role: "Preparador Físico" },
-    { id: 103, name: "Jorge Mendoza", role: "Entrenador de Arqueros" },
-];
-
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
-// --- COMPONENTES VISUALES DE LAS TARJETAS ---
-// Ahora PlayerCard recibe la función onSelectPlayer
+// --- COMPONENTES VISUALES ---
+
 const PlayerCard = ({ player, onSelectPlayer }) => (
-    // Cambiamos el <Link> por un <button> que ejecuta la función al hacer clic
     <button
         onClick={() => onSelectPlayer(player)}
-        className="group block w-full text-left"
+        className="group block w-full text-left cursor-pointer"
     >
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1">
             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                 <img
-                    src={player.imagenUrl || imagenPlaceholder}
+                    src={player.imagenUrl ? `${player.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
                     alt={`${player.nombre} ${player.apellido}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -54,44 +46,72 @@ const PlayerCard = ({ player, onSelectPlayer }) => (
     </button>
 );
 
+// ACTUALIZAMOS STAFFCARD PARA QUE LEA LOS DATOS REALES (nombre, apellido, rol, imagenUrl)
 const StaffCard = ({ staff }) => (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group">
         <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
             <img
-                src={imagenPlaceholder}
-                alt={staff.name}
-                className="w-full h-full object-cover grayscale transition-transform duration-500 hover:grayscale-0 hover:scale-105"
+                src={staff.imagenUrl ? `${staff.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
+                alt={`${staff.nombre} ${staff.apellido}`}
+                // CHAU GRIS: Ahora la imagen es a todo color desde el principio
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
+            {/* Degradado idéntico al de los jugadores */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+
             <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
-                <h3 className="text-lg font-black text-white uppercase">{staff.name}</h3>
-                <p className="text-sm font-bold text-red-400 uppercase tracking-widest">{staff.role}</p>
+                <h3 className="text-xl font-black text-white uppercase leading-tight tracking-wide">
+                    {staff.nombre} <br /> {staff.apellido}
+                </h3>
+                {/* Bajada de rol en rojo para mantener la estética de las tarjetas de jugadores */}
+                <p className="text-sm font-bold text-red-400 mt-1 uppercase tracking-widest">{staff.rol}</p>
             </div>
         </div>
     </div>
 );
 
-// --- COMPONENTE PRINCIPAL DE LA PÁGINA ---
+// --- COMPONENTE PRINCIPAL ---
 const Plantel = () => {
+    const location = useLocation(); // Hook para leer la URL actual
     const [jugadores, setJugadores] = useState([]);
+
+    // NUEVO ESTADO: Guardamos el cuerpo técnico real de la base de datos
+    const [cuerpoTecnico, setCuerpoTecnico] = useState([]);
+
     const [cargando, setCargando] = useState(true);
     const [activeTab, setActiveTab] = useState("jugadores");
-
-    // NUEVO ESTADO: Controla qué jugador está seleccionado para mostrar el Modal
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
+    // EFECTO 1: Para setear la pestaña inicial según la URL (Navbar)
     useEffect(() => {
-        const cargarJugadores = async () => {
+        // Si el usuario entró a "localhost:5173/plantel/cuerpo-tecnico", activamos esa pestaña.
+        // Si entró a "/plantel", activamos "jugadores".
+        if (location.pathname.includes("cuerpo-tecnico")) {
+            setActiveTab("cuerpo-tecnico");
+        } else {
+            setActiveTab("jugadores");
+        }
+    }, [location]); // Se vuelve a ejecutar si la URL cambia
+
+    // EFECTO 2: Cargar ambos conjuntos de datos desde la Base de Datos
+    useEffect(() => {
+        const cargarDatos = async () => {
             try {
-                const datos = await obtenerJugadores();
-                setJugadores(datos);
+                // Promise.all nos permite buscar ambas cosas a la vez para que cargue más rápido
+                const [datosJugadores, datosCT] = await Promise.all([
+                    obtenerJugadores(),
+                    obtenerCuerpoTecnico()
+                ]);
+
+                setJugadores(datosJugadores);
+                setCuerpoTecnico(datosCT);
                 setCargando(false);
             } catch (error) {
-                console.error("Error al cargar el plantel");
+                console.error("Error al cargar los datos del plantel y CT");
                 setCargando(false);
             }
         };
-        cargarJugadores();
+        cargarDatos();
     }, []);
 
     const arqueros = jugadores.filter(j => j.posicion.toLowerCase().includes("arquero"));
@@ -109,7 +129,7 @@ const Plantel = () => {
                 <div className="mx-auto max-w-7xl px-4">
                     <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider">Plantel Profesional</h1>
                     <p className="mt-3 text-red-100 font-medium text-lg">
-                        Conocé a los jugadores que defienden la camiseta del Santo esta temporada
+                        Conocé a los jugadores y cuerpo técnico de San Martín para la temporada 2026
                     </p>
                 </div>
             </section>
@@ -118,8 +138,9 @@ const Plantel = () => {
                 <div className="mx-auto max-w-7xl px-4">
 
                     <div className="flex space-x-2 border-b border-gray-300 mb-8 overflow-x-auto">
-                        <button
-                            onClick={() => setActiveTab("jugadores")}
+                        {/* Usamos Link en lugar de button para cambiar la URL y que se active el useEffect */}
+                        <Link
+                            to="/plantel"
                             className={cn(
                                 "px-6 py-3 text-sm font-bold uppercase tracking-wider transition-colors whitespace-nowrap",
                                 activeTab === "jugadores"
@@ -128,9 +149,9 @@ const Plantel = () => {
                             )}
                         >
                             Jugadores
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("cuerpo-tecnico")}
+                        </Link>
+                        <Link
+                            to="/plantel/cuerpo-tecnico"
                             className={cn(
                                 "px-6 py-3 text-sm font-bold uppercase tracking-wider transition-colors whitespace-nowrap",
                                 activeTab === "cuerpo-tecnico"
@@ -139,7 +160,7 @@ const Plantel = () => {
                             )}
                         >
                             Cuerpo Técnico
-                        </button>
+                        </Link>
                     </div>
 
                     {activeTab === "jugadores" && (
@@ -151,11 +172,9 @@ const Plantel = () => {
                             {arqueros.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
-                                        <span className="h-6 w-2 rounded bg-red-600"></span>
-                                        Arqueros
+                                        <span className="h-6 w-2 rounded bg-red-600"></span> Arqueros
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                        {/* Pasamos la función setJugadorSeleccionado al componente de la tarjeta */}
                                         {arqueros.map((player) => (
                                             <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
                                         ))}
@@ -166,8 +185,7 @@ const Plantel = () => {
                             {defensores.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
-                                        <span className="h-6 w-2 rounded bg-red-600"></span>
-                                        Defensores
+                                        <span className="h-6 w-2 rounded bg-red-600"></span> Defensores
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                         {defensores.map((player) => (
@@ -180,8 +198,7 @@ const Plantel = () => {
                             {mediocampistas.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
-                                        <span className="h-6 w-2 rounded bg-red-600"></span>
-                                        Mediocampistas
+                                        <span className="h-6 w-2 rounded bg-red-600"></span> Mediocampistas
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                         {mediocampistas.map((player) => (
@@ -194,8 +211,7 @@ const Plantel = () => {
                             {delanteros.length > 0 && (
                                 <div>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
-                                        <span className="h-6 w-2 rounded bg-red-600"></span>
-                                        Delanteros
+                                        <span className="h-6 w-2 rounded bg-red-600"></span> Delanteros
                                     </h2>
                                     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                         {delanteros.map((player) => (
@@ -208,17 +224,22 @@ const Plantel = () => {
                     )}
 
                     {activeTab === "cuerpo-tecnico" && (
-                        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            {cuerpoTecnico.map((staff) => (
-                                <StaffCard key={staff.id} staff={staff} />
-                            ))}
+                        <div className="space-y-12 relative z-0">
+                            {cuerpoTecnico.length === 0 ? (
+                                <p className="text-gray-500 text-center py-10 font-medium">Todavía no hay miembros del cuerpo técnico cargados.</p>
+                            ) : (
+                                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                    {cuerpoTecnico.map((staff) => (
+                                        <StaffCard key={staff._id} staff={staff} />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
 
                 </div>
             </section>
 
-            {/* --- RENDERIZAMOS EL MODAL AL FINAL (SÓLO SI HAY SELECCIONADO) --- */}
             {jugadorSeleccionado && (
                 <FichaJugadorModal
                     jugador={jugadorSeleccionado}

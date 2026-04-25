@@ -59,7 +59,7 @@ const SquadPreview = ({ onSelectPlayer }) => {
                             Nuestro Plantel
                         </h2>
                         <p className="mt-2 text-red-100 font-medium text-lg">
-                            Conocé a los jugadores del Santo
+                            Conocé a los jugadores de San Martín para la temporada 2026
                         </p>
                     </div>
                     <Link

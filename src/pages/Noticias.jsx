@@ -18,10 +18,7 @@ const Noticias = () => {
         const cargarNoticias = async () => {
             try {
                 const datos = await obtenerNoticias();
-
-                // Ordenamos las noticias de más nueva a más vieja usando la fecha de creación
                 const noticiasOrdenadas = datos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
                 setNoticias(noticiasOrdenadas);
                 setCargando(false);
             } catch (error) {
@@ -36,20 +33,12 @@ const Noticias = () => {
         return <div className="text-center mt-32 text-xl font-bold text-red-700 min-h-screen">Cargando el portal de noticias...</div>;
     }
 
-    // Extraemos las categorías (etiquetas) únicas de la base de datos para armar los botones
     const categoriasUnicas = ["Todas", ...new Set(noticias.map((n) => n.etiqueta))];
-
-    // Filtramos las noticias según el botón que el usuario haya tocado
-    const noticiasMostradas = filtroActivo === "Todas"
-        ? noticias
-        : noticias.filter((n) => n.etiqueta === filtroActivo);
-
+    const noticiasMostradas = filtroActivo === "Todas" ? noticias : noticias.filter((n) => n.etiqueta === filtroActivo);
     const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=1000&auto=format&fit=crop";
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
-
-            {/* Cabecera de la página */}
             <section className="bg-red-800 py-12 border-b-4 border-red-900">
                 <div className="mx-auto max-w-7xl px-4">
                     <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider ">
@@ -63,8 +52,6 @@ const Noticias = () => {
 
             <section className="py-10">
                 <div className="mx-auto max-w-7xl px-4">
-
-                    {/* Barra de Filtros (Categorías) */}
                     <div className="flex flex-wrap gap-2 border-b border-gray-300 pb-6 mb-8">
                         {categoriasUnicas.map((categoria) => (
                             <button
@@ -82,7 +69,6 @@ const Noticias = () => {
                         ))}
                     </div>
 
-                    {/* Grilla de Noticias */}
                     {noticiasMostradas.length === 0 ? (
                         <div className="text-center py-20 text-gray-500 font-medium text-lg">
                             No hay noticias publicadas en esta categoría.
@@ -92,15 +78,13 @@ const Noticias = () => {
                             {noticiasMostradas.map((noticia) => (
                                 <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group flex flex-col h-full">
                                     <div className="flex-1 overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col">
-
-                                        {/* Imagen */}
                                         <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                                            {/* ACÁ CARGAMOS LA IMAGEN REAL */}
                                             <img
-                                                src={imagenPlaceholder}
+                                                src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
                                                 alt={noticia.titulo}
                                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                             />
-                                            {/* Etiqueta flotante */}
                                             <div className="absolute top-4 left-4">
                                                 <span className="bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
                                                     {noticia.etiqueta}
@@ -108,7 +92,6 @@ const Noticias = () => {
                                             </div>
                                         </div>
 
-                                        {/* Contenido */}
                                         <div className="p-6 flex-1 flex flex-col">
                                             <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest mb-3">
                                                 <Calendar className="h-4 w-4 text-red-600" />
@@ -119,8 +102,9 @@ const Noticias = () => {
                                                 {noticia.titulo}
                                             </h3>
 
+                                            {/* ACÁ CARGAMOS EL RESUMEN */}
                                             <p className="line-clamp-3 text-gray-600 mb-6 flex-1">
-                                                {noticia.cuerpo}
+                                                {noticia.resumen || noticia.cuerpo}
                                             </p>
 
                                             <div className="mt-auto flex items-center gap-2 text-red-600 font-bold uppercase text-sm tracking-wider">
@@ -133,7 +117,6 @@ const Noticias = () => {
                             ))}
                         </div>
                     )}
-
                 </div>
             </section>
         </div>

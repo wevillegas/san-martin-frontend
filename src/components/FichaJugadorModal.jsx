@@ -16,6 +16,14 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
         return edad;
     };
 
+    // Función para forzar la fecha exacta sin que la zona horaria la modifique
+    const formatearFecha = (fechaISO) => {
+        if (!fechaISO) return "-";
+        // Cortamos la fecha por la "T" y luego separamos año, mes y día
+        const [year, month, day] = fechaISO.split('T')[0].split('-');
+        return `${day}/${month}/${year}`;
+    };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-all">
             {/* Contenedor Principal de la Ficha */}
@@ -78,7 +86,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                                     <div>
                                         <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Nacimiento (Edad)</p>
                                         <p className="font-bold text-gray-800">
-                                            {jugador.fechaNacimiento ? new Date(jugador.fechaNacimiento).toLocaleDateString('es-AR') : 'N/D'}
+                                            {formatearFecha(jugador.fechaNacimiento)}
                                             <span className="text-red-700 ml-1">({calcularEdad(jugador.fechaNacimiento)} años)</span>
                                         </p>
                                     </div>

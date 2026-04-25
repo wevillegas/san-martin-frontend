@@ -1,16 +1,32 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// IMPORTANTE: Agregamos el ícono "Eye" (Ojo)
 import { Plus, Edit, Trash2, ArrowLeft, Eye } from "lucide-react";
 import { obtenerJugadores, eliminarJugador } from "../../services/jugadorService";
-// IMPORTAMOS EL NUEVO COMPONENTE DEL MODAL (Asegurate de que la ruta sea correcta)
 import FichaJugadorModal from "../../components/FichaJugadorModal";
+
+// 1. FUNCIÓN PARA ORDENAR POR POSICIÓN
+const getPesoPosicion = (posicion) => {
+    const pos = posicion ? posicion.toLowerCase() : "";
+    if (pos.includes("arquero")) return 1;
+    if (pos.includes("defensor") || pos.includes("defensa")) return 2;
+    if (pos.includes("medio") || pos.includes("volante")) return 3;
+    if (pos.includes("delantero") || pos.includes("ataque")) return 4;
+    return 5;
+};
+
+// 2. FUNCIÓN PARA DARLE COLOR A LAS ETIQUETAS SEGÚN LA POSICIÓN
+const getColorPosicion = (posicion) => {
+    const pos = posicion ? posicion.toLowerCase() : "";
+    if (pos.includes("arquero")) return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    if (pos.includes("defensor") || pos.includes("defensa")) return "bg-blue-100 text-blue-800 border-blue-200";
+    if (pos.includes("medio") || pos.includes("volante")) return "bg-green-100 text-green-800 border-green-200";
+    if (pos.includes("delantero") || pos.includes("ataque")) return "bg-red-100 text-red-800 border-red-200";
+    return "bg-gray-100 text-gray-800 border-gray-200";
+};
 
 const PlantelAdmin = () => {
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
-
-    // NUEVO ESTADO: Para saber qué jugador estamos mirando en la Ficha Técnica
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
     useEffect(() => {
@@ -20,8 +36,19 @@ const PlantelAdmin = () => {
     const cargarPlantel = async () => {
         try {
             const datos = await obtenerJugadores();
-            // Ordenamos a los jugadores por número de camiseta
-            const jugadoresOrdenados = datos.sort((a, b) => a.numeroCamiseta - b.numeroCamiseta);
+            
+            // APLICAMOS LA MAGIA DEL ORDENAMIENTO ACÁ
+            const jugadoresOrdenados = datos.sort((a, b) => {
+                const pesoA = getPesoPosicion(a.posicion);
+                const pesoB = getPesoPosicion(b.posicion);
+
+                if (pesoA !== pesoB) {
+                    return pesoA - pesoB; // Ordena por línea (Arquero -> Delantero)
+                }
+                // Si están en la misma línea, los ordena por número de camiseta
+                return (a.numeroCamiseta || 0) - (b.numeroCamiseta || 0);
+            });
+
             setJugadores(jugadoresOrdenados);
             setCargando(false);
         } catch (error) {
@@ -72,7 +99,7 @@ const PlantelAdmin = () => {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider border-b border-gray-200">
-                                    <th className="p-4 font-bold">Dorsal</th>
+                                    <th className="p-4 font-bold w-20 text-center">Dorsal</th>
                                     <th className="p-4 font-bold">Nombre</th>
                                     <th className="p-4 font-bold">Posición</th>
                                     <th className="p-4 font-bold text-center">Acciones</th>
@@ -86,7 +113,7 @@ const PlantelAdmin = () => {
                                 ) : (
                                     jugadores.map((jugador) => (
                                         <tr key={jugador._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="p-4">
+                                            <td className="p-4 flex justify-center">
                                                 <span className="bg-red-700 text-white text-sm font-black w-9 h-9 flex items-center justify-center rounded-full shadow-md border-2 border-white">
                                                     {jugador.numeroCamiseta || "?"}
                                                 </span>
@@ -94,12 +121,14 @@ const PlantelAdmin = () => {
                                             <td className="p-4 font-bold text-gray-800">
                                                 {jugador.nombre} {jugador.apellido}
                                             </td>
-                                            <td className="p-4 text-sm font-medium text-gray-600 uppercase">
-                                                {jugador.posicion}
+                                            <td className="p-4">
+                                                {/* ETIQUETA DE COLOR PARA LA POSICIÓN */}
+                                                <span className={`px-3 py-1 text-xs font-black uppercase tracking-wider rounded-full border ${getColorPosicion(jugador.posicion)}`}>
+                                                    {jugador.posicion}
+                                                </span>
                                             </td>
                                             <td className="p-4 flex items-center justify-center gap-3">
 
-                                                {/* NUEVO BOTÓN: Ver Ficha Técnica */}
                                                 <button
                                                     onClick={() => setJugadorSeleccionado(jugador)}
                                                     className="p-2 text-gray-500 hover:text-white hover:bg-gray-800 rounded-md transition-colors"
@@ -134,7 +163,6 @@ const PlantelAdmin = () => {
 
             </div>
 
-            {/* RENDERIZAMOS LA FICHA TÉCNICA (MODAL) SÓLO SI HAY UN JUGADOR SELECCIONADO */}
             {jugadorSeleccionado && (
                 <FichaJugadorModal
                     jugador={jugadorSeleccionado}

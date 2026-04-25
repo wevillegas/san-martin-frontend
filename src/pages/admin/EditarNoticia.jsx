@@ -1,34 +1,39 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save, AlertCircle } from "lucide-react";
+import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { obtenerNoticiaPorId, actualizarNoticia } from "../../services/noticiaService";
 
 const EditarNoticia = () => {
     const navigate = useNavigate();
-    const { id } = useParams(); // Sacamos el ID de la URL
+    const { id } = useParams();
 
     const [cargando, setCargando] = useState(true);
     const [guardando, setGuardando] = useState(false);
     const [error, setError] = useState("");
 
+    const [imagen, setImagen] = useState(null);
+    const [preview, setPreview] = useState(null);
+
     const [formData, setFormData] = useState({
         titulo: "",
+        resumen: "",
         cuerpo: "",
         etiqueta: "Primer Equipo",
         autor: ""
     });
 
-    // Al cargar la página, buscamos la noticia por su ID
     useEffect(() => {
         const cargarNoticia = async () => {
             try {
                 const nota = await obtenerNoticiaPorId(id);
                 setFormData({
                     titulo: nota.titulo,
+                    resumen: nota.resumen || "", // Por si editás una vieja sin resumen
                     cuerpo: nota.cuerpo,
                     etiqueta: nota.etiqueta,
                     autor: nota.autor || ""
                 });
+                if (nota.imagenUrl) setPreview(nota.imagenUrl);
                 setCargando(false);
             } catch (error) {
                 console.error(error);
@@ -43,14 +48,26 @@ const EditarNoticia = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImagen(file);
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setGuardando(true);
         setError("");
 
+        const submitData = new FormData();
+        Object.keys(formData).forEach(key => submitData.append(key, formData[key]));
+        if (imagen) submitData.append("imagen", imagen);
+
         try {
-            await actualizarNoticia(id, formData);
-            navigate("/admin/noticias"); // Volvemos a la tabla si hay éxito
+            await actualizarNoticia(id, submitData);
+            navigate("/admin/noticias");
         } catch (err) {
             console.error(err);
             setError("Error al guardar los cambios.");
@@ -78,9 +95,38 @@ const EditarNoticia = () => {
                             </div>
                         )}
 
+                        {/* SECCIÓN IMAGEN */}
+                        <div className="flex flex-col md:flex-row gap-6 items-center bg-blue-50/30 p-6 rounded-lg border border-blue-100">
+                            <div className="w-full md:w-64 aspect-video flex-shrink-0 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden relative">
+                                {preview ? (
+                                    <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
+                                ) : (
+                                    <div className="text-center text-gray-400 p-4">
+                                        <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                        <span className="text-xs font-bold uppercase tracking-widest">Sin Imagen</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex-1 w-full text-center md:text-left">
+                                <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Imagen de Portada</h3>
+                                <p className="text-sm text-gray-500 mb-4">Seleccioná una imagen nueva si deseás reemplazar la actual.</p>
+                                <label className="cursor-pointer bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2 shadow-sm">
+                                    <Upload className="w-4 h-4" />
+                                    Cambiar Imagen
+                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                                </label>
+                                {imagen && <p className="text-xs text-green-600 font-bold mt-2">Nuevo archivo: {imagen.name}</p>}
+                            </div>
+                        </div>
+
                         <div>
                             <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Título</label>
-                            <input type="text" name="titulo" required value={formData.titulo} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none" />
+                            <input type="text" name="titulo" required value={formData.titulo} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none font-bold" />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Resumen (Copete)</label>
+                            <textarea name="resumen" required rows="2" value={formData.resumen} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none resize-y"></textarea>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
@@ -88,6 +134,8 @@ const EditarNoticia = () => {
                                 <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Categoría</label>
                                 <select name="etiqueta" value={formData.etiqueta} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none">
                                     <option value="Primer Equipo">Primer Equipo</option>
+                                    <option value="Primera Nacional">Primera Nacional</option>
+                                    <option value="Liga Tucumana">Liga Tucumana</option>
                                     <option value="Juveniles">Juveniles</option>
                                     <option value="Institucional">Institucional</option>
                                     <option value="Femenino">Femenino</option>
@@ -106,7 +154,7 @@ const EditarNoticia = () => {
                         </div>
 
                         <div className="pt-6 border-t flex justify-end">
-                            <button type="submit" disabled={guardando} className="bg-blue-700 hover:bg-blue-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest flex items-center gap-2 disabled:opacity-50">
+                            <button type="submit" disabled={guardando} className="bg-red-700 hover:bg-red-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest transition-all shadow-md flex items-center gap-2 disabled:opacity-50">
                                 {guardando ? "Guardando..." : <><Save className="w-5 h-5" /> Guardar Cambios</>}
                             </button>
                         </div>
