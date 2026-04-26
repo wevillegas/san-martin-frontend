@@ -1,3 +1,4 @@
+import Historia from './pages/Historia';
 import NuevoMiembro from './pages/admin/NuevoMiembro';
 import EditarMiembro from './pages/admin/EditarMiembro';
 import CuerpoTecnicoAdmin from './pages/admin/CuerpoTecnicoAdmin';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/noticias/:id" element={<NoticiaDetalle />} />
+            <Route path="/club/historia" element={<Historia />} />
             <Route
               path="/admin"
               element={

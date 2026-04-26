@@ -8,6 +8,7 @@ function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
+// ARREGLO DE NAVEGACIÓN ACTUALIZADO
 const navigation = [
     { name: "Inicio", href: "/" },
     {
@@ -15,6 +16,7 @@ const navigation = [
         children: [
             { name: "Historia", href: "/club/historia" },
             { name: "Estadio", href: "/club/estadio" },
+            { name: "Museo", href: "/club/museo" }, // <-- MUSEO AGREGADO ACÁ
             { name: "Autoridades", href: "/club/autoridades" },
         ],
     },
@@ -28,6 +30,7 @@ const navigation = [
     { name: "Noticias", href: "/noticias" },
     { name: "Fixtures", href: "/fixtures" },
     { name: "Tienda", href: "/tienda" },
+    { name: "Socios", href: "/socios" }, // <-- SOCIOS AGREGADO ACÁ AL FINAL
 ];
 
 const Navbar = () => {
