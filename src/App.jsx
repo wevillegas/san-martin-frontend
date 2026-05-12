@@ -1,3 +1,4 @@
+import Estadio from './pages/Estadio';
 import Historia from './pages/Historia';
 import NuevoMiembro from './pages/admin/NuevoMiembro';
 import EditarMiembro from './pages/admin/EditarMiembro';
@@ -44,6 +45,7 @@ function App() {
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/noticias/:id" element={<NoticiaDetalle />} />
             <Route path="/club/historia" element={<Historia />} />
+            <Route path="/club/estadio" element={<Estadio/>} />
             <Route
               path="/admin"
               element={
