@@ -50,7 +50,7 @@ const SquadPreview = ({ onSelectPlayer }) => {
     const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=800&auto=format&fit=crop";
 
     return (
-        <section className="bg-red-700 py-16 overflow-hidden">
+        <section className="bg-red-800 py-16 overflow-hidden">
             <div className="mx-auto max-w-7xl px-4">
 
                 <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">

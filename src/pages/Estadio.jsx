@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap, Map } from "lucide-react";
+import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap, Map, Clock } from "lucide-react";
 
 const Estadio = () => {
     // 1. IMAGEN PRINCIPAL (Hero) y PARTIDOS
@@ -13,20 +13,18 @@ const Estadio = () => {
     const imgClasico2 = "/public/images/1994clasico.jpg";
 
     // 2. FOTOS PARA LA GALERÍA DE EVOLUCIÓN
-    // Asegurate de nombrar tus 5 fotos así, o cambiá los nombres acá abajo:
     const fotosEvolucion = [
-        "/images/ciudadela1932.jpg", // 1932
-        "/images/ciudadela1932color.jpg", // Foto 2
-        "/images/ciudadelablanco.jpg", // Foto 3
-        "/images/ciudadelanoche.jpg", // Foto 4
-        "/images/ciudadeladentro.jpg"       // Foto actual
+        "/images/ciudadela1932.jpg", 
+        "/images/ciudadela1932color.jpg", 
+        "/images/ciudadelablanco.jpg", 
+        "/images/ciudadelanoche.jpg", 
+        "/images/ciudadeladentro.jpg"
     ];
 
-    // Estado para controlar qué foto se ve en grande en la galería
     const [fotoActiva, setFotoActiva] = useState(0);
 
     return (
-        <div className="min-h-screen font-sans">
+        <div className="min-h-screen font-sans bg-white">
 
             {/* =========================================
                 SECCIÓN 1: CABECERA HERO 
@@ -48,7 +46,7 @@ const Estadio = () => {
                     </p>
                 </div>
 
-                {/* Badges Flotantes de Datos Duros */}
+                {/* Badges Flotantes */}
                 <div className="absolute -bottom-10 left-0 w-full px-4 z-20">
                     <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="bg-white rounded-xl shadow-xl p-6 flex items-center gap-4 border-b-4 border-red-700">
@@ -82,14 +80,12 @@ const Estadio = () => {
                 </div>
             </div>
 
-
             {/* =========================================
                 SECCIÓN 2: HISTORIA (FONDO BLANCO)
             ========================================== */}
-            <div className="bg-white pt-32 pb-24">
+            <div className="bg-white pt-32 pb-24 border-b border-gray-100">
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="grid lg:grid-cols-2 gap-12 items-start">
-                        {/* Texto */}
                         <div>
                             <div className="flex items-center gap-3 mb-4">
                                 <MapPin className="w-8 h-8 text-red-700" />
@@ -104,9 +100,7 @@ const Estadio = () => {
                             </p>
                         </div>
 
-                        {/* Galería Interactiva de Evolución */}
                         <div className="flex flex-col gap-3">
-                            {/* Foto Principal (La Grande) */}
                             <div className="w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-100">
                                 <img
                                     src={fotosEvolucion[fotoActiva] || "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop"}
@@ -114,15 +108,12 @@ const Estadio = () => {
                                     className="w-full h-full object-cover transition-opacity duration-500"
                                 />
                             </div>
-
-                            {/* Miniaturas */}
                             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                                 {fotosEvolucion.map((foto, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setFotoActiva(index)}
-                                        className={`cursor-pointer relative w-24 h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
-                                            }`}
+                                        className={`cursor-pointer relative w-24 h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
                                     >
                                         <img src={foto || "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop"} alt="Miniatura" className="w-full h-full object-cover" />
                                     </button>
@@ -132,86 +123,22 @@ const Estadio = () => {
                     </div>
                 </div>
             </div>
-
             {/* =========================================
-                SECCIÓN BANNER UBICACIÓN (ROJO BRILLANTE)
-            ========================================== */}
-            <div className="bg-red-800 py-5 shadow-inner">
-                <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-white">
-                    <Map className="w-10 h-10" />
-                    <div className="text-center sm:text-left">
-                        <p className="text-red-200 font-bold uppercase tracking-widest text-sm">Dirección</p>
-                        <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider">
-                            Bolívar 1960, San Miguel de Tucumán
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-
-            {/* =========================================
-                SECCIÓN 3: INFRAESTRUCTURA (FONDO ROJO OSCURO)
+                SECCIÓN 4: MOMENTOS ICÓNICOS (FONDO ROJO)
             ========================================== */}
             <div className="bg-red-800 py-24">
                 <div className="max-w-6xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-black text-white uppercase tracking-wider mb-4">Infraestructura</h2>
-                        <div className="w-24 h-1.5 bg-red-500 mx-auto rounded-full"></div>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Tarjetas Blancas para generar mucho contraste */}
-                        <div className="p-6 bg-white rounded-xl shadow-xl transform hover:-translate-y-2 transition-transform">
-                            <ShieldCheck className="w-10 h-10 text-red-700 mb-4" />
-                            <h3 className="text-xl font-black text-gray-900 mb-2 uppercase">Sectores</h3>
-                            <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                                Cuatro imponentes tribunas de cemento: Calle Rondeau, Bolívar, Pellegrini y la histórica platea central por calle Matienzo.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-xl shadow-xl transform hover:-translate-y-2 transition-transform">
-                            <Lightbulb className="w-10 h-10 text-red-700 mb-4" />
-                            <h3 className="text-xl font-black text-gray-900 mb-2 uppercase">Iluminación</h3>
-                            <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                                Sistema lumínico LED de última generación apto para transmisiones en HD, montado sobre cuatro torres principales.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-xl shadow-xl transform hover:-translate-y-2 transition-transform">
-                            <Radio className="w-10 h-10 text-red-700 mb-4" />
-                            <h3 className="text-xl font-black text-gray-900 mb-2 uppercase">Prensa</h3>
-                            <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                                Cabinas de transmisión equipadas, sala de conferencias de prensa y zona mixta para el confort del periodismo nacional.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-xl shadow-xl transform hover:-translate-y-2 transition-transform">
-                            <Zap className="w-10 h-10 text-red-700 mb-4" />
-                            <h3 className="text-xl font-black text-gray-900 mb-2 uppercase">Comodidades</h3>
-                            <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                                Palcos VIP, vestuarios modernos de primer nivel para local, visitante y árbitros, y un campo de juego con riego automático.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* =========================================
-                SECCIÓN 4: PARTIDOS ICÓNICOS (FONDO GRIS CLARITO)
-            ========================================== */}
-            <div className="bg-gray-50 py-24">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-4">momentos iconicos</h2>
-                        <p className="text-gray-500 font-medium">Algunos de los momentos mas destacados sucedidos en ciudadela</p>
+                    <div className="text-center mb-16 text-white">
+                        <h2 className="text-3xl font-black uppercase tracking-wider mb-4">momentos iconicos</h2>
+                        <div className="w-24 h-1.5 bg-white mx-auto rounded-full mb-4"></div>
+                        <p className="text-red-100 font-medium">Algunos de los momentos mas destacados sucedidos en ciudadela</p>
                     </div>
 
                     <div className="space-y-8">
                         {/* Tarjeta 0 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={img1932 || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={img1932} alt="Inauguración" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -220,18 +147,15 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">INAUGURACION DE LA CIUDADELA</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    El 24 de marzo de 1932 marcó un antes y un después con la inauguración del mítico estadio en el predio donde se libró la Batalla de Tucumán. Este hito no solo dio un sentido de pertenencia inigualable, sino que convirtió a La Ciudadela en un símbolo de la resistencia y pasión del pueblo ciruja. La construcción de sus primeras tribunas cimentó el carácter de una fortaleza que, con el tiempo, se ganaría el respeto de todo el fútbol argentino. El estadio mas caliente del país
+                                    El 24 de marzo de 1932 marcó un antes y un después con la inauguración del mítico estadio. Un símbolo de la resistencia y pasión del pueblo ciruja.
                                 </p>
                             </div>
                         </div>
+
                         {/* Tarjeta 1 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgCosmos || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgCosmos} alt="Maradona" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -240,18 +164,15 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">MARADONA EN LA CIUDADELA</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    El 4 de noviembre de 1978 en la Ciudadela la Selección Juvenil, dirida por Cesar Luis Menotti, derrotó 2-1 al Cosmos de Nueva York, con un golazo de tiro libre de Diego. Franz Beckenbauer jugaba en el equipo norteamericano.
+                                    El 4 de noviembre de 1978 la Selección Juvenil derrotó 2-1 al Cosmos de Nueva York, con un golazo de tiro libre de Diego. Franz Beckenbauer jugaba para el equipo norteamericano.
                                 </p>
                             </div>
                         </div>
-                        {/* Tarjeta 2 - La Roma */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+
+                        {/* Tarjeta 2 */}
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgRoma || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgRoma} alt="Roma" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -260,18 +181,15 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">Victoria frente a la Roma</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    El Santo recibió a la poderosa Roma de Italia en un amistoso internacional que quedó grabado a fuego. En una Ciudadela repleta, San Martín se impuso por 1 a 0 con un gol inolvidable de Alfredo "Cachi" Zelaya.
+                                    San Martín se impuso por 1 a 0 frente a la poderosa Roma de Italia con un gol inolvidable de Alfredo "Cachi" Zelaya en una Ciudadela repleta.
                                 </p>
                             </div>
                         </div>
-                        {/* Tarjeta clasico 1 - 1991*/}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+
+                        {/* Tarjeta 3 */}
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgClasico1 || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgClasico1} alt="Clásico 92" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -280,38 +198,32 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">Clasificación en el clásico tucumano</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    En esta llave del Torneo Reducido, San Martín eliminó de forma directa a Atlético Tucumán tras igualar 1-1 en el Monumental y empatar 0-0 en La Ciudadela. El marcador global finalizó empatado, pero San Martín dejó afuera a su clásico rival gracias a la ventaja deportiva por su mejor ubicación en la tabla general. Este triunfo en el clásico impulsó al Santo a semifinales, camino a su posterior ascenso a Primera División.
+                                    San Martín eliminó de forma directa a Atlético Tucumán tras igualar en el Monumental y empatar 0-0 en La Ciudadela, avanzando por ventaja deportiva camino al ascenso.
                                 </p>
                             </div>
                         </div>
-                        {/* Tarjeta clasico 2 - 1994*/}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+
+                        {/* Tarjeta 4 */}
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgClasico2 || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgClasico2} alt="Clásico 94" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
                                     <Swords className="w-5 h-5" />
                                     <span>San Martín vs Atlético Tucumán - 1994</span>
                                 </div>
-                                <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">Otra clasificación en el clásico tucumano</h3>
+                                <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">Otra clasificación en el clásico</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    Dos años después se repitió la historia y San Martín volvió a eliminar a Atlético en los cuartos de final por la misma vía. La ida en el estadio de Atlético terminó en un empate 1-1, mientras que la vuelta en La Ciudadela culminó en un tenso 0-0 que sentenció la serie. San Martín dejó en el camino a Atlético haciendo valer nuevamente la ventaja deportiva.
+                                    Dos años después se repitió la historia y el Santo volvió a eliminar a su clásico rival en cuartos de final haciendo valer nuevamente la ventaja deportiva tras dos empates.
                                 </p>
                             </div>
                         </div>
-                        {/* Tarjeta 3 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+
+                        {/* Tarjeta 5 */}
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgGuarani || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgGuarani} alt="Guarani" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -320,18 +232,15 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">GOL AGONICO Y ESTADIO COLAPSADO</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    El 22 de mayo de 2016 San Martín venció 2 a 1 a Guaraní Antonio Franco de Misiones por la vuelta de los cuartos de final del torneo Argentino A. Con gol de Briones y un gol agonico de Ivan Agudiak, San MartÍn ganó la serie y pasó a la semifinales del torneo, donde terminaria ascendiendo a la B Nacional.
+                                    Con un gol agónico de Iván Agudiak sobre el final, San Martín ganó la serie y pasó a semifinales del Federal A en una tarde de locura total en Tucumán.
                                 </p>
                             </div>
                         </div>
-                        {/* Tarjeta 4 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col md:flex-row hover:shadow-lg transition-shadow">
+
+                        {/* Tarjeta 6 */}
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300">
                             <div className="md:w-2/5 h-64 md:h-auto">
-                                <img
-                                    src={imgDalmine || "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop"}
-                                    alt="San Martín vs Roma"
-                                    className="w-full h-full object-cover"
-                                />
+                                <img src={imgDalmine} alt="Dalmine" className="w-full h-full object-cover" />
                             </div>
                             <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-sm">
@@ -340,7 +249,7 @@ const Estadio = () => {
                                 </div>
                                 <h3 className="text-2xl font-black text-gray-900 mb-4 uppercase">EMPATE AGONICO Y CLASIFICACION</h3>
                                 <p className="text-gray-600 leading-relaxed font-medium">
-                                    El 6 de mayo de 2018 San Martín jugó contra Villa Dalmine por la vuelta de los cuartos de final del reducido de la B Nacional 2018. Con goles de Costa, Bieler y un gol agónico al último minuto de Galeano, San Martín empató 3 a 3 contra Villa Dalmine en la Ciudadela, lo que permitió la clasificacion por ventaja deportiva a las semifinales del reducido donde San Martín terminaria ascendiendo a la Superliga Argentina. Considerado uno de los partidos mas épicos de la historia del ascenso.
+                                    Uno de los partidos más épicos del ascenso: gol al último minuto de Galeano para empatar 3-3 y clasificar a semifinales del reducido donde el Santo volvería a Primera.
                                 </p>
                             </div>
                         </div>
@@ -348,6 +257,56 @@ const Estadio = () => {
                 </div>
             </div>
 
+            {/* =========================================
+                SECCIÓN 3: UBICACIÓN E INFRAESTRUCTURA (ESTILO MUSEO)
+            ========================================== */}
+            <div className="bg-white py-24 border-b border-gray-100">
+                <div className="max-w-6xl mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-wider mb-4">Ubicación e Infraestructura</h2>
+                        <div className="w-24 h-1.5 bg-red-600 mx-auto rounded-full"></div>
+                    </div>
+
+                    {/* Tarjeta de Ubicación Principal */}
+                    <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md mb-12 text-center max-w-3xl mx-auto">
+                        <MapPin className="w-12 h-12 text-red-700 mb-4" />
+                        <h3 className="font-bold uppercase tracking-widest text-sm text-gray-500 mb-3">Dirección Oficial</h3>
+                        <p className="text-2xl md:text-3xl font-black text-gray-900 uppercase">Bolívar 1960, San Miguel de Tucumán</p>
+                        <p className="text-red-700 font-bold mt-2 uppercase tracking-wider text-sm">Barrio Ciudadela</p>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                            <ShieldCheck className="w-10 h-10 text-red-700 mb-4" />
+                            <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-3">Sectores</h3>
+                            <p className="text-gray-700 text-sm leading-relaxed font-medium">
+                                Cuatro imponentes tribunas de cemento: Rondeau, Bolívar, Pellegrini y la histórica Matienzo.
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                            <Lightbulb className="w-10 h-10 text-red-700 mb-4" />
+                            <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-3">Iluminación</h3>
+                            <p className="text-gray-700 text-sm leading-relaxed font-medium">
+                                Sistema LED de última generación apto para transmisiones HD y competencias internacionales.
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                            <Radio className="w-10 h-10 text-red-700 mb-4" />
+                            <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-3">Prensa</h3>
+                            <p className="text-gray-700 text-sm leading-relaxed font-medium">
+                                Cabinas de transmisión equipadas, sala de conferencias y zona mixta de alto nivel.
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                            <Zap className="w-10 h-10 text-red-700 mb-4" />
+                            <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-3">Comodidades</h3>
+                            <p className="text-gray-700 text-sm leading-relaxed font-medium">
+                                Palcos VIP, vestuarios modernos y campo de juego con sistema de riego automático.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

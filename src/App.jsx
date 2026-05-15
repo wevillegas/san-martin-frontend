@@ -1,3 +1,6 @@
+import Socios from './pages/Socios'
+import Autoridades from './pages/Autoridades';
+import Museo from './pages/Museo'
 import Estadio from './pages/Estadio';
 import Historia from './pages/Historia';
 import NuevoMiembro from './pages/admin/NuevoMiembro';
@@ -43,9 +46,12 @@ function App() {
             <Route path="/plantel/cuerpo-tecnico" element={<Plantel />} />
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<Noticias />} />
+            <Route path="/socios" element={<Socios />} />
             <Route path="/noticias/:id" element={<NoticiaDetalle />} />
             <Route path="/club/historia" element={<Historia />} />
             <Route path="/club/estadio" element={<Estadio/>} />
+            <Route path="/club/museo" element={<Museo />} />
+            <Route path="/club/autoridades" element={<Autoridades />} />
             <Route
               path="/admin"
               element={
