@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight } from "lucide-react";
+import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag } from "lucide-react";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -35,6 +35,14 @@ const Dashboard = () => {
             linkList: "/admin/noticias",
             linkNew: "/admin/noticias/nueva",
             btnNewText: "Redactar Nota"
+        },
+        {
+            title: "Tienda Oficial",
+            desc: "Administrá la vidriera de productos, precios y links de compra.",
+            icon: <ShoppingBag className="w-8 h-8 text-red-700 mb-4" />,
+            linkList: "/admin/tienda",
+            linkNew: "/admin/tienda/nuevo",
+            btnNewText: "Nuevo Producto"
         }
     ];
 

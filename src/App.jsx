@@ -1,3 +1,7 @@
+import EditarProducto from './pages/admin/EditarProducto';
+import TiendaAdmin from './pages/admin/TiendaAdmin';
+import NuevoProducto from './pages/admin/NuevoProducto';
+import Tienda from './pages/Tienda'
 import Socios from './pages/Socios'
 import Autoridades from './pages/Autoridades';
 import Museo from './pages/Museo'
@@ -49,9 +53,10 @@ function App() {
             <Route path="/socios" element={<Socios />} />
             <Route path="/noticias/:id" element={<NoticiaDetalle />} />
             <Route path="/club/historia" element={<Historia />} />
-            <Route path="/club/estadio" element={<Estadio/>} />
+            <Route path="/club/estadio" element={<Estadio />} />
             <Route path="/club/museo" element={<Museo />} />
             <Route path="/club/autoridades" element={<Autoridades />} />
+            <Route path="/tienda" element={<Tienda />} />
             <Route
               path="/admin"
               element={
@@ -127,6 +132,30 @@ function App() {
               element={
                 <RutaProtegida>
                   <EditarMiembro />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/tienda"
+              element={
+                <RutaProtegida>
+                  <TiendaAdmin />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/tienda/nuevo"
+              element={
+                <RutaProtegida>
+                  <NuevoProducto />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/tienda/editar/:id"
+              element={
+                <RutaProtegida>
+                  <EditarProducto />
                 </RutaProtegida>
               }
             />
