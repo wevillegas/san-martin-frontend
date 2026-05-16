@@ -76,7 +76,7 @@ const Tienda = () => {
             <div className="max-w-6xl mx-auto px-4 py-24">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>
-                        <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-2">Colección 2026</h2>
+                        <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-2">SANTO STORE</h2>
                         <div className="w-16 h-1.5 bg-red-600 rounded-full"></div>
                     </div>
                     <a 
@@ -141,7 +141,7 @@ const Tienda = () => {
                         LAS COMPRAS NO SE REALIZAN EN ESTA PAGINA
                     </h2>
                     <p className="text-xl text-gray-600 font-bold max-w-2xl mx-auto mb-12 leading-relaxed">
-                        En esta página no se realizan compras ni transacciones. Las mismas se realizan a travez de la página web de Marathon en la sección de Santo Store o a travez de la página oficial de Kappa. Acá solo nos limitamos a mostrar el catálogo.
+                        En esta página no se realizan compras ni transacciones. Las mismas se realizan a traves de la página web de Marathon en la sección de Santo Store o a traves de la página oficial de Kappa. Acá solo nos limitamos a mostrar el catálogo.
                     </p>
                     
                     <a 

@@ -111,7 +111,7 @@ const Socios = () => {
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-4">Por qué ser Socio</h2>
                         <div className="w-24 h-1.5 bg-red-600 mx-auto rounded-full mb-4"></div>
-                        <p className="text-gray-500 font-medium max-w-xl mx-auto">Estar al día tiene sus ventajas. Disfrutá de tu club los 365 días del año.</p>
+                        <p className="text-gray-500 font-medium max-w-xl mx-auto">Estar al día tiene sus ventajas. Disfrutá y ayuda al club.</p>
                     </div>
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -181,7 +181,7 @@ const Socios = () => {
             </div>
 
             {/* 5. SECCIÓN FINAL - LLAMADO A LA ACCIÓN (FONDO GRIS CLARO) */}
-            <div className="bg-gray-100 py-24 border-b border-gray-200">
+            <div className="bg-gray-50 py-24 border-t border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <Trophy className="w-16 h-16 text-red-600 mx-auto mb-8" />
                     <h2 className="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter mb-6">

@@ -4,6 +4,8 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { obtenerNoticias } from "../services/noticiaService";
 import HeroSection from "../components/HeroSection";
 import SquadPreview from "../components/SquadPreview";
+import TiendaPreview from "../components/TiendaPreview";
+import AsociateBanner from "../components/AsociateBanner";
 import FichaJugadorModal from "../components/FichaJugadorModal";
 
 const Home = () => {
@@ -125,14 +127,17 @@ const Home = () => {
                 </div>
             </section>
 
+            
             <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
-
-            {jugadorSeleccionado && (
+    {jugadorSeleccionado && (
                 <FichaJugadorModal
-                    jugador={jugadorSeleccionado}
-                    onClose={() => setJugadorSeleccionado(null)}
+                jugador={jugadorSeleccionado}
+                onClose={() => setJugadorSeleccionado(null)}
                 />
             )}
+
+            <TiendaPreview />
+            <AsociateBanner />
         </div>
     );
 };

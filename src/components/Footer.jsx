@@ -7,18 +7,16 @@ const footerLinks = {
         { name: "Historia", href: "/club/historia" },
         { name: "Estadio", href: "/club/estadio" },
         { name: "Autoridades", href: "/club/autoridades" },
-        { name: "Instalaciones", href: "/club/instalaciones" },
+        { name: "Museo", href: "/club/museo" },
     ],
     futbol: [
         { name: "Plantel Profesional", href: "/plantel" },
         { name: "Cuerpo Técnico", href: "/plantel/cuerpo-tecnico" },
-        { name: "Juveniles", href: "/plantel/juveniles" },
         { name: "Fixtures", href: "/fixtures" },
     ],
     socios: [
         { name: "Hacete Socio", href: "/socios" },
-        { name: "Beneficios", href: "/socios/beneficios" },
-        { name: "Carnets", href: "/socios/carnets" },
+        { name: "Beneficios", href: "/socios" },
         { name: "Contacto", href: "/contacto" },
     ],
 };

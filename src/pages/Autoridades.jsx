@@ -23,10 +23,10 @@ const autoridades = [
     { cargo: "Vocal Suplente 6", nombre: "Gonzalo Valdez Todoroff" },
     { cargo: "Junta Fiscalizadora, Titular 1", nombre: "Amira Nair Maidan" },
     { cargo: "Junta Fiscalizadora, Titular 2", nombre: "Nery Maximiliano Nieto" },
-    { cargo: "Junta Fiscalizadora, Titular 3", nombre: "Baaclini Ignacio" },
+    { cargo: "Junta Fiscalizadora, Titular 3", nombre: "Ignacio Baaclini" },
     { cargo: "Junta Fiscalizadora, Suplente 1", nombre: "Luciana Falcucci" },
     { cargo: "Junta Fiscalizadora, Suplente 2", nombre: "Adolfo Enrique Bottini Rubiol" },
-    { cargo: "Junta Fiscalizadora, Suplente 3", nombre: "NCarlos Hinojosa Pozzi" },
+    { cargo: "Junta Fiscalizadora, Suplente 3", nombre: "Carlos Hinojosa Pozzi" },
 
 ];
 
