@@ -44,13 +44,34 @@ const Home = () => {
         );
     }
 
-    const noticiaDestacada = noticias[0];
-    const ultimasNoticias = noticias.slice(1, 5);
+    // --- LÓGICA DE DESTACADOS ---
+    // 1. Buscamos todas las destacadas
+    const noticiasDestacadas = noticias.filter(n => n.destacado);
+    
+    let noticiasHero = [];
+    let noticiasRestantes = [];
+
+    if (noticiasDestacadas.length > 0) {
+        // Si hay destacadas, pasamos hasta 3 al Hero
+        noticiasHero = noticiasDestacadas.slice(0, 3);
+        // El resto (las que no entraron al hero) van a la sección de abajo
+        noticiasRestantes = noticias.filter(n => !noticiasHero.find(heroNoticia => heroNoticia._id === n._id));
+    } else {
+        // Si no hay ninguna destacada, el Hero usa las 3 más recientes por defecto
+        noticiasHero = noticias.slice(0, 3);
+        noticiasRestantes = noticias.slice(3);
+    }
+
+    // Para la sección de "Últimas Noticias" de abajo
+    const noticiaPrincipal = noticiasRestantes.length > 0 ? noticiasRestantes[0] : noticiasHero[0]; 
+    const ultimasNoticias = noticiasRestantes.slice(1, 5);
+    
     const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=1000&auto=format&fit=crop";
 
     return (
         <div className="relative">
-            <HeroSection noticiasHero={noticias.slice(0, 3)} />
+            {/* Le pasamos exclusivamente las destacadas (o más recientes si no hay) */}
+            <HeroSection noticiasHero={noticiasHero} />
 
             <section className="bg-gray-50 py-12 md:py-16 min-h-screen">
                 <div className="mx-auto max-w-7xl px-4">
@@ -70,69 +91,69 @@ const Home = () => {
                         </Link>
                     </div>
 
-                    <div className="grid gap-6 lg:grid-cols-2">
-                        {/* Noticia Destacada */}
-                        <Link to={`/noticias/${noticiaDestacada._id}`} className="group">
-                            <div className="h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-xl flex flex-col">
-                                <div className="relative aspect-[16/10] overflow-hidden">
-                                    <img
-                                        src={noticiaDestacada.imagenUrl ? `${noticiaDestacada.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
-                                        alt={noticiaDestacada.titulo}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                                    <div className="absolute bottom-4 left-4 right-4">
-                                        <span className="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full uppercase">{noticiaDestacada.etiqueta}</span>
-                                        <h3 className="text-balance text-2xl font-bold text-white md:text-3xl leading-tight">{noticiaDestacada.titulo}</h3>
+                    {noticiasRestantes.length > 0 && (
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            {/* Noticia Principal (De la grilla inferior) */}
+                            <Link to={`/noticias/${noticiaPrincipal._id}`} className="group">
+                                <div className="h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-xl flex flex-col">
+                                    <div className="relative aspect-[16/10] overflow-hidden">
+                                        <img
+                                            src={noticiaPrincipal.imagenUrl ? `${noticiaPrincipal.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
+                                            alt={noticiaPrincipal.titulo}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                        <div className="absolute bottom-4 left-4 right-4">
+                                            <span className="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full uppercase">{noticiaPrincipal.etiqueta}</span>
+                                            <h3 className="text-balance text-2xl font-bold text-white md:text-3xl leading-tight">{noticiaPrincipal.titulo}</h3>
+                                        </div>
+                                    </div>
+                                    <div className="p-6 flex-1 flex flex-col justify-between">
+                                        <p className="mb-4 line-clamp-3 text-gray-600">{noticiaPrincipal.resumen || noticiaPrincipal.cuerpo}</p>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
+                                            <Calendar className="h-4 w-4" />
+                                            <span>{new Date(noticiaPrincipal.createdAt).toLocaleDateString('es-AR')}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="p-6 flex-1 flex flex-col justify-between">
-                                    {/* ACÁ USAMOS EL NUEVO RESUMEN */}
-                                    <p className="mb-4 line-clamp-3 text-gray-600">{noticiaDestacada.resumen || noticiaDestacada.cuerpo}</p>
-                                    <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
-                                        <Calendar className="h-4 w-4" />
-                                        <span>{new Date(noticiaDestacada.createdAt).toLocaleDateString('es-AR')}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
+                            </Link>
 
-                        {/* Lista de Noticias Secundarias */}
-                        <div className="flex flex-col gap-4">
-                            {ultimasNoticias.map((noticia) => (
-                                <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group">
-                                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
-                                        <div className="flex gap-4 p-4">
-                                            <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg">
-                                                <img
-                                                    src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
-                                                    alt={noticia.titulo}
-                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                                />
-                                            </div>
-                                            <div className="flex flex-1 flex-col justify-center">
-                                                <span className="mb-2 inline-block bg-gray-100 text-gray-800 text-xs font-bold px-2 py-0.5 rounded-full w-fit uppercase">{noticia.etiqueta}</span>
-                                                <h3 className="line-clamp-2 text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">{noticia.titulo}</h3>
-                                                <div className="mt-3 flex items-center gap-2 text-xs text-gray-500 font-medium">
-                                                    <Calendar className="h-4 w-4" />
-                                                    <span>{new Date(noticia.createdAt).toLocaleDateString('es-AR')}</span>
+                            {/* Lista de Noticias Secundarias */}
+                            <div className="flex flex-col gap-4">
+                                {ultimasNoticias.map((noticia) => (
+                                    <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group">
+                                        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+                                            <div className="flex gap-4 p-4">
+                                                <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg">
+                                                    <img
+                                                        src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
+                                                        alt={noticia.titulo}
+                                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-1 flex-col justify-center">
+                                                    <span className="mb-2 inline-block bg-gray-100 text-gray-800 text-xs font-bold px-2 py-0.5 rounded-full w-fit uppercase">{noticia.etiqueta}</span>
+                                                    <h3 className="line-clamp-2 text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">{noticia.titulo}</h3>
+                                                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-500 font-medium">
+                                                        <Calendar className="h-4 w-4" />
+                                                        <span>{new Date(noticia.createdAt).toLocaleDateString('es-AR')}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </section>
 
-            
             <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
-    {jugadorSeleccionado && (
+            {jugadorSeleccionado && (
                 <FichaJugadorModal
-                jugador={jugadorSeleccionado}
-                onClose={() => setJugadorSeleccionado(null)}
+                    jugador={jugadorSeleccionado}
+                    onClose={() => setJugadorSeleccionado(null)}
                 />
             )}
 

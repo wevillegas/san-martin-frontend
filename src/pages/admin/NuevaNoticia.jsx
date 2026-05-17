@@ -8,22 +8,23 @@ const NuevaNoticia = () => {
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState("");
 
-    // ESTADO PARA LA IMAGEN
     const [imagen, setImagen] = useState(null);
     const [preview, setPreview] = useState(null);
 
     const [formData, setFormData] = useState({
         titulo: "",
-        resumen: "", // Agregamos el resumen
+        resumen: "",
         cuerpo: "",
         etiqueta: "Primer Equipo",
-        autor: ""
+        autor: "",
+        destacado: false // Agregamos el campo
     });
 
     const handleChange = (e) => {
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: value
         });
     };
 
@@ -40,7 +41,6 @@ const NuevaNoticia = () => {
         setCargando(true);
         setError("");
 
-        // Usamos FormData para empaquetar texto + archivo
         const submitData = new FormData();
         Object.keys(formData).forEach(key => submitData.append(key, formData[key]));
         if (imagen) submitData.append("imagen", imagen);
@@ -76,7 +76,6 @@ const NuevaNoticia = () => {
                             </div>
                         )}
 
-                        {/* SECCIÓN IMAGEN */}
                         <div className="flex flex-col md:flex-row gap-6 items-center bg-red-50/30 p-6 rounded-lg border border-red-100">
                             <div className="w-full md:w-64 aspect-video flex-shrink-0 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden relative">
                                 {preview ? (
@@ -100,7 +99,6 @@ const NuevaNoticia = () => {
                             </div>
                         </div>
 
-                        {/* Fila 1: Título */}
                         <div>
                             <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Título de la Noticia</label>
                             <input
@@ -110,7 +108,21 @@ const NuevaNoticia = () => {
                             />
                         </div>
 
-                        {/* Fila Nueva: Resumen */}
+                        {/* CHECKBOX DESTACADO */}
+                        <div className="flex items-center gap-3 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                            <input 
+                                type="checkbox" 
+                                id="destacado" 
+                                name="destacado" 
+                                checked={formData.destacado} 
+                                onChange={handleChange}
+                                className="w-5 h-5 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
+                            />
+                            <label htmlFor="destacado" className="font-bold text-yellow-800 cursor-pointer select-none">
+                                Destacar esta noticia en la página principal
+                            </label>
+                        </div>
+
                         <div>
                             <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Resumen (Copete)</label>
                             <textarea
@@ -120,7 +132,6 @@ const NuevaNoticia = () => {
                             ></textarea>
                         </div>
 
-                        {/* Fila 2: Categoría y Autor */}
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Categoría</label>
@@ -147,7 +158,6 @@ const NuevaNoticia = () => {
                             </div>
                         </div>
 
-                        {/* Fila 3: Cuerpo */}
                         <div>
                             <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Cuerpo de la Noticia</label>
                             <textarea

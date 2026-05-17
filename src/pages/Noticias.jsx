@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight, Star } from "lucide-react"; // Importamos la estrella
 import { obtenerNoticias } from "../services/noticiaService";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -18,8 +18,9 @@ const Noticias = () => {
         const cargarNoticias = async () => {
             try {
                 const datos = await obtenerNoticias();
-                const noticiasOrdenadas = datos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setNoticias(noticiasOrdenadas);
+                // ELIMINAMOS EL SORT DE FRONTEND: Dejamos el arreglo exactamente como lo mandó el backend
+                // (Destacadas primero, luego por fecha)
+                setNoticias(datos);
                 setCargando(false);
             } catch (error) {
                 console.error("No se pudieron cargar las noticias");
@@ -76,10 +77,18 @@ const Noticias = () => {
                     ) : (
                         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                             {noticiasMostradas.map((noticia) => (
-                                <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group flex flex-col h-full">
+                                <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group flex flex-col h-full relative">
                                     <div className="flex-1 overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col">
+                                        
+                                        {/* CARTELITO DE DESTACADO */}
+                                        {noticia.destacado && (
+                                            <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-yellow-400 text-yellow-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                                                <Star className="w-3 h-3 fill-yellow-900" />
+                                                Destacado
+                                            </div>
+                                        )}
+
                                         <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                                            {/* ACÁ CARGAMOS LA IMAGEN REAL */}
                                             <img
                                                 src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
                                                 alt={noticia.titulo}
@@ -102,7 +111,6 @@ const Noticias = () => {
                                                 {noticia.titulo}
                                             </h3>
 
-                                            {/* ACÁ CARGAMOS EL RESUMEN */}
                                             <p className="line-clamp-3 text-gray-600 mb-6 flex-1">
                                                 {noticia.resumen || noticia.cuerpo}
                                             </p>

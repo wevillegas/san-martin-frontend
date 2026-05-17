@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
-import { obtenerNoticias, eliminarNoticia } from "../../services/noticiaService";
+import { Plus, Edit, Trash2, ArrowLeft, Star } from "lucide-react";
+import { obtenerNoticias, eliminarNoticia, actualizarNoticia } from "../../services/noticiaService";
 
 const NoticiasAdmin = () => {
     const [noticias, setNoticias] = useState([]);
@@ -14,9 +14,7 @@ const NoticiasAdmin = () => {
     const cargarNoticias = async () => {
         try {
             const datos = await obtenerNoticias();
-            // Ordenamos de más nueva a más vieja
-            const noticiasOrdenadas = datos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setNoticias(noticiasOrdenadas);
+            setNoticias(datos);
             setCargando(false);
         } catch (error) {
             console.error("Error al cargar las noticias", error);
@@ -28,12 +26,24 @@ const NoticiasAdmin = () => {
         if (window.confirm("¿Estás seguro de que querés borrar esta noticia? Esta acción no se puede deshacer.")) {
             try {
                 await eliminarNoticia(id);
-                // Recargamos la tabla para que la noticia desaparezca de la pantalla
                 cargarNoticias();
             } catch (error) {
                 console.error("Error al borrar", error);
                 alert("Hubo un error al intentar borrar la noticia.");
             }
+        }
+    };
+
+    // Función rápida para cambiar el estado "Destacado" desde la tabla
+    const toggleDestacado = async (noticia) => {
+        try {
+            const formData = new FormData();
+            formData.append('destacado', !noticia.destacado);
+            await actualizarNoticia(noticia._id, formData);
+            cargarNoticias(); // Recarga para que se acomoden según el backend
+        } catch (error) {
+            console.error("Error al destacar", error);
+            alert("No se pudo cambiar el estado de destacado.");
         }
     };
 
@@ -67,6 +77,7 @@ const NoticiasAdmin = () => {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider border-b border-gray-200">
+                                    <th className="p-4 font-bold text-center w-16">Dest.</th>
                                     <th className="p-4 font-bold">Fecha</th>
                                     <th className="p-4 font-bold">Título</th>
                                     <th className="p-4 font-bold">Categoría</th>
@@ -76,24 +87,32 @@ const NoticiasAdmin = () => {
                             <tbody className="divide-y divide-gray-100">
                                 {noticias.length === 0 ? (
                                     <tr>
-                                        <td colSpan="4" className="p-8 text-center text-gray-500">No hay noticias publicadas aún.</td>
+                                        <td colSpan="5" className="p-8 text-center text-gray-500">No hay noticias publicadas aún.</td>
                                     </tr>
                                 ) : (
                                     noticias.map((noticia) => (
                                         <tr key={noticia._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="p-4 text-sm text-gray-600">
+                                            <td className="p-4 text-center">
+                                                <button 
+                                                    onClick={() => toggleDestacado(noticia)}
+                                                    className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                                                    title={noticia.destacado ? "Quitar de destacados" : "Destacar noticia"}
+                                                >
+                                                    <Star className={`w-5 h-5 ${noticia.destacado ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
+                                                </button>
+                                            </td>
+                                            <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
                                                 {new Date(noticia.createdAt).toLocaleDateString('es-AR')}
                                             </td>
                                             <td className="p-4 font-bold text-gray-800">
                                                 {noticia.titulo}
                                             </td>
                                             <td className="p-4">
-                                                <span className="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                                <span className="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
                                                     {noticia.etiqueta}
                                                 </span>
                                             </td>
                                             <td className="p-4 flex items-center justify-center gap-3">
-                                                {/* Botón Editar (Ahora es un Link a la pantalla de edición) */}
                                                 <Link
                                                     to={`/admin/noticias/editar/${noticia._id}`}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
@@ -101,8 +120,6 @@ const NoticiasAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
-
-                                                {/* Botón Borrar */}
                                                 <button
                                                     onClick={() => handleBorrar(noticia._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
