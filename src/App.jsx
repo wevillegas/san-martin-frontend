@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import EditarProducto from './pages/admin/EditarProducto';
 import TiendaAdmin from './pages/admin/TiendaAdmin';
 import NuevoProducto from './pages/admin/NuevoProducto';
@@ -19,7 +20,7 @@ import NoticiasAdmin from './pages/admin/NoticiasAdmin';
 import RutaProtegida from './components/RutaProtegida';
 import Dashboard from './pages/admin/Dashboard';
 import Noticias from './pages/Noticias';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -27,9 +28,26 @@ import Plantel from './pages/Plantel';
 import Login from './pages/Login';
 import NoticiaDetalle from './pages/NoticiaDetalle';
 
+// --- COMPONENTE SCROLL VIGÍA ---
+// Se encarga de mandar la vista arriba de todo cada vez que cambiás de ruta
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 function App() {
   return (
     <BrowserRouter>
+      {/* Acá ubicamos el componente silencioso.
+        Debe ir sí o sí dentro del BrowserRouter para poder leer la URL.
+      */}
+      <ScrollToTop />
+
       {/* min-h-screen: Ocupa al menos el 100% del alto de la pantalla
         flex flex-col: Nos permite empujar el footer hacia abajo
         bg-gray-50: Color de fondo general de la página

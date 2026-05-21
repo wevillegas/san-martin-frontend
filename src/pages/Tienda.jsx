@@ -27,7 +27,7 @@ const Tienda = () => {
         <div className="min-h-screen bg-gray-50 pb-0 font-sans">
             
             {/* 1. CABECERA HERO */}
-            <div className="relative w-full h-[400px] md:h-[500px]">
+            <div className="relative w-full h-[500px] md:h-[600px]">
                 <img
                     src="/images/tiendahero.png"
                     alt="Nueva Colección San Martín"
@@ -41,10 +41,10 @@ const Tienda = () => {
                         <ShoppingBag className="w-4 h-4" />
                         Tienda Oficial
                     </span>
-                    <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-4">
+                    <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-4">
                         SANTO STORE
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-100 font-bold max-w-xl text-balance drop-shadow-lg mb-8">
+                    <p className="text-xl md:text-2xl text-gray-200 font-bold max-w-2xl text-balance drop-shadow-lg mb-10">
                         Llevá los colores del Santo a todos lados. Toda la indumentaria oficial, ropa de entrenamiento y accesorios los encontrarás en las páginas web oficiales de Marathon y Kappa.
                     </p>
                 </div>
@@ -77,7 +77,6 @@ const Tienda = () => {
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>
                         <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-2">SANTO STORE</h2>
-                        <div className="w-16 h-1.5 bg-red-600 rounded-full"></div>
                     </div>
                     <a 
                         href={urlTiendaOficial}

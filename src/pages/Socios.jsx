@@ -85,11 +85,11 @@ const Socios = () => {
             </div>
 
             {/* 2. BARRA DE ESTADÍSTICAS (ROJA) */}
-            <div className="bg-red-700 py-12 shadow-inner relative z-10 -mt-8 mx-4 md:mx-auto max-w-5xl rounded-2xl border border-red-600">
+            <div className="bg-red-700 py-12 border border-red-600 shadow-xl relative z-10 -mt-10 mx-4 md:mx-auto max-w-5xl rounded-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-red-500/50 text-white text-center">
                     <div className="flex flex-col items-center px-4">
                         <Users className="w-10 h-10 text-red-200 mb-2" />
-                        <span className="text-4xl font-black">+20.000</span>
+                        <span className="text-4xl font-black">+10.000</span>
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Socios Activos</span>
                     </div>
                     <div className="flex flex-col items-center px-4 pt-8 md:pt-0">

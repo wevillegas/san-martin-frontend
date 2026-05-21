@@ -29,7 +29,7 @@ const Estadio = () => {
             {/* =========================================
                 SECCIÓN 1: CABECERA HERO 
             ========================================== */}
-            <div className="relative w-full h-[600px] md:h-[700px]">
+            <div className="relative w-full h-[500px] md:h-[600px]">
                 <img
                     src={imgHero || "https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?q=80&w=2000&auto=format&fit=crop"}
                     alt="Estadio La Ciudadela"
@@ -38,6 +38,7 @@ const Estadio = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-20">
+                    <span class="bg-red-700 text-white text-sm font-black px-5 py-2 rounded-full uppercase tracking-widest mb-6 shadow-lg border border-red-500">Departamento de Socios</span>
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-4">
                         La Ciudadela
                     </h1>

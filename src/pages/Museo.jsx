@@ -4,8 +4,8 @@ const Museo = () => {
     // Imágenes (Cargalas en public/images/ con estos nombres)
     const imgHero = "/images/museo-hero.jpg"; 
     const imgCopa44 = "/images/reliquia-copa.JPG";
-    const imgCamiseta = "/images/reliquia-camiseta.jpg";
-    const imgBotines = "/images/reliquia-botines.jpg";
+    const imgCamiseta = "/images/reliquia-camiseta.png";
+    const imgBotines = "/images/reliquia-nota.jpg";
     const imgInterior = "/images/museo-interior.jpg";
 
     const reliquias = [
@@ -16,14 +16,14 @@ const Museo = () => {
             icono: <Trophy className="w-6 h-6 text-red-700" />
         },
         {
-            titulo: "Manto Sagrado Histórico",
-            descripcion: "Camiseta de lana tejida a mano utilizada en la década del 50. Conserva los colores intactos de la época dorada del club.",
+            titulo: "Camiseta mítica del ascenso 2008",
+            descripcion: "Camiseta Kappa original utilizada en el partido ante Chacarita que nos dió el ascenso a la primera division en 2008.",
             imagen: imgCamiseta,
             icono: <Shirt className="w-6 h-6 text-red-700" />
         },
         {
-            titulo: "Botines del Ascenso 88",
-            descripcion: "Los botines que pisaron la Bombonera en el histórico 6-1. Símbolos de uno de los ascensos más grandes de la historia del fútbol.",
+            titulo: "Declaración de fundacion",
+            descripcion: "Entre aclamaciones de delirante entusiasmo, el 2 de noviembre de 1909 en casa de Secundino Dante Torossi, ubicada en calle Ayacucho 557, nacía el Club Atletico San Martín y Romelio Castro sería elegido como su Presidente.",
             imagen: imgBotines,
             icono: <Award className="w-6 h-6 text-red-700" />
         }
@@ -89,7 +89,7 @@ const Museo = () => {
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-black text-white uppercase tracking-wider mb-4">Tesoros Invaluables</h2>
                         <div className="w-24 h-1.5 bg-white mx-auto rounded-full mb-4"></div>
-                        <p className="text-red-100 font-medium">Las piezas más emblemáticas de nuestra exhibición.</p>
+                        <p className="text-red-100 font-medium">Algunas de las piezas de nuestra exhibición.</p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
