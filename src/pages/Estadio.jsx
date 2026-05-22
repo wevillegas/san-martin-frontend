@@ -3,14 +3,14 @@ import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords
 
 const Estadio = () => {
     // 1. IMAGEN PRINCIPAL (Hero) y PARTIDOS
-    const imgHero = "/public/images/portada.jpg";
-    const imgRoma = "/public/images/roma.jpg";
-    const img1932 = "/public/images/ciudadela1932.jpg";
-    const imgCosmos = "/public/images/cosmos.jpg";
-    const imgGuarani = "/public/images/guarani.jpg";
-    const imgDalmine = "/public/images/dalmine.jpg";
-    const imgClasico1 = "/public/images/1992clasico.jpg";
-    const imgClasico2 = "/public/images/1994clasico.jpg";
+    const imgHero = "/images/portada.jpg";
+    const imgRoma = "/images/roma.jpg";
+    const img1932 = "/images/ciudadela1932.jpg";
+    const imgCosmos = "/images/cosmos.jpg";
+    const imgGuarani = "/images/guarani.jpg";
+    const imgDalmine = "/images/dalmine.jpg";
+    const imgClasico1 = "/images/1992clasico.jpg";
+    const imgClasico2 = "/images/1994clasico.jpg";
 
     // 2. FOTOS PARA LA GALERÍA DE EVOLUCIÓN
     const fotosEvolucion = [

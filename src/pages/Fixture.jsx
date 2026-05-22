@@ -62,7 +62,7 @@ const Fixture = () => {
                     <div className="flex items-center gap-4 mb-6">
                         {/* Logo del Torneo */}
                         <img 
-                            src="/public/images/pn.png" 
+                            src="/images/pn.png" 
                             alt="Logo Primera Nacional" 
                             className="w-14 h-14 md:w-20 md:h-20 object-contain drop-shadow-sm mt-3"
                         />

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, X, Code, GraduationCap, User } from "lucide-react";
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const footerLinks = {
@@ -8,6 +9,7 @@ const footerLinks = {
         { name: "Estadio", href: "/club/estadio" },
         { name: "Autoridades", href: "/club/autoridades" },
         { name: "Museo", href: "/club/museo" },
+        { name: "Complejo", href: "/club/complejo" },
     ],
     futbol: [
         { name: "Plantel Profesional", href: "/plantel" },
@@ -17,7 +19,6 @@ const footerLinks = {
     socios: [
         { name: "Hacete Socio", href: "/socios" },
         { name: "Beneficios", href: "/socios" },
-        { name: "Contacto", href: "/contacto" },
     ],
 };
 
@@ -30,11 +31,9 @@ const socialLinks = [
 ];
 
 const Footer = () => {
-    // 1. Agregamos el radar de rutas
     const location = useLocation(); 
-
-    // 2. Verificamos si hay un administrador activo
     const isLoggedIn = !!localStorage.getItem("token");
+    const [isAboutOpen, setIsAboutOpen] = useState(false);
 
     return (
         <footer className="bg-red-800 text-white mt-auto">
@@ -43,7 +42,7 @@ const Footer = () => {
 
                     <div className="lg:col-span-2">
                         <Link to="/" className="mb-4 flex items-center gap-3">
-                            <div className="relative h-30 w-30 overflow-hidden rounded-full bg-white/10 p-1">
+                            <div className="relative h-20 w-20 overflow-hidden rounded-full bg-white/10 p-1">
                                 <img src="/images/escudo.png" alt="Escudo San Martín" className="w-full h-full object-contain" />
                             </div>
                             <div className="flex flex-col">
@@ -132,11 +131,16 @@ const Footer = () => {
                         © {new Date().getFullYear()} Club Atlético San Martín de Tucumán. Todos los derechos reservados.
                     </p>
                     <div className="flex gap-4">
-                        <Link to="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
-                        <Link to="/terminos" className="hover:text-white transition-colors">Términos y Condiciones</Link>
-                        
-                        {/* 3. ENLACE INTELIGENTE */}
+                        {/* Botón Acerca De con el mismo estilo de Acceso Staff */}
+                        <button 
+                            onClick={() => setIsAboutOpen(true)}
+                            className="hover:text-red-400 transition-colors font-medium"
+                        >
+                            Acerca de
+                        </button>
+
                         <span className="text-red-900/30">|</span>
+
                         <Link 
                             to={isLoggedIn ? "/admin" : "/login"} 
                             className="hover:text-red-400 transition-colors font-medium"
@@ -146,6 +150,81 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
+
+            {/* ========================================== */}
+            {/* MODAL "ACERCA DEL PROYECTO" (PORTFOLIO)    */}
+            {/* ========================================== */}
+            {isAboutOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-opacity duration-300">
+                    <div className="relative w-full max-w-2xl rounded-2xl bg-white p-8 text-gray-900 shadow-2xl">
+                        
+                        <button
+                            onClick={() => setIsAboutOpen(false)}
+                            className="absolute right-4 top-4 text-gray-400 hover:text-red-600 transition-colors bg-gray-100 rounded-full p-2"
+                            aria-label="Cerrar modal"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
+
+                        <div className="mb-6 flex items-center gap-3 border-b border-gray-200 pb-4">
+                            <Code className="h-8 w-8 text-red-700" />
+                            <div>
+                                <h3 className="text-2xl font-black uppercase tracking-wider text-gray-900 leading-none">
+                                    Acerca de este sitio
+                                </h3>
+                                <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-1">Proyecto de Portfolio</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-5 text-gray-700">
+                            
+                            <div className="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-lg">
+                                <p className="text-sm text-red-900 font-medium">
+                                    <strong className="font-black uppercase tracking-wider">Aviso:</strong> Este sitio web no es la página oficial del Club Atlético San Martín de Tucumán. Es una aplicación web desarrollada exclusivamente con fines académicos y de demostración técnica.
+                                </p>
+                            </div>
+
+                            <p className="text-sm md:text-base leading-relaxed">
+                                La plataforma fue construida utilizando arquitectura <strong>MERN</strong> (MongoDB, Express, React, Node.js), implementando bases de datos no relacionales, diseño de interfaces UI/UX mediante Figma, consumo de APIs externas (ESPN), un sistema de gestión de contenidos (CMS) propio y aplicación de Inteligencia Artificial.
+                            </p>
+
+                            <div className="mt-6 rounded-xl bg-gray-50 p-6 border border-gray-200 shadow-inner">
+                                <h4 className="mb-4 font-bold uppercase tracking-widest text-gray-400 text-xs flex items-center gap-2">
+                                    <User className="h-4 w-4" />
+                                    Desarrollador y estudiante de Ingeniería Informática.
+                                </h4>
+                                
+                                <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                                    <div className="flex-grow space-y-2">
+                                        <p className="font-black text-2xl text-gray-900 uppercase tracking-tight">Wenceslao José Villegas</p>
+                                        <div className="flex items-center gap-2 text-sm text-gray-600 font-medium mt-2">
+                                            <GraduationCap className="h-4 w-4 text-red-700" />
+                                            Estudiante de 5to Año - Ingeniería Informática (UNSTA)
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
+                                            <Code className="h-4 w-4 text-red-700" />
+                                            Egresado Fullstack - Rolling Code School
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                                            <MapPin className="h-4 w-4" />
+                                            Yerba Buena, Tucumán, Argentina
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex flex-col gap-2 w-full md:w-auto">
+                                        <a href="https://www.linkedin.com/in/wenceslaojosevillegas/" target="_blank" rel="noopener noreferrer" className="text-center px-6 py-2 bg-[#0A66C2] text-white text-sm font-bold rounded-lg hover:bg-blue-800 transition-colors">
+                                            LinkedIn
+                                        </a>
+                                        <a href="https://github.com/wevillegas" target="_blank" rel="noopener noreferrer" className="text-center px-6 py-2 bg-gray-900 text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors">
+                                            GitHub
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </footer>
     );
 };
