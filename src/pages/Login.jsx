@@ -18,7 +18,7 @@ const Login = () => {
 
         try {
             // Cambiamos 'usuarios' por 'auth'
-            const respuesta = await axios.post("http://localhost:5000/api/auth/login", {
+            const respuesta = await axios.post("https://san-martin-backend.onrender.com/api/auth/login", {
                 email,
                 password,
             });

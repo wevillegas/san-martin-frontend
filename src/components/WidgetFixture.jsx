@@ -58,7 +58,7 @@ const WidgetFixture = () => {
         const obtenerFixture = async () => {
             try {
                 // Modificá el puerto si tu backend usa uno distinto al 5000
-                const respuesta = await fetch("http://localhost:5000/api/fixture");
+                const respuesta = await fetch("https://san-martin-backend.onrender.com/api/fixture");
                 if (respuesta.ok) {
                     const data = await respuesta.json();
                     setPartidos(data);

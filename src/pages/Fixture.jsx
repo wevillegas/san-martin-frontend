@@ -33,7 +33,7 @@ const Fixture = () => {
     useEffect(() => {
         const traerFixture = async () => {
             try {
-                const respuesta = await fetch("http://localhost:5000/api/fixture");
+                const respuesta = await fetch("https://san-martin-backend.onrender.com/api/fixture");
                 if (!respuesta.ok) throw new Error("Error al conectar con el servidor");
                 const data = await respuesta.json();
                 setPartidos(data);

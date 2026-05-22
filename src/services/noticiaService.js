@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/noticias";
+const API_URL = "https://san-martin-backend.onrender.com/api/noticias";
 
 // Traer todas las noticias
 export const obtenerNoticias = async () => {
