@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { obtenerNoticias } from "../services/noticiaService";
 
 // Importamos todos los componentes visuales
+import WidgetFixture from '../components/WidgetFixture';
 import HeroSection from "../components/HeroSection";
 import NoticiasPreview from "../components/NoticiasPreview"; // <-- Nuestro nuevo componente
 import SquadPreview from "../components/SquadPreview";
@@ -69,6 +70,9 @@ const Home = () => {
 
             {/* 5. Banner de Socios */}
             <AsociateBanner />
+
+            {/* 6. Seccion de fixture */}
+            <WidgetFixture />
         </div>
     );
 };

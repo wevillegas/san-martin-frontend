@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import Fixture from './pages/Fixture';
 import EditarProducto from './pages/admin/EditarProducto';
 import TiendaAdmin from './pages/admin/TiendaAdmin';
 import NuevoProducto from './pages/admin/NuevoProducto';
@@ -77,6 +78,7 @@ function App() {
             <Route path="/club/autoridades" element={<Autoridades />} />
             <Route path="/club/complejo" element={<Complejo />} />
             <Route path="/tienda" element={<Tienda />} />
+            <Route path="/fixture" element={<Fixture />} />
             <Route
               path="/admin"
               element={

@@ -13,6 +13,10 @@ const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e
 
 const HeroSection = ({ noticiasHero }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    
+    // Estados para detectar el deslizamiento táctil (swipe) en celulares
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
 
     if (!noticiasHero || noticiasHero.length === 0) return null;
 
@@ -26,8 +30,30 @@ const HeroSection = ({ noticiasHero }) => {
     const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % noticiasHero.length);
     const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + noticiasHero.length) % noticiasHero.length);
 
+    // Funciones para manejar el táctil en móvil
+    const handleTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
+    const handleTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > 50;
+        const isRightSwipe = distance < -50;
+
+        if (isLeftSwipe) nextSlide();
+        if (isRightSwipe) prevSlide();
+
+        // Reseteamos las coordenadas
+        setTouchStart(0);
+        setTouchEnd(0);
+    };
+
     return (
-        <section className="relative h-[500px] overflow-hidden bg-gray-900 md:h-[600px] lg:h-[650px] mt-0">
+        <section 
+            className="relative h-[500px] overflow-hidden bg-gray-900 md:h-[600px] lg:h-[650px] mt-0"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+        >
             {noticiasHero.map((noticia, index) => (
                 <div
                     key={noticia._id}
@@ -80,13 +106,23 @@ const HeroSection = ({ noticiasHero }) => {
                 </div>
             ))}
 
-            <button onClick={prevSlide} className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-colors hover:bg-red-600 border border-white/10" aria-label="Anterior">
+            {/* BOTONES OCULTOS EN CELULAR (hidden md:flex) */}
+            <button 
+                onClick={prevSlide} 
+                className="hidden md:flex absolute left-4 top-1/2 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-colors hover:bg-red-600 border border-white/10" 
+                aria-label="Anterior"
+            >
                 <ChevronLeft className="h-6 w-6" />
             </button>
-            <button onClick={nextSlide} className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-colors hover:bg-red-600 border border-white/10" aria-label="Siguiente">
+            <button 
+                onClick={nextSlide} 
+                className="hidden md:flex absolute right-4 top-1/2 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-colors hover:bg-red-600 border border-white/10" 
+                aria-label="Siguiente"
+            >
                 <ChevronRight className="h-6 w-6" />
             </button>
 
+            {/* PUNTOS INDICADORES INFERIORES */}
             <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-3">
                 {noticiasHero.map((_, index) => (
                     <button

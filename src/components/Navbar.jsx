@@ -29,7 +29,7 @@ const navigation = [
         ],
     },
     { name: "Noticias", href: "/noticias" },
-    { name: "Fixtures", href: "/fixtures" },
+    { name: "Fixture", href: "/fixture" },
     { name: "Tienda", href: "/tienda" },
     { name: "Socios", href: "/socios" },
 ];
@@ -39,7 +39,7 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const location = useLocation();
 
-    // Verificación inteligente que se ejecuta cada vez que cambiamos de página
+    // Verificación inteligente de sesión
     useEffect(() => {
         const checkToken = () => {
             const token = localStorage.getItem("token");
@@ -47,9 +47,8 @@ const Navbar = () => {
 
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                // Si el token venció
                 if (payload.exp && payload.exp * 1000 < Date.now()) {
-                    localStorage.removeItem("token"); // Limpiamos el token fantasma
+                    localStorage.removeItem("token");
                     return false;
                 }
                 return true;
@@ -59,7 +58,18 @@ const Navbar = () => {
         };
 
         setIsLoggedIn(checkToken());
-    }, [location]); // Al poner 'location' acá, re-evaluamos el login cada vez que navegás
+    }, [location]);
+
+    // LÓGICA MAESTRA: Controlador de clic para el Inicio
+    const handleHomeClick = (e) => {
+        if (location.pathname === "/") {
+            e.preventDefault(); // Evita que React Router intente recargar
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth" // Sube de manera fluida y elegante
+            });
+        }
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full shadow-md">
@@ -86,8 +96,8 @@ const Navbar = () => {
             <nav className="bg-white border-b border-gray-200">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
 
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center gap-3 group">
+                    {/* Logo con el handler de scroll suave */}
+                    <Link to="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
                         <div className="relative h-20 w-20 flex items-center justify-center p-0 transition-transform group-hover:scale-105 duration-300">
                             <img src="/images/escudo.png" alt="Escudo San Martín" className="w-full h-full object-contain" />
                         </div>
@@ -115,7 +125,12 @@ const Navbar = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <Link key={item.name} to={item.href} className="rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 transition-colors hover:text-red-700">
+                                <Link 
+                                    key={item.name} 
+                                    to={item.href} 
+                                    onClick={item.href === "/" ? handleHomeClick : undefined}
+                                    className="rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 transition-colors hover:text-red-700"
+                                >
                                     {item.name}
                                 </Link>
                             )
@@ -146,7 +161,14 @@ const Navbar = () => {
                     <div className="space-y-1 px-4 py-6">
                         {navigation.map((item) => (
                             <div key={item.name}>
-                                <Link to={item.href} className="block rounded-md px-3 py-2 text-lg font-bold text-gray-800 hover:bg-red-100 hover:text-red-700 uppercase" onClick={() => setMobileMenuOpen(false)}>
+                                <Link 
+                                    to={item.href} 
+                                    className="block rounded-md px-3 py-2 text-lg font-bold text-gray-800 hover:bg-red-100 hover:text-red-700 uppercase" 
+                                    onClick={(e) => {
+                                        if (item.href === "/") handleHomeClick(e);
+                                        setMobileMenuOpen(false);
+                                    }}
+                                >
                                     {item.name}
                                 </Link>
                                 {item.children && (
