@@ -27,6 +27,7 @@ import Home from './pages/Home';
 import Plantel from './pages/Plantel';
 import Login from './pages/Login';
 import NoticiaDetalle from './pages/NoticiaDetalle';
+import Complejo from './pages/Complejo';
 
 // --- COMPONENTE SCROLL VIGÍA ---
 // Se encarga de mandar la vista arriba de todo cada vez que cambiás de ruta
@@ -74,6 +75,7 @@ function App() {
             <Route path="/club/estadio" element={<Estadio />} />
             <Route path="/club/museo" element={<Museo />} />
             <Route path="/club/autoridades" element={<Autoridades />} />
+            <Route path="/club/complejo" element={<Complejo />} />
             <Route path="/tienda" element={<Tienda />} />
             <Route
               path="/admin"

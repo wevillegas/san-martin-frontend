@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, ArrowRight, Star } from "lucide-react"; // Importamos la estrella
+import { Calendar, ArrowRight, Star } from "lucide-react";
 import { obtenerNoticias } from "../services/noticiaService";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -18,8 +18,6 @@ const Noticias = () => {
         const cargarNoticias = async () => {
             try {
                 const datos = await obtenerNoticias();
-                // ELIMINAMOS EL SORT DE FRONTEND: Dejamos el arreglo exactamente como lo mandó el backend
-                // (Destacadas primero, luego por fecha)
                 setNoticias(datos);
                 setCargando(false);
             } catch (error) {
@@ -34,8 +32,17 @@ const Noticias = () => {
         return <div className="text-center mt-32 text-xl font-bold text-red-700 min-h-screen">Cargando el portal de noticias...</div>;
     }
 
-    const categoriasUnicas = ["Todas", ...new Set(noticias.map((n) => n.etiqueta))];
-    const noticiasMostradas = filtroActivo === "Todas" ? noticias : noticias.filter((n) => n.etiqueta === filtroActivo);
+    // Agregamos "Destacados" de forma manual a la lista de categorías
+    const categoriasUnicas = ["Todas", "Destacados", ...new Set(noticias.map((n) => n.etiqueta))];
+    
+    // Lógica para filtrar las noticias dependiendo del botón que tocaste
+    const noticiasMostradas = 
+        filtroActivo === "Todas" 
+            ? noticias 
+            : filtroActivo === "Destacados"
+                ? noticias.filter((n) => n.destacado) // Si tocás "Destacados", filtra por el booleano
+                : noticias.filter((n) => n.etiqueta === filtroActivo); // Si tocás otra, filtra por etiqueta
+
     const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=1000&auto=format&fit=crop";
 
     return (
@@ -53,18 +60,24 @@ const Noticias = () => {
 
             <section className="py-10">
                 <div className="mx-auto max-w-7xl px-4">
+                    
+                    {/* BARRA DE FILTROS */}
                     <div className="flex flex-wrap gap-2 border-b border-gray-300 pb-6 mb-8">
                         {categoriasUnicas.map((categoria) => (
                             <button
                                 key={categoria}
                                 onClick={() => setFiltroActivo(categoria)}
                                 className={cn(
-                                    "px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all",
+                                    "px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2",
                                     filtroActivo === categoria
                                         ? "bg-red-700 text-white shadow-md"
-                                        : "bg-white text-gray-600 border border-gray-200 hover:border-red-300 hover:text-red-700"
+                                        : "bg-white text-gray-600 border border-gray-200 hover:border-red-300 hover:text-red-700",
+                                    // Le damos un toque especial visual si el botón es "Destacados" y está activo
+                                    categoria === "Destacados" && filtroActivo === categoria ? "bg-yellow-500 text-yellow-900 border-yellow-500" : ""
                                 )}
                             >
+                                {/* Si el botón es "Destacados", le metemos la estrellita adentro */}
+                                {categoria === "Destacados" && <Star className={cn("w-4 h-4", filtroActivo === categoria ? "fill-yellow-900" : "text-gray-400")} />}
                                 {categoria}
                             </button>
                         ))}

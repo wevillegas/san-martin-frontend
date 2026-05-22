@@ -14,10 +14,10 @@ const Estadio = () => {
 
     // 2. FOTOS PARA LA GALERÍA DE EVOLUCIÓN
     const fotosEvolucion = [
-        "/images/ciudadela1932.jpg", 
-        "/images/ciudadela1932color.jpg", 
-        "/images/ciudadelablanco.jpg", 
-        "/images/ciudadelanoche.jpg", 
+        "/images/ciudadela1932.jpg",
+        "/images/ciudadela1932color.jpg",
+        "/images/ciudadelablanco.jpg",
+        "/images/ciudadelanoche.jpg",
         "/images/ciudadeladentro.jpg"
     ];
 
@@ -38,7 +38,7 @@ const Estadio = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-20">
-                    <span class="bg-red-700 text-white text-sm font-black px-5 py-2 rounded-full uppercase tracking-widest mb-6 shadow-lg border border-red-500">Departamento de Socios</span>
+                    <span className="bg-red-700 text-white text-sm font-black px-5 py-2 rounded-full uppercase tracking-widest mb-6 shadow-lg border border-red-500">LA FORTALEZA</span>
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-4">
                         La Ciudadela
                     </h1>
@@ -124,8 +124,9 @@ const Estadio = () => {
                     </div>
                 </div>
             </div>
+
             {/* =========================================
-                SECCIÓN 4: MOMENTOS ICÓNICOS (FONDO ROJO)
+                SECCIÓN 3: MOMENTOS ICÓNICOS (FONDO ROJO)
             ========================================== */}
             <div className="bg-red-800 py-24">
                 <div className="max-w-6xl mx-auto px-4">
@@ -259,7 +260,7 @@ const Estadio = () => {
             </div>
 
             {/* =========================================
-                SECCIÓN 3: UBICACIÓN E INFRAESTRUCTURA (ESTILO MUSEO)
+                SECCIÓN 4: UBICACIÓN E INFRAESTRUCTURA (MAPA)
             ========================================== */}
             <div className="bg-white py-24 border-b border-gray-100">
                 <div className="max-w-6xl mx-auto px-4">
@@ -268,12 +269,13 @@ const Estadio = () => {
                         <div className="w-24 h-1.5 bg-red-600 mx-auto rounded-full"></div>
                     </div>
 
-                    {/* Tarjeta de Ubicación Principal */}
-                    <div className="flex flex-col items-center p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md mb-12 text-center max-w-3xl mx-auto">
-                        <MapPin className="w-12 h-12 text-red-700 mb-4" />
-                        <h3 className="font-bold uppercase tracking-widest text-sm text-gray-500 mb-3">Dirección Oficial</h3>
-                        <p className="text-2xl md:text-3xl font-black text-gray-900 uppercase">Bolívar 1960, San Miguel de Tucumán</p>
-                        <p className="text-red-700 font-bold mt-2 uppercase tracking-wider text-sm">Barrio Ciudadela</p>
+                    {/* MAPA DE GOOGLE MAPS INSERTADO (Reemplaza la tarjeta gigante) */}
+                    <div className="w-full h-[400px] md:h-[450px] rounded-2xl overflow-hidden shadow-xl mb-16 border border-gray-200 relative">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.116847545089!2d-65.23240652381254!3d-26.836235590014113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225c6553d78fdd%3A0x8f34dc03963cdf3f!2sEstadio%20La%20Ciudadela!5e0!3m2!1ses-419!2sar!4v1779401872210!5m2!1ses-419!2sar" className="absolute inset-0 w-full h-full border-0"
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="Ubicación Complejo Natalio Mirkin"></iframe>
                     </div>
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">

@@ -16,7 +16,8 @@ const navigation = [
         children: [
             { name: "Historia", href: "/club/historia" },
             { name: "Estadio", href: "/club/estadio" },
-            { name: "Museo", href: "/club/museo" }, // <-- MUSEO AGREGADO ACÁ
+            { name: "Complejo", href: "/club/complejo"},
+            { name: "Museo", href: "/club/museo" },
             { name: "Autoridades", href: "/club/autoridades" },
         ],
     },
@@ -30,7 +31,7 @@ const navigation = [
     { name: "Noticias", href: "/noticias" },
     { name: "Fixtures", href: "/fixtures" },
     { name: "Tienda", href: "/tienda" },
-    { name: "Socios", href: "/socios" }, // <-- SOCIOS AGREGADO ACÁ AL FINAL
+    { name: "Socios", href: "/socios" },
 ];
 
 const Navbar = () => {
