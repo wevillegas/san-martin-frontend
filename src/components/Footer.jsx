@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MapPin, Phone, Mail, ChevronDown } from "lucide-react";
+import { MapPin, Phone, Mail, ChevronDown, X, Code, GraduationCap, User } from "lucide-react";
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const footerLinks = {
@@ -9,16 +9,16 @@ const footerLinks = {
         { name: "Estadio", href: "/club/estadio" },
         { name: "Autoridades", href: "/club/autoridades" },
         { name: "Museo", href: "/club/museo" },
+        { name: "Complejo", href: "/club/complejo" },
     ],
     futbol: [
         { name: "Plantel Profesional", href: "/plantel" },
         { name: "Cuerpo Técnico", href: "/plantel/cuerpo-tecnico" },
-        { name: "Fixtures", href: "/fixtures" },
+        { name: "Fixture", href: "/fixture" },
     ],
     socios: [
         { name: "Hacete Socio", href: "/socios" },
         { name: "Beneficios", href: "/socios" },
-        { name: "Contacto", href: "/contacto" },
     ],
 };
 
@@ -33,16 +33,17 @@ const socialLinks = [
 const Footer = () => {
     const location = useLocation(); 
     const isLoggedIn = !!localStorage.getItem("token");
-
-    // ESTADO PARA EL ACORDEÓN MÓVIL
+    
+    // Estados para Acordeón y Modal
     const [openSection, setOpenSection] = useState(null);
+    const [isAboutOpen, setIsAboutOpen] = useState(false);
 
     const toggleAccordion = (section) => {
         setOpenSection(openSection === section ? null : section);
     };
 
     return (
-        <footer className="bg-red-800 text-white mt-auto">
+        <footer className="bg-red-800 text-white mt-auto relative">
             <div className="mx-auto max-w-7xl px-4 py-12">
                 <div className="grid gap-8 lg:grid-cols-5">
 
@@ -76,7 +77,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    {/* COLUMNA 2: Menús (Agrupados para controlar el Acordeón) */}
+                    {/* COLUMNA 2: Menús en Acordeón */}
                     <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-8 divide-y divide-red-700/50 md:divide-y-0 mt-4 md:mt-0">
                         
                         {/* SECCIÓN: EL CLUB */}
@@ -159,26 +160,108 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* BARRA INFERIOR DE LEGALES */}
+            {/* BARRA INFERIOR CON MODAL "ACERCA DE" */}
             <div className="border-t border-red-900 bg-red-950">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 md:py-4 text-center md:text-left text-sm md:flex-row text-red-200/60">
                     <p>
                         © {new Date().getFullYear()} Club Atlético San Martín de Tucumán. Todos los derechos reservados.
                     </p>
-                    <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4">
-                        <Link to="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
-                        <span className="hidden md:inline text-red-900/50">|</span>
-                        <Link to="/terminos" className="hover:text-white transition-colors">Términos y Condiciones</Link>
+                    <div className="flex items-center gap-4">
+                        <button 
+                            onClick={() => setIsAboutOpen(true)}
+                            className="hover:text-white transition-colors font-medium tracking-wider uppercase text-xs"
+                        >
+                            Acerca de
+                        </button>
+                        
                         <span className="text-red-900/50">|</span>
+                        
                         <Link 
                             to={isLoggedIn ? "/admin" : "/login"} 
-                            className="hover:text-red-400 transition-colors font-medium"
+                            className="hover:text-white transition-colors font-medium tracking-wider uppercase text-xs"
                         >
                             {isLoggedIn ? "Panel Admin" : "Acceso Staff"}
                         </Link>
                     </div>
                 </div>
             </div>
+
+            {/* ========================================== */}
+            {/* MODAL "ACERCA DEL PROYECTO" RESPONSIVO     */}
+            {/* ========================================== */}
+            {isAboutOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-opacity duration-300">
+                    
+                    {/* ARREGLO: max-h-[90vh] overflow-y-auto para evitar desbordes. Paddings ajustados (p-5 en cel, p-8 en PC) */}
+                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-5 md:p-8 text-gray-900 shadow-2xl">
+                        
+                        <button
+                            onClick={() => setIsAboutOpen(false)}
+                            className="absolute right-3 top-3 md:right-4 md:top-4 text-gray-400 hover:text-red-600 transition-colors bg-gray-100 rounded-full p-1.5 md:p-2"
+                            aria-label="Cerrar modal"
+                        >
+                            <X className="h-5 w-5 md:h-6 md:w-6" />
+                        </button>
+
+                        <div className="mb-4 md:mb-6 flex items-center gap-3 border-b border-gray-200 pb-3 md:pb-4 pr-8">
+                            <Code className="h-6 w-6 md:h-8 md:w-8 text-red-700 shrink-0" />
+                            <div>
+                                <h3 className="text-xl md:text-2xl font-black uppercase tracking-wider text-gray-900 leading-none">
+                                    Acerca de este sitio
+                                </h3>
+                                <p className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Proyecto de Portfolio</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4 md:space-y-5 text-gray-700">
+                            
+                            <div className="bg-red-50 border-l-4 border-red-600 p-3 md:p-4 rounded-r-lg">
+                                <p className="text-[13px] md:text-sm text-red-900 font-medium leading-snug">
+                                    <strong className="font-black uppercase tracking-wider">Aviso:</strong> Este sitio web no es la página oficial del Club Atlético San Martín de Tucumán. Es una aplicación web desarrollada exclusivamente con fines académicos y de demostración técnica.
+                                </p>
+                            </div>
+
+                            <p className="text-[13px] md:text-base leading-relaxed">
+                                La plataforma fue construida utilizando arquitectura <strong>MERN</strong> (MongoDB, Express, React, Node.js), implementando bases de datos no relacionales, diseño de interfaces UI/UX mediante Figma, consumo de APIs externas (ESPN), un sistema de gestión de contenidos (CMS) propio y aplicación de Inteligencia Artificial.
+                            </p>
+
+                            <div className="mt-4 md:mt-6 rounded-xl bg-gray-50 p-4 md:p-6 border border-gray-200 shadow-inner">
+                                <h4 className="mb-3 md:mb-4 font-bold uppercase tracking-widest text-gray-400 text-[10px] md:text-xs flex items-center gap-1.5 md:gap-2">
+                                    <User className="h-3.5 w-3.5 md:h-4 md:w-4 shrink-0" />
+                                    Desarrollador y estudiante de Ing. Informática.
+                                </h4>
+                                
+                                <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center">
+                                    <div className="flex-grow space-y-1.5 md:space-y-2">
+                                        <p className="font-black text-lg md:text-2xl text-gray-900 uppercase tracking-tight">Wenceslao José Villegas</p>
+                                        <div className="flex items-start md:items-center gap-2 text-[13px] md:text-sm text-gray-600 font-medium mt-1 md:mt-2">
+                                            <GraduationCap className="h-4 w-4 text-red-700 shrink-0 mt-0.5 md:mt-0" />
+                                            <span>Estudiante de 5to Año - Ingeniería Informática (UNSTA)</span>
+                                        </div>
+                                        <div className="flex items-start md:items-center gap-2 text-[13px] md:text-sm text-gray-600 font-medium">
+                                            <Code className="h-4 w-4 text-red-700 shrink-0 mt-0.5 md:mt-0" />
+                                            <span>Egresado Fullstack - Rolling Code School</span>
+                                        </div>
+                                        <div className="flex items-start md:items-center gap-2 text-[13px] md:text-sm text-gray-500 mt-1 md:mt-2">
+                                            <MapPin className="h-4 w-4 shrink-0 mt-0.5 md:mt-0" />
+                                            <span>Yerba Buena, Tucumán, Argentina</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex flex-col sm:flex-row md:flex-col gap-2 w-full md:w-auto mt-2 md:mt-0">
+                                        <a href="https://www.linkedin.com/in/wenceslaojosevillegas/" target="_blank" rel="noopener noreferrer" className="text-center px-6 py-2.5 md:py-2 bg-[#0A66C2] text-white text-[13px] md:text-sm font-bold rounded-lg hover:bg-blue-800 transition-colors w-full">
+                                            LinkedIn
+                                        </a>
+                                        <a href="https://github.com/wevillegas" target="_blank" rel="noopener noreferrer" className="text-center px-6 py-2.5 md:py-2 bg-gray-900 text-white text-[13px] md:text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors w-full">
+                                            GitHub
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </footer>
     );
 };
