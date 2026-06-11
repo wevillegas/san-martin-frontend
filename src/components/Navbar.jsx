@@ -8,7 +8,6 @@ function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
-// ARREGLO DE NAVEGACIÓN ACTUALIZADO
 const navigation = [
     { name: "Inicio", href: "/" },
     {
@@ -63,10 +62,10 @@ const Navbar = () => {
     // LÓGICA MAESTRA: Controlador de clic para el Inicio
     const handleHomeClick = (e) => {
         if (location.pathname === "/") {
-            e.preventDefault(); // Evita que React Router intente recargar
+            e.preventDefault(); 
             window.scrollTo({
                 top: 0,
-                behavior: "smooth" // Sube de manera fluida y elegante
+                behavior: "smooth" 
             });
         }
     };
@@ -149,7 +148,7 @@ const Navbar = () => {
 
                     {/* Botón Menú Celular */}
                     <button
-                        className="lg:hidden p-2 text-gray-600 hover:text-red-700"
+                        className="lg:hidden p-2 text-gray-600 hover:text-red-700 focus:outline-none"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
                         {mobileMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
@@ -157,8 +156,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Menú Celular Desplegable */}
-                <div className={cn("overflow-hidden transition-all duration-300 lg:hidden bg-gray-50", mobileMenuOpen ? "max-h-[600px] border-b" : "max-h-0")}>
-                    <div className="space-y-1 px-4 py-6">
+                {/* ARREGLO: max-h-[85vh] y overflow-y-auto para evitar que se corte el contenido */}
+                <div className={cn("transition-all duration-300 lg:hidden bg-gray-50", mobileMenuOpen ? "max-h-[85vh] overflow-y-auto border-b" : "max-h-0 overflow-hidden")}>
+                    
+                    {/* ARREGLO: pb-24 para dejar un buen margen abajo y que no quede pegado */}
+                    <div className="space-y-1 px-4 pt-6 pb-6">
                         {navigation.map((item) => (
                             <div key={item.name}>
                                 <Link 
