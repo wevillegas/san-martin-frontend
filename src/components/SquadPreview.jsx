@@ -71,13 +71,13 @@ const SquadPreview = ({ onSelectPlayer }) => {
                     </Link>
                 </div>
 
-                <div className="relative group">
+                {/* EL ARREGLO ESTÁ ACÁ: Agregamos md:px-14 para crear el pasillo de las flechas */}
+                <div className="relative group md:px-14">
                     <div className="overflow-hidden rounded-xl" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
                             {jugadores.map((player) => (
                                 <div key={player._id} className="relative min-w-0 flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
 
-                                    {/* ACÁ ESTÁ LA MAGIA: Cambiamos Link por button */}
                                     <button
                                         onClick={() => onSelectPlayer(player)}
                                         className="block h-full group/card w-full text-left"
@@ -108,9 +108,10 @@ const SquadPreview = ({ onSelectPlayer }) => {
                         </div>
                     </div>
 
+                    {/* FLECHAS CORREGIDAS: left-0 / right-0 para ubicarse en el pasillo, y hidden md:flex para que desaparezcan en móvil */}
                     <button
                         onClick={scrollPrev}
-                        className="absolute -left-6 md:-left-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
+                        className="absolute left-0 top-1/2 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Anterior"
                     >
                         <ChevronLeft className="h-7 w-7 pr-1" />
@@ -118,7 +119,7 @@ const SquadPreview = ({ onSelectPlayer }) => {
 
                     <button
                         onClick={scrollNext}
-                        className="absolute -right-6 md:-right-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
+                        className="absolute right-0 top-1/2 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Siguiente"
                     >
                         <ChevronRight className="h-7 w-7 pl-1" />

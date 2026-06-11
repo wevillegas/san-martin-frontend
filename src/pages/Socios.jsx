@@ -4,10 +4,10 @@ const Socios = () => {
     // Foto épica de la hinchada
     const imgHero = "/images/hinchada-socios.JPG"; 
 
-    // URL de la página web externa de socios (Reemplazala por la real)
+    // URL de la página web externa de socios
     const urlPlataformaSocios = "https://socios.casmt.ar/";
 
-    // Lista de beneficios (Sin hover)
+    // Lista de beneficios
     const beneficios = [
         {
             icono: <Ticket className="w-8 h-8 text-red-700" />,
@@ -31,13 +31,13 @@ const Socios = () => {
         }
     ];
 
-    // Categorías de socios (Solo 2 y sin botón interno)
+    // Categorías de socios
     const categorias = [
         {
             nombre: "Socio Tucumán (Activo)",
             edades: "Mayores de 18 años",
             precio: "$25.000",
-            destacado: true, // Resaltamos el plan estándar
+            destacado: true,
             features: ["Entradas a mitad de precio", "Voz y voto en asambleas", "Descuento en tienda oficial", "Prioridad en plateas", "Acceso al Complejo"]
         },
         {
@@ -53,7 +53,8 @@ const Socios = () => {
         <div className="min-h-screen bg-gray-50 pb-0 font-sans">
             
             {/* 1. CABECERA HERO */}
-            <div className="relative w-full h-[500px] md:h-[600px]">
+            {/* Aumentamos un poco la altura en móvil para que entre todo bien (h-[550px]) */}
+            <div className="relative w-full h-[550px] md:h-[600px]">
                 <img
                     src={imgHero || "https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?q=80&w=2000&auto=format&fit=crop"}
                     alt="Hinchada de San Martín"
@@ -61,31 +62,34 @@ const Socios = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent" />
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-10">
-                    <span className="bg-red-700 text-white text-sm font-black px-5 py-2 rounded-full uppercase tracking-widest mb-6 shadow-lg border border-red-500">
+                {/* ARREGLO: pb-24 en móvil para empujar el botón hacia arriba y que no choque */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-10 pb-24 md:pb-16">
+                    <span className="bg-red-700 text-white text-xs md:text-sm font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-lg border border-red-500">
                         Departamento de Socios
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-4">
+                    {/* Texto más escalable en móvil (text-4xl) */}
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-3 md:mb-4">
                         SER SOCIO ES UN ORGULLO
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-200 font-bold max-w-2xl text-balance drop-shadow-lg mb-10">
+                    <p className="text-lg md:text-2xl text-gray-200 font-bold max-w-2xl text-balance drop-shadow-lg mb-8 md:mb-10">
                         Hacerte socio es el acto de amor más grande. Defendé los colores, cuidá la institución y hacé más grande a San Martín.
                     </p>
-                    {/* Botón Hero que redirige a la web externa */}
+                    {/* Botón Hero */}
                     <a 
                         href={urlPlataformaSocios}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all transform hover:scale-105 flex items-center gap-3"
+                        className="bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-sm md:text-base py-3.5 px-8 md:py-4 md:px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all transform hover:scale-105 flex items-center gap-2 md:gap-3"
                     >
                         Asociate Online
-                        <ExternalLink className="w-5 h-5" />
+                        <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
                     </a>
                 </div>
             </div>
 
             {/* 2. BARRA DE ESTADÍSTICAS (ROJA) */}
-            <div className="bg-red-700 py-12 border border-red-600 shadow-xl relative z-10 -mt-10 mx-4 md:mx-auto max-w-5xl rounded-2xl">
+            {/* ARREGLO: z-20 y -mt-16 para que se monte elegante sin chocar */}
+            <div className="bg-red-700 py-10 md:py-12 border border-red-600 shadow-xl relative z-20 -mt-16 md:-mt-20 mx-4 md:mx-auto max-w-5xl rounded-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-red-500/50 text-white text-center">
                     <div className="flex flex-col items-center px-4">
                         <Users className="w-10 h-10 text-red-200 mb-2" />
@@ -105,8 +109,8 @@ const Socios = () => {
                 </div>
             </div>
 
-            {/* 3. BENEFICIOS (Fondo Blanco, Sin Hovers) */}
-            <div className="bg-white py-24 border-b border-gray-100">
+            {/* 3. BENEFICIOS */}
+            <div className="bg-white py-24 border-b border-gray-100 mt-8 md:mt-0">
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-black text-gray-900 uppercase tracking-wider mb-4">Por qué ser Socio</h2>
@@ -132,7 +136,7 @@ const Socios = () => {
                 </div>
             </div>
 
-            {/* 4. CATEGORÍAS Y VALORES (Fondo Blanco, Sin Hovers ni Botones) */}
+            {/* 4. CATEGORÍAS Y VALORES */}
             <div className="bg-white py-24 border-b border-gray-100">
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="text-center mb-16">
@@ -141,7 +145,6 @@ const Socios = () => {
                         <p className="text-gray-500 font-medium max-w-xl mx-auto">Valores referenciales de la cuota mensual para mayores de 18 años.</p>
                     </div>
 
-                    {/* Grilla ajustada a 2 columnas y centrada */}
                     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
                         {categorias.map((cat, index) => (
                             <div 
@@ -159,7 +162,7 @@ const Socios = () => {
                                     {cat.edades}
                                 </p>
                                 
-                                <div className="mb-10 pb-8 border-b ${cat.destacado ? 'border-red-600' : 'border-gray-200'}">
+                                <div className={`mb-10 pb-8 border-b ${cat.destacado ? 'border-red-600' : 'border-gray-200'}`}>
                                     <span className="text-5xl md:text-6xl font-black">{cat.precio}</span>
                                     <span className={`text-base font-bold ${cat.destacado ? 'text-red-200' : 'text-gray-500'}`}> /mes</span>
                                 </div>
@@ -180,7 +183,7 @@ const Socios = () => {
                 </div>
             </div>
 
-            {/* 5. SECCIÓN FINAL - LLAMADO A LA ACCIÓN (FONDO GRIS CLARO) */}
+            {/* 5. SECCIÓN FINAL */}
             <div className="bg-gray-50 py-24 border-t border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <Trophy className="w-16 h-16 text-red-600 mx-auto mb-8" />
@@ -191,15 +194,14 @@ const Socios = () => {
                         Toda la gestión de tu carnet, el pago de cuotas y el reempadronamiento se realiza exclusivamente a través de nuestra plataforma digital oficial. Hacé clic abajo para dirigirte al sitio.
                     </p>
                     
-                    {/* EL BOTÓN NOTORIO FINAL */}
                     <a 
                         href={urlPlataformaSocios}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-4 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-lg md:text-xl py-6 px-12 rounded-2xl shadow-[0_15px_40px_rgba(220,38,38,0.4)] transition-all transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(220,38,38,0.5)] w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-sm md:text-lg py-5 md:py-6 px-6 md:px-12 rounded-2xl shadow-[0_15px_40px_rgba(220,38,38,0.4)] transition-all transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(220,38,38,0.5)] w-full sm:w-auto"
                     >
-                        Ir a la Plataforma de Socios Oficial
-                        <ExternalLink className="w-6 h-6" />
+                        Ir a la Plataforma Oficial
+                        <ExternalLink className="w-5 h-5 md:w-6 md:h-6" />
                     </a>
                     
                     <p className="text-gray-400 text-sm mt-8 font-bold uppercase tracking-widest">

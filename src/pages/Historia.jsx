@@ -1,9 +1,7 @@
 import { Calendar, Trophy, Star, ArrowUpCircle, Church } from "lucide-react";
 
-// Imagen Placeholder elegante por si falta alguna foto oficial
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
-// Datos de la historia
 const hitosHistoricos = [
     {
         año: "1909",
@@ -92,7 +90,7 @@ const hitosHistoricos = [
         imagenUrl: "/images/rip.jpg",
         icono: <Star className="w-6 h-6 text-white" />,
         color: "bg-red-700"
-    },
+    }
 ];
 
 const Historia = () => {
@@ -132,10 +130,10 @@ const Historia = () => {
                 </div>
 
                 <div className="relative">
-                    {/* Línea vertical para Escritorio (Fija en el medio, rojo sólido) */}
+                    {/* Línea vertical para Escritorio (Fija en el medio) */}
                     <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-red-700 transform -translate-x-1/2 rounded-full shadow-sm"></div>
                     
-                    {/* Línea vertical para Móviles (Fija a la izquierda, rojo sólido) */}
+                    {/* Línea vertical para Móviles (Fija a la izquierda) */}
                     <div className="md:hidden absolute left-8 top-0 bottom-0 w-1 bg-red-700 transform -translate-x-1/2 rounded-full shadow-sm"></div>
 
                     <div className="space-y-16 md:space-y-20">
@@ -150,10 +148,10 @@ const Historia = () => {
                                         {hito.icono}
                                     </div>
 
-                                    {/* --- COLUMNA IZQUIERDA (41%) --- */}
-                                    <div className="w-full md:w-5/12 pl-16 md:pl-0">
+                                    {/* --- COLUMNA IZQUIERDA --- */}
+                                    {/* LÓGICA: Si es par, es Texto (order-2 en móvil, order-1 en PC). Si es impar, es Imagen (order-1 en móvil, order-1 en PC). */}
+                                    <div className={`w-full md:w-5/12 pl-16 md:pl-0 ${isEven ? 'order-2 md:order-1 mt-6 md:mt-0' : 'order-1 md:order-1'}`}>
                                         {isEven ? (
-                                            // Tarjeta de Texto (Sin hover)
                                             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left md:text-right">
                                                 <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}
@@ -166,7 +164,6 @@ const Historia = () => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            // Tarjeta de Imagen (Sin hover ni animaciones)
                                             <div className="overflow-hidden rounded-2xl shadow-xl aspect-video w-full bg-white border border-gray-100">
                                                 <img
                                                     src={hito.imagenUrl || imagenPlaceholder}
@@ -177,18 +174,17 @@ const Historia = () => {
                                         )}
                                     </div>
 
-                                    {/* --- COLUMNA CENTRAL: CARRIL DEL ÍCONO (16%) --- */}
-                                    <div className="hidden md:flex w-2/12 justify-center items-center z-20">
-                                        {/* Icono central (Sin hover) */}
+                                    {/* --- COLUMNA CENTRAL: CARRIL DEL ÍCONO --- */}
+                                    <div className="hidden md:flex w-2/12 justify-center items-center z-20 md:order-2">
                                         <div className={`w-14 h-14 rounded-full border-4 border-white shadow-xl flex items-center justify-center ${hito.color}`}>
                                             {hito.icono}
                                         </div>
                                     </div>
 
-                                    {/* --- COLUMNA DERECHA (41%) --- */}
-                                    <div className="w-full md:w-5/12 pl-16 md:pl-0 mt-6 md:mt-0">
+                                    {/* --- COLUMNA DERECHA --- */}
+                                    {/* LÓGICA: Si es par, es Imagen (order-1 en móvil, order-3 en PC). Si es impar, es Texto (order-2 en móvil, order-3 en PC). */}
+                                    <div className={`w-full md:w-5/12 pl-16 md:pl-0 ${isEven ? 'order-1 md:order-3' : 'order-2 md:order-3 mt-6 md:mt-0'}`}>
                                         {isEven ? (
-                                            // Tarjeta de Imagen (Sin hover ni animaciones)
                                             <div className="overflow-hidden rounded-2xl shadow-xl aspect-video w-full bg-white border border-gray-100">
                                                 <img
                                                     src={hito.imagenUrl || imagenPlaceholder}
@@ -197,7 +193,6 @@ const Historia = () => {
                                                 />
                                             </div>
                                         ) : (
-                                            // Tarjeta de Texto (Sin hover)
                                             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left">
                                                 <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}

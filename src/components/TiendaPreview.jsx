@@ -22,7 +22,6 @@ const TiendaPreview = () => {
         const cargarDestacados = async () => {
             try {
                 const datos = await obtenerProductos();
-                // Filtramos para traer SOLAMENTE los que tienen el tilde de destacado
                 const destacados = datos.filter(p => p.activo && p.destacado);
                 setProductos(destacados);
                 setCargando(false);
@@ -34,7 +33,6 @@ const TiendaPreview = () => {
         cargarDestacados();
     }, []);
 
-    // Si está cargando o no hay productos destacados, el componente se oculta de forma silenciosa
     if (cargando || productos.length === 0) return null;
 
     const urlTiendaOficial = "https://tienda.clubatleticosanmartin.com.ar";
@@ -61,7 +59,8 @@ const TiendaPreview = () => {
                     </Link>
                 </div>
 
-                <div className="relative group">
+                {/* EL ARREGLO ESTÁ ACÁ: Agregamos md:px-14 para crear el pasillo de las flechas */}
+                <div className="relative group md:px-14">
                     <div className="overflow-hidden rounded-xl" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
                             {productos.map((producto) => (
@@ -73,14 +72,12 @@ const TiendaPreview = () => {
                                         rel="noopener noreferrer"
                                         className="block h-full group/card w-full text-left"
                                     >
-                                        {/* Tarjeta con altura adaptada para indumentaria */}
                                         <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-gray-200 bg-gray-50 transition-all hover:shadow-xl">
                                             <img
                                                 src={producto.imagenUrl}
                                                 alt={producto.nombre}
                                                 className="w-full h-full object-cover transition-all duration-500 group-hover/card:scale-105"
                                             />
-                                            {/* Degradado oscuro para que el texto resalte */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-black/20 to-transparent opacity-90" />
 
                                             <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -105,9 +102,10 @@ const TiendaPreview = () => {
                         </div>
                     </div>
 
+                    {/* FLECHAS CORREGIDAS: left-0 / right-0 para ubicarse en el pasillo, y hidden md:flex para que desaparezcan en móvil */}
                     <button
                         onClick={scrollPrev}
-                        className="absolute -left-6 md:-left-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
+                        className="absolute left-0 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Anterior"
                     >
                         <ChevronLeft className="h-7 w-7 pr-1" />
@@ -115,7 +113,7 @@ const TiendaPreview = () => {
 
                     <button
                         onClick={scrollNext}
-                        className="absolute -right-6 md:-right-16 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
+                        className="absolute right-0 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-2xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
                         aria-label="Siguiente"
                     >
                         <ChevronRight className="h-7 w-7 pl-1" />
