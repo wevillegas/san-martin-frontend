@@ -33,7 +33,13 @@ const Fixture = () => {
     useEffect(() => {
         const traerFixture = async () => {
             try {
-                const respuesta = await fetch("http://localhost:5000/api/fixture");
+                // ACÁ ESTÁ LA CORRECCIÓN: Misma lógica de producción
+                const API_URL = import.meta.env.VITE_API_URL 
+                    ? `${import.meta.env.VITE_API_URL}/api/fixture` 
+                    : "http://localhost:5000/api/fixture"; 
+                    // NOTA: Reemplazar igual que en el Widget si no usás variables de entorno.
+
+                const respuesta = await fetch(API_URL);
                 if (!respuesta.ok) throw new Error("Error al conectar con el servidor");
                 const data = await respuesta.json();
                 setPartidos(data);
@@ -57,22 +63,19 @@ const Fixture = () => {
         <div className="min-h-screen bg-gray-50 text-gray-900 py-16">
             <div className="max-w-5xl mx-auto px-4">
                 
-                {/* HEADER SEGÚN TUS DIBUJOS: LOGO + FIXTURE. + LÍNEA ROJA */}
                 <div className="flex flex-col items-center justify-center mb-16">
                     <div className="flex items-center gap-4 mb-6">
-                        {/* Logo del Torneo */}
+                        {/* CORRECCIÓN: Quité el /public/ del src de la imagen */}
                         <img 
-                            src="/public/images/pn.png" 
+                            src="/images/pn.png" 
                             alt="Logo Primera Nacional" 
                             className="w-14 h-14 md:w-20 md:h-20 object-contain drop-shadow-sm mt-3"
                         />
-                        {/* Título Negro Sólido */}
                         <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none text-gray-900">
                             Fixture
                         </h1>
                     </div>
                     
-                    {/* Línea Roja Divisoria (Igual a página de Socios) */}
                     <div className="w-24 h-1.5 bg-red-600 rounded-full shadow-sm"></div>
                     
                     <p className="mt-6 text-gray-500 font-bold uppercase tracking-[0.2em] text-xs md:text-sm">
@@ -80,7 +83,6 @@ const Fixture = () => {
                     </p>
                 </div>
 
-                {/* LISTADO DE PARTIDOS CON CARDS ROJAS PROFUNDAS */}
                 <div className="grid gap-6">
                     {partidos.map((partido, index) => {
                         const esProximo = partido.estado !== 'post' && (index === 0 || partidos[index - 1].estado === 'post');
@@ -92,12 +94,10 @@ const Fixture = () => {
                                     ${esProximo ? 'ring-4 ring-red-600/20 scale-[1.02] z-10 shadow-2xl' : 'shadow-md'}
                                     bg-gradient-to-br from-red-900 to-red-950 border-red-800`}
                             >
-                                {/* Brillo estético para el próximo partido */}
                                 {esProximo && <div className="absolute -right-20 -top-20 w-64 h-64 bg-red-600/10 rounded-full blur-3xl"></div>}
 
                                 <div className="flex flex-col lg:flex-row items-center p-6 md:p-8 gap-8 relative z-10">
                                     
-                                    {/* FECHA Y ESTADO */}
                                     <div className="flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-center w-full lg:w-40 gap-2">
                                         <div className="flex items-center gap-2 text-red-200/70 font-bold">
                                             <Calendar className="w-4 h-4 text-red-500" />
@@ -111,10 +111,8 @@ const Fixture = () => {
                                         </div>
                                     </div>
 
-                                    {/* EL DUELO CENTRAL */}
                                     <div className="flex-grow flex items-center justify-between w-full max-w-2xl mx-auto">
                                         
-                                        {/* LOCAL */}
                                         <div className="flex flex-col items-center gap-3 w-1/3 text-center">
                                             <Escudo src={partido.local.escudoUrl} alt={partido.local.nombre} esSanMartin={partido.local.esSanMartin} size="w-16 h-16 md:w-20 md:h-20" />
                                             <span className={`text-white font-black text-xs md:text-sm uppercase tracking-wide h-10 flex items-center leading-tight
@@ -123,7 +121,6 @@ const Fixture = () => {
                                             </span>
                                         </div>
 
-                                        {/* MARCADOR BOX */}
                                         <div className="flex flex-col items-center gap-2">
                                             <div className="bg-white text-gray-950 font-black text-3xl md:text-5xl px-6 py-3 rounded-2xl shadow-2xl tracking-tighter border-b-4 border-gray-300">
                                                 {partido.local.goles}<span className="text-red-600 mx-1">:</span>{partido.visitante.goles}
@@ -135,7 +132,6 @@ const Fixture = () => {
                                             )}
                                         </div>
 
-                                        {/* VISITANTE */}
                                         <div className="flex flex-col items-center gap-3 w-1/3 text-center">
                                             <Escudo src={partido.visitante.escudoUrl} alt={partido.visitante.nombre} esSanMartin={partido.visitante.esSanMartin} size="w-16 h-16 md:w-20 md:h-20" />
                                             <span className={`text-white font-black text-xs md:text-sm uppercase tracking-wide h-10 flex items-center leading-tight
@@ -145,7 +141,6 @@ const Fixture = () => {
                                         </div>
                                     </div>
 
-                                    {/* UBICACIÓN */}
                                     <div className="w-full lg:w-40 flex items-center justify-center lg:justify-end">
                                         <div className="flex items-center gap-2 text-red-200/60 font-bold text-[10px] uppercase tracking-widest bg-black/20 px-4 py-2 rounded-xl border border-white/5 text-white">
                                             <MapPin className="w-4 h-4 text-red-500 text-white" />

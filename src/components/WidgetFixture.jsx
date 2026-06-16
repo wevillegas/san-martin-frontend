@@ -48,7 +48,13 @@ const WidgetFixture = () => {
     useEffect(() => {
         const obtenerFixture = async () => {
             try {
-                const respuesta = await fetch("http://localhost:5000/api/fixture");
+                // ACÁ ESTÁ LA CORRECCIÓN: Apunta a producción si estás en Vercel
+                const API_URL = import.meta.env.VITE_API_URL 
+                    ? `${import.meta.env.VITE_API_URL}/api/fixture` 
+                    : "http://localhost:5000/api/fixture"; 
+                    // NOTA: Si no usás variables de entorno, pegá acá directo la URL de tu backend web, ej: "https://tu-backend.com/api/fixture"
+
+                const respuesta = await fetch(API_URL);
                 if (respuesta.ok) {
                     const data = await respuesta.json();
                     setPartidos(data);
@@ -95,7 +101,6 @@ const WidgetFixture = () => {
                     </Link>
                 </div>
 
-                {/* ACÁ ESTÁ LA MAGIA APLICADA: md:px-14 para crear el pasillo lateral */}
                 <div className="relative group md:px-14">
                     <div className="overflow-hidden rounded-xl" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
@@ -166,7 +171,6 @@ const WidgetFixture = () => {
                         </div>
                     </div>
 
-                    {/* FLECHAS CON LA LÓGICA CORRECTA: left-0 y right-0 combinadas con el padding superior */}
                     <button
                         onClick={scrollPrev}
                         className="absolute left-0 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-red-700 shadow-xl opacity-0 transition-all duration-300 hover:scale-110 hover:bg-gray-50 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0 hidden md:flex z-10 border border-gray-200"
