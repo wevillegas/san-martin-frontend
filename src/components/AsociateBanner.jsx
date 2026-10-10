@@ -36,7 +36,7 @@ const AsociateBanner = () => {
                     
                     {/* Botón principal (Rojo San Martín) */}
                     <Link
-                        to="https://socios.casmt.ar/" 
+                        to="https://socios.clubatleticosanmartin.com.ar/clubatleticosanmartin_socios/login"
                         className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-bold uppercase tracking-widest text-sm text-white bg-red-700 hover:bg-red-800 shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all hover:-translate-y-1"
                         target="_blank"
                     >

@@ -4,6 +4,10 @@ import { Calendar, ArrowRight, Star } from "lucide-react";
 import { obtenerNoticias } from "../services/noticiaService";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import Loader from "../components/Loader";
+import ErrorState from "../components/ErrorState";
+import Reveal from "../components/Reveal";
+import { imagenPlaceholder } from "../constants/placeholders";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -12,6 +16,7 @@ function cn(...inputs) {
 const Noticias = () => {
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(false);
     const [filtroActivo, setFiltroActivo] = useState("Todas");
 
     useEffect(() => {
@@ -21,16 +26,16 @@ const Noticias = () => {
                 setNoticias(datos);
                 setCargando(false);
             } catch (error) {
-                console.error("No se pudieron cargar las noticias");
+                console.error("No se pudieron cargar las noticias", error);
+                setError(true);
                 setCargando(false);
             }
         };
         cargarNoticias();
     }, []);
 
-    if (cargando) {
-        return <div className="text-center mt-32 text-xl font-bold text-red-700 min-h-screen">Cargando el portal de noticias...</div>;
-    }
+    if (cargando) return <Loader texto="Cargando el portal de noticias..." />;
+    if (error) return <ErrorState texto="No pudimos cargar las noticias. Probá recargar la página." />;
 
     // Agregamos "Destacados" de forma manual a la lista de categorías
     const categoriasUnicas = ["Todas", "Destacados", ...new Set(noticias.map((n) => n.etiqueta))];
@@ -42,8 +47,6 @@ const Noticias = () => {
             : filtroActivo === "Destacados"
                 ? noticias.filter((n) => n.destacado) // Si tocás "Destacados", filtra por el booleano
                 : noticias.filter((n) => n.etiqueta === filtroActivo); // Si tocás otra, filtra por etiqueta
-
-    const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=1000&auto=format&fit=crop";
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
@@ -90,7 +93,8 @@ const Noticias = () => {
                     ) : (
                         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                             {noticiasMostradas.map((noticia) => (
-                                <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group flex flex-col h-full relative">
+                                <Reveal key={noticia._id}>
+                                <Link to={`/noticias/${noticia._id}`} className="group flex flex-col h-full relative">
                                     <div className="flex-1 overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col">
                                         
                                         {/* CARTELITO DE DESTACADO */}
@@ -135,6 +139,7 @@ const Noticias = () => {
                                         </div>
                                     </div>
                                 </Link>
+                                </Reveal>
                             ))}
                         </div>
                     )}

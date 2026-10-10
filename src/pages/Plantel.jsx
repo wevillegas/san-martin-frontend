@@ -8,12 +8,14 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import FichaJugadorModal from "../components/FichaJugadorModal";
+import Loader from "../components/Loader";
+import ErrorState from "../components/ErrorState";
+import Reveal from "../components/Reveal";
+import { imagenPlaceholder } from "../constants/placeholders";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
-
-const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
 // --- COMPONENTES VISUALES ---
 
@@ -79,6 +81,7 @@ const Plantel = () => {
     const [cuerpoTecnico, setCuerpoTecnico] = useState([]);
 
     const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(false);
     const [activeTab, setActiveTab] = useState("jugadores");
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
@@ -107,7 +110,8 @@ const Plantel = () => {
                 setCuerpoTecnico(datosCT);
                 setCargando(false);
             } catch (error) {
-                console.error("Error al cargar los datos del plantel y CT");
+                console.error("Error al cargar los datos del plantel y CT", error);
+                setError(true);
                 setCargando(false);
             }
         };
@@ -119,9 +123,8 @@ const Plantel = () => {
     const mediocampistas = jugadores.filter(j => j.posicion.toLowerCase().includes("medio") || j.posicion.toLowerCase().includes("volante"));
     const delanteros = jugadores.filter(j => j.posicion.toLowerCase().includes("delantero") || j.posicion.toLowerCase().includes("ataque"));
 
-    if (cargando) {
-        return <div className="text-center mt-32 text-xl font-bold text-red-700 min-h-screen">Cargando plantel profesional...</div>;
-    }
+    if (cargando) return <Loader texto="Cargando plantel profesional..." />;
+    if (error) return <ErrorState texto="No pudimos cargar el plantel. Probá recargar la página." />;
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20 relative">
@@ -170,7 +173,7 @@ const Plantel = () => {
                             )}
 
                             {arqueros.length > 0 && (
-                                <div>
+                                <Reveal>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
                                         <span className="h-6 w-2 rounded bg-red-600"></span> Arqueros
                                     </h2>
@@ -179,11 +182,11 @@ const Plantel = () => {
                                             <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
                                         ))}
                                     </div>
-                                </div>
+                                </Reveal>
                             )}
 
                             {defensores.length > 0 && (
-                                <div>
+                                <Reveal>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
                                         <span className="h-6 w-2 rounded bg-red-600"></span> Defensores
                                     </h2>
@@ -192,11 +195,11 @@ const Plantel = () => {
                                             <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
                                         ))}
                                     </div>
-                                </div>
+                                </Reveal>
                             )}
 
                             {mediocampistas.length > 0 && (
-                                <div>
+                                <Reveal>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
                                         <span className="h-6 w-2 rounded bg-red-600"></span> Mediocampistas
                                     </h2>
@@ -205,11 +208,11 @@ const Plantel = () => {
                                             <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
                                         ))}
                                     </div>
-                                </div>
+                                </Reveal>
                             )}
 
                             {delanteros.length > 0 && (
-                                <div>
+                                <Reveal>
                                     <h2 className="mb-6 flex items-center gap-3 text-2xl font-black uppercase text-gray-800 tracking-wider">
                                         <span className="h-6 w-2 rounded bg-red-600"></span> Delanteros
                                     </h2>
@@ -218,7 +221,7 @@ const Plantel = () => {
                                             <PlayerCard key={player._id} player={player} onSelectPlayer={setJugadorSeleccionado} />
                                         ))}
                                     </div>
-                                </div>
+                                </Reveal>
                             )}
                         </div>
                     )}
@@ -228,11 +231,13 @@ const Plantel = () => {
                             {cuerpoTecnico.length === 0 ? (
                                 <p className="text-gray-500 text-center py-10 font-medium">Todavía no hay miembros del cuerpo técnico cargados.</p>
                             ) : (
-                                <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                    {cuerpoTecnico.map((staff) => (
-                                        <StaffCard key={staff._id} staff={staff} />
-                                    ))}
-                                </div>
+                                <Reveal>
+                                    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                        {cuerpoTecnico.map((staff) => (
+                                            <StaffCard key={staff._id} staff={staff} />
+                                        ))}
+                                    </div>
+                                </Reveal>
                             )}
                         </div>
                     )}

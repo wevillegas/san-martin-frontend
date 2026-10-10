@@ -8,6 +8,7 @@ import {
     FaSkating, FaFootballBall, FaTableTennis, FaVolleyballBall
 } from "react-icons/fa";
 import { GiBoxingGlove } from "react-icons/gi";
+import Reveal from "../components/Reveal";
 
 const Complejo = () => {
     // 1. IMAGEN PRINCIPAL (Hero)
@@ -70,7 +71,7 @@ const Complejo = () => {
             {/* =========================================
                 TARJETAS FLOTANTES (Margen Negativo)
             ========================================== */}
-            <div className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
+            <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                     <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
@@ -100,7 +101,7 @@ const Complejo = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
             {/* =========================================
                 SECCIÓN 2: INTRODUCCIÓN e HISTORIA
@@ -108,7 +109,7 @@ const Complejo = () => {
             <div className="bg-white pt-16 md:pt-32 pb-16 md:pb-24 border-b border-gray-100 w-full">
                 <div className="max-w-6xl mx-auto px-4 w-full">
                     {/* ARREGLO: grid-cols-1 explícito y min-w-0 */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
+                    <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
                         
                         {/* Columna Texto */}
                         <div className="w-full min-w-0">
@@ -144,7 +145,7 @@ const Complejo = () => {
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
 
@@ -155,16 +156,16 @@ const Complejo = () => {
                 <div className="max-w-6xl mx-auto px-4 text-center w-full">
                     <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider mb-4 text-white">Nuestras Disciplinas</h2>
                     <div className="w-20 md:w-24 h-1.5 bg-white mx-auto rounded-full mb-8 md:mb-12"></div>
-                    
+
                     {/* ARREGLO: Gap ajustado y padding interno reducido en celular para que no reviente */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 w-full">
+                    <Reveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 w-full">
                         {disciplinas.map((disciplina, index) => (
                             <div key={index} className="bg-white/10 border border-red-500/30 rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center hover:bg-white/20 transition-all duration-300 shadow-lg group min-w-0">
                                 {disciplina.icono}
                                 <h3 className="text-white font-bold uppercase tracking-wider text-[10px] md:text-sm text-center break-words">{disciplina.nombre}</h3>
                             </div>
                         ))}
-                    </div>
+                    </Reveal>
                 </div>
             </div>
 
@@ -184,7 +185,7 @@ const Complejo = () => {
                             title="Ubicación Complejo Natalio Mirkin"></iframe>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-10 md:mt-16 w-full">
+                    <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-10 md:mt-16 w-full">
                         <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
                             <Waves className="w-8 h-8 md:w-10 md:h-10 text-red-700 mx-auto mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Piletas</h3>
@@ -205,7 +206,7 @@ const Complejo = () => {
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Naturaleza</h3>
                             <p className="text-gray-700 text-sm font-medium">Predio parquizado.</p>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
         </div>

@@ -9,10 +9,14 @@ import SquadPreview from "../components/SquadPreview";
 import TiendaPreview from "../components/TiendaPreview";
 import AsociateBanner from "../components/AsociateBanner";
 import FichaJugadorModal from "../components/FichaJugadorModal";
+import Loader from "../components/Loader";
+import ErrorState from "../components/ErrorState";
+import Reveal from "../components/Reveal";
 
 const Home = () => {
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(false);
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
     useEffect(() => {
@@ -22,16 +26,16 @@ const Home = () => {
                 setNoticias(datos);
                 setCargando(false);
             } catch (error) {
-                console.error("No se pudieron cargar las noticias");
+                console.error("No se pudieron cargar las noticias", error);
+                setError(true);
                 setCargando(false);
             }
         };
         cargarNoticias();
     }, []);
 
-    if (cargando) {
-        return <div className="text-center mt-20 text-xl font-bold text-red-700 min-h-screen">Cargando novedades del club...</div>;
-    }
+    if (cargando) return <Loader texto="Cargando novedades del club..." />;
+    if (error) return <ErrorState texto="No pudimos cargar las novedades del club. Probá recargar la página." />;
 
     // LÓGICA DE DISTRIBUCIÓN
     // El Hero agarra las 3 primeras (destacadas o recientes)
@@ -47,17 +51,21 @@ const Home = () => {
             <HeroSection noticiasHero={noticiasHero} />
 
             {/* 2. Sección de Noticias (Solo se muestra si hay noticias) */}
-            {noticias.length > 0 ? (
-                <NoticiasPreview 
-                    noticiaPrincipal={noticiaPrincipal} 
-                    ultimasNoticias={ultimasNoticias} 
-                />
-            ) : (
-                <div className="text-center py-20 text-gray-500 font-medium">No hay noticias publicadas.</div>
-            )}
+            <Reveal>
+                {noticias.length > 0 ? (
+                    <NoticiasPreview
+                        noticiaPrincipal={noticiaPrincipal}
+                        ultimasNoticias={ultimasNoticias}
+                    />
+                ) : (
+                    <div className="text-center py-20 text-gray-500 font-medium">No hay noticias publicadas.</div>
+                )}
+            </Reveal>
 
             {/* 3. Sección Plantel */}
-            <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
+            <Reveal>
+                <SquadPreview onSelectPlayer={setJugadorSeleccionado} />
+            </Reveal>
             {jugadorSeleccionado && (
                 <FichaJugadorModal
                     jugador={jugadorSeleccionado}
@@ -66,13 +74,19 @@ const Home = () => {
             )}
 
             {/* 4. Sección Tienda */}
-            <TiendaPreview />
+            <Reveal>
+                <TiendaPreview />
+            </Reveal>
 
             {/* 5. Banner de Socios */}
-            <AsociateBanner />
+            <Reveal>
+                <AsociateBanner />
+            </Reveal>
 
             {/* 6. Seccion de fixture */}
-            <WidgetFixture />
+            <Reveal>
+                <WidgetFixture />
+            </Reveal>
         </div>
     );
 };

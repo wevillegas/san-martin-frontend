@@ -1,4 +1,5 @@
 import { Calendar, Trophy, Star, ArrowUpCircle, Church } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
@@ -141,7 +142,7 @@ const Historia = () => {
                             const isEven = index % 2 === 0;
 
                             return (
-                                <div key={hito.año} className="relative flex flex-col md:flex-row items-center justify-between w-full">
+                                <Reveal key={hito.año} className="relative flex flex-col md:flex-row items-center justify-between w-full">
 
                                     {/* Icono Flotante para Móviles */}
                                     <div className={`md:hidden absolute left-8 transform -translate-x-1/2 w-10 h-10 rounded-full border-4 border-white shadow-md flex items-center justify-center z-20 top-0 ${hito.color}`}>
@@ -207,7 +208,7 @@ const Historia = () => {
                                         )}
                                     </div>
 
-                                </div>
+                                </Reveal>
                             );
                         })}
                     </div>
