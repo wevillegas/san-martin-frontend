@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 const Estadio = () => {
     // 1. IMÁGENES
@@ -52,7 +53,7 @@ const Estadio = () => {
             {/* =========================================
                 TARJETAS FLOTANTES
             ========================================== */}
-            <div className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
+            <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                     <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
@@ -82,7 +83,7 @@ const Estadio = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
             {/* =========================================
                 SECCIÓN 2: HISTORIA (LA ZONA DEL PROBLEMA)
@@ -90,7 +91,7 @@ const Estadio = () => {
             <div className="bg-white pt-16 md:pt-32 pb-16 md:pb-24 border-b border-gray-100 w-full">
                 <div className="max-w-6xl mx-auto px-4 w-full">
                     {/* EL ARREGLO: grid-cols-1 explícito y min-w-0 en las columnas */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
+                    <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
                         
                         {/* Columna de Texto */}
                         <div className="order-2 lg:order-1 w-full min-w-0">
@@ -133,7 +134,7 @@ const Estadio = () => {
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
 
@@ -142,15 +143,15 @@ const Estadio = () => {
             ========================================== */}
             <div className="bg-red-800 py-16 md:py-24 w-full">
                 <div className="max-w-6xl mx-auto px-4 w-full">
-                    <div className="text-center mb-10 md:mb-16 text-white w-full">
+                    <Reveal className="text-center mb-10 md:mb-16 text-white w-full">
                         <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider mb-4">momentos iconicos</h2>
                         <div className="w-20 md:w-24 h-1.5 bg-white mx-auto rounded-full mb-4"></div>
                         <p className="text-red-100 font-medium text-sm md:text-base">Algunos de los momentos mas destacados sucedidos en ciudadela</p>
-                    </div>
+                    </Reveal>
 
                     <div className="space-y-6 md:space-y-8 w-full">
                         {/* Tarjeta 0 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={img1932} alt="Inauguración" className="w-full h-full object-cover" />
                             </div>
@@ -164,10 +165,10 @@ const Estadio = () => {
                                     El 24 de marzo de 1932 marcó un antes y un después con la inauguración del mítico estadio. Un símbolo de la resistencia y pasión del pueblo ciruja.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 1 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgCosmos} alt="Maradona" className="w-full h-full object-cover" />
                             </div>
@@ -181,10 +182,10 @@ const Estadio = () => {
                                     El 4 de noviembre de 1978 la Selección Juvenil derrotó 2-1 al Cosmos de Nueva York, con un golazo de tiro libre de Diego. Franz Beckenbauer jugaba para el equipo norteamericano.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 2 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgRoma} alt="Roma" className="w-full h-full object-cover" />
                             </div>
@@ -198,10 +199,10 @@ const Estadio = () => {
                                     San Martín se impuso por 1 a 0 frente a la poderosa Roma de Italia con un gol inolvidable de Alfredo "Cachi" Zelaya en una Ciudadela repleta.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 3 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgClasico1} alt="Clásico 92" className="w-full h-full object-cover" />
                             </div>
@@ -215,10 +216,10 @@ const Estadio = () => {
                                     San Martín eliminó de forma directa a Atlético Tucumán tras igualar en el Monumental y empatar 0-0 en La Ciudadela, avanzando por ventaja deportiva camino al ascenso.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 4 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgClasico2} alt="Clásico 94" className="w-full h-full object-cover" />
                             </div>
@@ -232,10 +233,10 @@ const Estadio = () => {
                                     Dos años después se repitió la historia y el Santo volvió a eliminar a su clásico rival en cuartos de final haciendo valer nuevamente la ventaja deportiva tras dos empates.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 5 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgGuarani} alt="Guarani" className="w-full h-full object-cover" />
                             </div>
@@ -249,10 +250,10 @@ const Estadio = () => {
                                     Con un gol agónico de Iván Agudiak sobre el final, San Martín ganó la serie y pasó a semifinales del Federal A en una tarde de locura total en Tucumán.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
 
                         {/* Tarjeta 6 */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgDalmine} alt="Dalmine" className="w-full h-full object-cover" />
                             </div>
@@ -266,7 +267,7 @@ const Estadio = () => {
                                     Uno de los partidos más épicos del ascenso: gol al último minuto de Galeano para empatar 3-3 y clasificar a semifinales del reducido donde el Santo volvería a Primera.
                                 </p>
                             </div>
-                        </div>
+                        </Reveal>
                     </div>
                 </div>
             </div>
@@ -289,7 +290,7 @@ const Estadio = () => {
                             title="Ubicación Complejo Natalio Mirkin"></iframe>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
+                    <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
                         <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
                             <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Sectores</h3>
@@ -318,7 +319,7 @@ const Estadio = () => {
                                 Palcos VIP, vestuarios modernos y campo de juego con sistema de riego automático.
                             </p>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
         </div>

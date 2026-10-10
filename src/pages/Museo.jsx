@@ -1,4 +1,5 @@
 import { Trophy, Shirt, Clock, MapPin, Ticket, Award, History } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 const Museo = () => {
     // Imágenes (Cargalas en public/images/ con estos nombres)
@@ -64,7 +65,7 @@ const Museo = () => {
             <div className="bg-white pt-16 md:pt-32 pb-16 md:pb-24 border-b border-gray-100 w-full">
                 <div className="max-w-6xl mx-auto px-4 w-full">
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
+                    <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start w-full">
                         
                         {/* Columna de Texto */}
                         <div className="order-2 lg:order-1 w-full min-w-0">
@@ -97,7 +98,7 @@ const Museo = () => {
                             </div>
                         </div>
 
-                    </div>
+                    </Reveal>
                 </div>
             </div>
 
@@ -106,16 +107,16 @@ const Museo = () => {
             ========================================== */}
             <div className="bg-red-800 py-16 md:py-24 w-full">
                 <div className="max-w-6xl mx-auto px-4 w-full">
-                    <div className="text-center mb-10 md:mb-16 text-white w-full">
+                    <Reveal className="text-center mb-10 md:mb-16 text-white w-full">
                         <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider mb-4">Tesoros Invaluables</h2>
                         <div className="w-20 md:w-24 h-1.5 bg-white mx-auto rounded-full mb-4"></div>
                         <p className="text-red-100 font-medium text-sm md:text-base">Algunas de las piezas de nuestra exhibición.</p>
-                    </div>
+                    </Reveal>
 
                     {/* Espaciado responsivo para las tarjetas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
                         {reliquias.map((item, index) => (
-                            <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-xl hover:-translate-y-2 transition-transform duration-300 flex flex-col min-w-0 w-full">
+                            <Reveal key={index} className="bg-white rounded-2xl overflow-hidden shadow-xl hover:-translate-y-2 transition-transform duration-300 flex flex-col min-w-0 w-full">
                                 {/* Altura de la imagen responsiva */}
                                 <div className="h-48 sm:h-56 md:h-64 overflow-hidden relative bg-gray-100 border-b border-gray-100 w-full shrink-0">
                                     <img 
@@ -139,7 +140,7 @@ const Museo = () => {
                                         {item.descripcion}
                                     </p>
                                 </div>
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 </div>
@@ -152,8 +153,8 @@ const Museo = () => {
                 <div className="max-w-6xl mx-auto px-4 text-center w-full">
                     <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wider mb-4">Vení a conocer el museo</h2>
                     <div className="w-20 md:w-24 h-1.5 bg-red-600 mx-auto rounded-full mb-10 md:mb-12"></div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+
+                    <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
                         <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
                             <Clock className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Horarios</h3>
@@ -175,7 +176,7 @@ const Museo = () => {
                             <p className="text-base md:text-lg font-black text-gray-900 leading-tight">Libre y Gratuita</p>
                             <p className="text-red-700 font-bold mt-2 text-[13px] md:text-sm">Socios y público general</p>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
 

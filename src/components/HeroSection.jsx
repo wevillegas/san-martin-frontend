@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { imagenPlaceholder } from "../constants/placeholders";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
-
-// Imagen por defecto por si te olvidás de subir una
-const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=2000&auto=format&fit=crop";
 
 const HeroSection = ({ noticiasHero }) => {
     const [currentSlide, setCurrentSlide] = useState(0);

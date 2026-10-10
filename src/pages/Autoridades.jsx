@@ -1,4 +1,5 @@
 import { Users } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 // Lista de autoridades (Podés agregar o quitar los que necesites)
 const autoridades = [
@@ -54,8 +55,8 @@ const Autoridades = () => {
                 {/* Grilla de Tarjetas */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {autoridades.map((autoridad, index) => (
-                        <div 
-                            key={index} 
+                        <Reveal
+                            key={index}
                             className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center hover:shadow-md transition-shadow"
                         >
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
@@ -64,7 +65,7 @@ const Autoridades = () => {
                             <p className="text-lg font-black text-gray-900 uppercase">
                                 {autoridad.nombre}
                             </p>
-                        </div>
+                        </Reveal>
                     ))}
                 </div>
 

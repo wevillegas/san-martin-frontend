@@ -1,11 +1,12 @@
 import { Users, TrendingUp, ShieldCheck, Ticket, ShoppingBag, Landmark, CheckCircle2, ExternalLink, Trophy } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 const Socios = () => {
     // Foto épica de la hinchada
     const imgHero = "/images/hinchada-socios.JPG"; 
 
     // URL de la página web externa de socios
-    const urlPlataformaSocios = "https://socios.casmt.ar/";
+    const urlPlataformaSocios = "https://socios.clubatleticosanmartin.com.ar/clubatleticosanmartin_socios/login";
 
     // Lista de beneficios
     const beneficios = [
@@ -89,7 +90,7 @@ const Socios = () => {
 
             {/* 2. BARRA DE ESTADÍSTICAS (ROJA) */}
             {/* ARREGLO: z-20 y -mt-16 para que se monte elegante sin chocar */}
-            <div className="bg-red-700 py-10 md:py-12 border border-red-600 shadow-xl relative z-20 -mt-16 md:-mt-20 mx-4 md:mx-auto max-w-5xl rounded-2xl">
+            <Reveal className="bg-red-700 py-10 md:py-12 border border-red-600 shadow-xl relative z-20 -mt-16 md:-mt-20 mx-4 md:mx-auto max-w-5xl rounded-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-red-500/50 text-white text-center">
                     <div className="flex flex-col items-center px-4">
                         <Users className="w-10 h-10 text-red-200 mb-2" />
@@ -107,7 +108,7 @@ const Socios = () => {
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Años de Grandeza</span>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
             {/* 3. BENEFICIOS */}
             <div className="bg-white py-24 border-b border-gray-100 mt-8 md:mt-0">
@@ -120,7 +121,7 @@ const Socios = () => {
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {beneficios.map((item, index) => (
-                            <div key={index} className="bg-gray-50 p-8 rounded-2xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center border border-gray-100">
+                            <Reveal key={index} className="bg-gray-50 p-8 rounded-2xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center border border-gray-100">
                                 <div className="bg-red-50 p-4 rounded-full mb-6 border border-red-100">
                                     {item.icono}
                                 </div>
@@ -130,7 +131,7 @@ const Socios = () => {
                                 <p className="text-gray-600 text-sm leading-relaxed font-medium">
                                     {item.descripcion}
                                 </p>
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 </div>
@@ -147,11 +148,11 @@ const Socios = () => {
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
                         {categorias.map((cat, index) => (
-                            <div 
-                                key={index} 
+                            <Reveal
+                                key={index}
                                 className={`rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden border ${
-                                    cat.destacado 
-                                    ? 'bg-red-700 text-white shadow-2xl border-red-600' 
+                                    cat.destacado
+                                    ? 'bg-red-700 text-white shadow-2xl border-red-600'
                                     : 'bg-gray-50 text-gray-900 border-gray-200 shadow-sm'
                                 }`}
                             >
@@ -177,14 +178,14 @@ const Socios = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 </div>
             </div>
 
             {/* 5. SECCIÓN FINAL */}
-            <div className="bg-gray-50 py-24 border-t border-gray-200">
+            <Reveal className="bg-gray-50 py-24 border-t border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <Trophy className="w-16 h-16 text-red-600 mx-auto mb-8" />
                     <h2 className="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter mb-6">
@@ -205,10 +206,10 @@ const Socios = () => {
                     </a>
                     
                     <p className="text-gray-400 text-sm mt-8 font-bold uppercase tracking-widest">
-                        https://socios.casmt.ar/
+                        socios.clubatleticosanmartin.com.ar/clubatleticosanmartin_socios
                     </p>
                 </div>
-            </div>
+            </Reveal>
 
         </div>
     );

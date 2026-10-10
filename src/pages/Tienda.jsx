@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, ExternalLink, Shirt, Tag, Truck } from "lucide-react";
 import { obtenerProductos } from "../services/productoService";
+import Reveal from "../components/Reveal";
 
 const Tienda = () => {
     const urlTiendaOficial = "https://marathon.com.ar/collections/casm?filter.v.availability=1";
 
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const cargarProductosTienda = async () => {
@@ -17,6 +19,7 @@ const Tienda = () => {
                 setCargando(false);
             } catch (error) {
                 console.error("Error al cargar los productos en la vidriera:", error);
+                setError(true);
                 setCargando(false);
             }
         };
@@ -53,7 +56,7 @@ const Tienda = () => {
 
             {/* 2. VENTAJAS (Cuadro flotante) */}
             {/* ARREGLO: z-20, -mt-16, overflow-hidden y padding simétrico en los hijos */}
-            <div className="bg-white border border-gray-200 shadow-xl relative z-20 -mt-16 md:-mt-20 mx-4 md:mx-auto max-w-5xl rounded-2xl overflow-hidden">
+            <Reveal className="bg-white border border-gray-200 shadow-xl relative z-20 -mt-16 md:-mt-20 mx-4 md:mx-auto max-w-5xl rounded-2xl overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 text-center">
                     <div className="flex flex-col items-center p-8 md:p-10 bg-gray-50/50 hover:bg-gray-50 transition-colors">
                         <Shirt className="w-8 h-8 text-red-700 mb-3" />
@@ -71,7 +74,7 @@ const Tienda = () => {
                         <span className="text-sm text-gray-600 mt-1">15% off con cuota al día en las sucursales de Santo Store</span>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
             {/* 3. SHOWROOM / DESTACADOS */}
             <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
@@ -92,13 +95,26 @@ const Tienda = () => {
                 </div>
 
                 {cargando ? (
-                    <div className="text-center py-12 font-bold text-gray-500 uppercase tracking-widest">
-                        Cargando productos del Santo Store...
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[...Array(4)].map((_, i) => (
+                            <div key={i} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                                <div className="aspect-square bg-gray-200 animate-pulse" />
+                                <div className="p-5 space-y-2">
+                                    <div className="h-3 w-1/3 bg-gray-200 rounded animate-pulse" />
+                                    <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+                                    <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : error ? (
+                    <div className="text-center py-12 text-gray-500 font-bold uppercase tracking-wide border-2 border-dashed border-gray-200 rounded-2xl">
+                        No pudimos cargar los productos. Probá recargar la página.
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {productos.map((producto) => (
-                            <div key={producto._id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden group shadow-sm hover:shadow-lg transition-shadow duration-300">
+                            <Reveal key={producto._id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden group shadow-sm hover:shadow-lg transition-shadow duration-300">
                                 <div className="aspect-square bg-gray-100 relative overflow-hidden">
                                     <img 
                                         src={producto.imagenUrl} 
@@ -123,12 +139,12 @@ const Tienda = () => {
                                         ${producto.precio.toLocaleString('es-AR')}
                                     </p>
                                 </div>
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 )}
 
-                {!cargando && productos.length === 0 && (
+                {!cargando && !error && productos.length === 0 && (
                     <div className="text-center py-12 text-gray-500 font-bold uppercase tracking-wide border-2 border-dashed border-gray-200 rounded-2xl">
                         No hay productos cargados en este momento.
                     </div>
@@ -136,7 +152,7 @@ const Tienda = () => {
             </div>
 
             {/* 4. CTA FINAL */}
-            <div className="bg-gray-50 py-16 md:py-24 border-t border-gray-200">
+            <Reveal className="bg-gray-50 py-16 md:py-24 border-t border-gray-200">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <ShoppingBag className="w-12 h-12 md:w-16 md:h-16 text-red-700 mx-auto mb-6 md:mb-8" />
                     <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tighter text-gray-900 mb-4 md:mb-6">
@@ -156,7 +172,7 @@ const Tienda = () => {
                         <ExternalLink className="w-5 h-5 shrink-0" />
                     </a>
                 </div>
-            </div>
+            </Reveal>
 
         </div>
     );

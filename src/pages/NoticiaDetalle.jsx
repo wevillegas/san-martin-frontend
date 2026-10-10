@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import { obtenerNoticiaPorId } from "../services/noticiaService";
+import Loader from "../components/Loader";
+import ErrorState from "../components/ErrorState";
+import { imagenPlaceholder } from "../constants/placeholders";
+import Reveal from "../components/Reveal";
 
 const NoticiaDetalle = () => {
     const { id } = useParams();
@@ -17,7 +21,7 @@ const NoticiaDetalle = () => {
                 setNoticia(datos);
                 setCargando(false);
             } catch (err) {
-                console.error("Error al cargar la nota");
+                console.error("Error al cargar la nota", err);
                 setError(true);
                 setCargando(false);
             }
@@ -25,10 +29,8 @@ const NoticiaDetalle = () => {
         cargarNoticia();
     }, [id]);
 
-    if (cargando) return <div className="text-center mt-32 text-xl font-bold text-red-700">Cargando nota...</div>;
-    if (error || !noticia) return <div className="text-center mt-32 text-xl text-gray-500">No se encontró la noticia.</div>;
-
-    const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=2000&auto=format&fit=crop";
+    if (cargando) return <Loader texto="Cargando nota..." />;
+    if (error || !noticia) return <ErrorState texto="No se encontró la noticia que buscás." />;
 
     return (
         <article className="min-h-screen bg-white pb-20">
@@ -64,7 +66,7 @@ const NoticiaDetalle = () => {
             </div>
 
             {/* Cuerpo de la noticia */}
-            <div className="max-w-4xl mx-auto px-4 mt-8 md:mt-12">
+            <Reveal className="max-w-4xl mx-auto px-4 mt-8 md:mt-12">
                 {/* Metadatos */}
                 <div className="flex flex-wrap items-center gap-6 py-6 border-y border-gray-100 mb-10 text-gray-500 font-medium">
                     <div className="flex items-center gap-2">
@@ -87,7 +89,7 @@ const NoticiaDetalle = () => {
                         {noticia.cuerpo}
                     </p>
                 </div>
-            </div>
+            </Reveal>
         </article>
     );
 };

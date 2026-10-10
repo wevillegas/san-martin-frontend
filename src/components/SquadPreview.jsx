@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { obtenerJugadores } from "../services/jugadorService";
+import { imagenPlaceholder } from "../constants/placeholders";
 
 const getPesoPosicion = (posicion) => {
     const pos = posicion.toLowerCase();
@@ -38,7 +39,7 @@ const SquadPreview = ({ onSelectPlayer }) => {
                 setJugadores(jugadoresOrdenados);
                 setCargando(false);
             } catch (error) {
-                console.error("Error al cargar el plantel para el inicio");
+                console.error("Error al cargar el plantel para el inicio", error);
                 setCargando(false);
             }
         };
@@ -46,8 +47,6 @@ const SquadPreview = ({ onSelectPlayer }) => {
     }, []);
 
     if (cargando || jugadores.length === 0) return null;
-
-    const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=800&auto=format&fit=crop";
 
     return (
         <section className="bg-red-800 py-16 overflow-hidden">

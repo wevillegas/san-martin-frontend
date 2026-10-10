@@ -1,6 +1,7 @@
 // src/pages/Fixture.jsx
 import { useState, useEffect } from "react";
 import { Calendar, MapPin, AlertCircle, ShieldCheck, Trophy, Clock } from "lucide-react";
+import Reveal from "../components/Reveal";
 
 const Escudo = ({ src, alt, esSanMartin, size = "w-12 h-12" }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -88,7 +89,7 @@ const Fixture = () => {
                         const esProximo = partido.estado !== 'post' && (index === 0 || partidos[index - 1].estado === 'post');
                         
                         return (
-                            <div 
+                            <Reveal
                                 key={partido.id}
                                 className={`group relative rounded-3xl overflow-hidden border transition-all duration-300
                                     ${esProximo ? 'ring-4 ring-red-600/20 scale-[1.02] z-10 shadow-2xl' : 'shadow-md'}
@@ -149,7 +150,7 @@ const Fixture = () => {
                                     </div>
 
                                 </div>
-                            </div>
+                            </Reveal>
                         );
                     })}
                 </div>

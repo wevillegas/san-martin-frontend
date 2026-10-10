@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { Calendar, ArrowRight, Star } from "lucide-react";
+import { imagenPlaceholder } from "../constants/placeholders";
 
 const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
-    const imagenPlaceholder = "https://images.unsplash.com/photo-1518605368461-1ee7e53023eb?q=80&w=1000&auto=format&fit=crop";
-
     if (!noticiaPrincipal) return null;
 
     return (
