@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://san-martin-backend.onrender.com/api'
+    baseURL: `${import.meta.env.VITE_API_URL || 'https://san-martin-backend.onrender.com'}/api`
 });
 
 // "Interceptor": Este código se ejecuta automáticamente ANTES de que salga cualquier petición

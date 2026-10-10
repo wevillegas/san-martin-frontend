@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios"; // O tu servicio de auth si ya lo tenés
+import { loginUsuario } from "../services/authService";
 import { LogIn, AlertCircle } from "lucide-react";
 
 const Login = () => {
@@ -17,14 +17,9 @@ const Login = () => {
         setCargando(true);
 
         try {
-            // Cambiamos 'usuarios' por 'auth'
-            const respuesta = await axios.post("https://san-martin-backend.onrender.com/api/auth/login", {
-                email,
-                password,
-            });
+            const respuesta = await loginUsuario(email, password);
 
-            // Guardamos como 'token' para estandarizar (borrá el 'tokenSanto' de tu navegador para no confundirte)
-            const token = respuesta.data.token;
+            const token = respuesta.token;
             localStorage.setItem("token", token);
 
             navigate("/admin");
