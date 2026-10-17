@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { esAdmin } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { obtenerCuerpoTecnico, eliminarMiembro } from "../../services/cuerpoTecnicoService";
+import { mensajeDeError } from "../../utils/errores";
 
 // Función para darle color a las etiquetas según el rol
 const getColorRol = (rol) => {
@@ -46,7 +48,7 @@ const CuerpoTecnicoAdmin = () => {
                 cargarCT(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                avisar("Hubo un error al intentar eliminar.", "error");
+                avisar(mensajeDeError(error, "Hubo un error al intentar eliminar."), "error");
             }
         }
     };
@@ -126,13 +128,13 @@ const CuerpoTecnicoAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
-                                                <button
+                                                {esAdmin() && (<button
                                                     onClick={() => handleBorrar(miembro._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Dar de baja"
                                                 >
                                                     <Trash2 className="w-5 h-5" />
-                                                </button>
+                                                </button>)}
                                             </td>
                                         </tr>
                                     ))

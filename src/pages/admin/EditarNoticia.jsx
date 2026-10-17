@@ -7,6 +7,7 @@ import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerNoticiaPorId, actualizarNoticia } from "../../services/noticiaService";
 import EstadoPublicacion, { camposDeEstado, textoBoton, modoInicial, aInputLocal } from "../../components/EstadoPublicacion";
+import { mensajeDeError } from "../../utils/errores";
 
 const EditarNoticia = () => {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ const EditarNoticia = () => {
                 setCargando(false);
             } catch (error) {
                 console.error(error);
-                setError("No se pudo cargar la noticia.");
+                setError(mensajeDeError(error, "No se pudo cargar la noticia."));
                 setCargando(false);
             }
         };
@@ -81,7 +82,7 @@ const EditarNoticia = () => {
             navigate("/admin/noticias");
         } catch (err) {
             console.error(err);
-            setError("Error al guardar los cambios.");
+            setError(mensajeDeError(err, "Error al guardar los cambios."));
             setGuardando(false);
         }
     };

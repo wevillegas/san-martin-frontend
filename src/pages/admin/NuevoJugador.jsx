@@ -6,6 +6,7 @@ import { useSalidaSegura } from "../../hooks/useSalidaSegura";
 import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearJugador } from "../../services/jugadorService";
+import { mensajeDeError } from "../../utils/errores";
 
 const NuevoJugador = () => {
     const navigate = useNavigate();
@@ -63,7 +64,7 @@ const NuevoJugador = () => {
             navigate("/admin/plantel");
         } catch (err) {
             console.error(err);
-            const errorBack = err.response?.data?.mensaje || "Error al registrar el jugador. Revisá los datos.";
+            const errorBack = mensajeDeError(err, "Error al registrar el jugador. Revisá los datos.");
             setError(errorBack);
             setCargando(false);
         }

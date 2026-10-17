@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, KeyRound, UserPlus, Trash2, Eye, EyeOff, Dices } from "lucide-react";
-import { listarUsuarios, crearUsuario, cambiarMiClave, restablecerClave, eliminarUsuario } from "../../services/usuarioService";
+import { listarUsuarios, crearUsuario, cambiarMiClave, cambiarRol, restablecerClave, eliminarUsuario } from "../../services/usuarioService";
 import { useAvisos } from "../../components/Avisos";
+import { mensajeDeError } from "../../utils/errores";
 
 const MIN_CLAVE = 8;
 const input = "w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none transition-all text-gray-800";
 const etiqueta = "block text-xs font-black text-gray-600 uppercase tracking-widest mb-1.5";
 const boton = "bg-red-700 hover:bg-red-800 text-white font-bold px-5 py-2.5 rounded-lg transition-colors disabled:opacity-50 text-sm uppercase tracking-wider";
 
-const mensajeDe = (err) => err.response?.data?.mensaje || "No se pudo completar la acción";
+const mensajeDe = (err) => mensajeDeError(err);
 
 // Clave aleatoria de 12 caracteres sin letras que se confunden (0/O, 1/l/I)
 const generarClave = () => {
@@ -31,7 +32,7 @@ const Usuarios = () => {
     const [cargando, setCargando] = useState(true);
     const [avisoLista, setAvisoLista] = useState(null);
 
-    const [nuevo, setNuevo] = useState({ nombre: "", email: "", password: "" });
+    const [nuevo, setNuevo] = useState({ nombre: "", email: "", password: "", rol: "editor" });
     const [verClave, setVerClave] = useState(false);
     const [avisoNuevo, setAvisoNuevo] = useState(null);
 
@@ -57,7 +58,7 @@ const Usuarios = () => {
         try {
             await crearUsuario(nuevo);
             setAvisoNuevo({ ok: true, texto: `Se creó la cuenta de ${nuevo.nombre}. Pasale la clave por un canal seguro.` });
-            setNuevo({ nombre: "", email: "", password: "" });
+            setNuevo({ nombre: "", email: "", password: "", rol: "editor" });
             cargar();
         } catch (err) {
             setAvisoNuevo({ ok: false, texto: mensajeDe(err) });
@@ -68,12 +69,23 @@ const Usuarios = () => {
         e.preventDefault();
         if (mia.nueva !== mia.repetir) return setAvisoMia({ ok: false, texto: "Las claves nuevas no coinciden" });
         try {
-            await cambiarMiClave(mia.actual, mia.nueva);
+            const { token } = await cambiarMiClave(mia.actual, mia.nueva);
+            if (token) localStorage.setItem("token", token); // al cambiar la clave se cierran las demás sesiones; esta sigue
             setAvisoMia({ ok: true, texto: "Listo, cambiaste tu clave." });
             setMia({ actual: "", nueva: "", repetir: "" });
         } catch (err) {
             setAvisoMia({ ok: false, texto: mensajeDe(err) });
         }
+    };
+
+    const cambiarElRol = async (usuario, rol) => {
+        try {
+            await cambiarRol(usuario._id, rol);
+            setAvisoLista({ ok: true, texto: `${usuario.nombre} ahora es ${rol}.` });
+        } catch (err) {
+            setAvisoLista({ ok: false, texto: mensajeDe(err) });
+        }
+        cargar();
     };
 
     const restablecer = async (usuario) => {
@@ -109,7 +121,7 @@ const Usuarios = () => {
                         <KeyRound className="w-8 h-8 text-red-700" />
                         Usuarios
                     </h1>
-                    <p className="text-gray-500 mt-1 font-medium">Quién puede entrar al panel. Todos los administradores tienen los mismos permisos.</p>
+                    <p className="text-gray-500 mt-1 font-medium">Quién puede entrar al panel. Un editor crea y edita contenido; solo un administrador elimina, ve la auditoría y maneja usuarios.</p>
                 </div>
 
                 {/* LISTA */}
@@ -126,12 +138,22 @@ const Usuarios = () => {
                                             <p className="font-bold text-gray-900">
                                                 {u.nombre}
                                                 {u.esActual && <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-black uppercase text-red-700">Vos</span>}
+                                                <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-black uppercase ${u.rol === "administrador" ? "bg-gray-900 text-white" : "bg-blue-100 text-blue-800"}`}>{u.rol}</span>
                                             </p>
                                             <p className="text-sm text-gray-500 break-all">{u.email}</p>
                                             <p className="text-xs text-gray-400">Alta: {new Date(u.createdAt).toLocaleDateString("es-AR")}</p>
                                         </div>
                                         {!u.esActual && (
                                             <div className="flex gap-2">
+                                                <select
+                                                    value={u.rol}
+                                                    onChange={(e) => cambiarElRol(u, e.target.value)}
+                                                    aria-label={`Rol de ${u.nombre}`}
+                                                    className="rounded-md border border-gray-300 bg-white px-2 py-2 text-xs font-bold uppercase tracking-wider text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                                >
+                                                    <option value="editor">Editor</option>
+                                                    <option value="administrador">Administrador</option>
+                                                </select>
                                                 <button
                                                     onClick={() => { setEditando(editando === u._id ? null : u._id); setClaveOtro(""); }}
                                                     className="rounded-md border border-gray-300 px-3 py-2 text-xs font-bold uppercase tracking-wider text-gray-700 hover:border-red-700 hover:text-red-700"
@@ -180,6 +202,13 @@ const Usuarios = () => {
                         <div>
                             <label className={etiqueta}>Correo</label>
                             <input required type="email" value={nuevo.email} onChange={(e) => setNuevo({ ...nuevo, email: e.target.value })} className={input} />
+                        </div>
+                        <div>
+                            <label className={etiqueta}>Rol</label>
+                            <select value={nuevo.rol} onChange={(e) => setNuevo({ ...nuevo, rol: e.target.value })} className={input}>
+                                <option value="editor">Editor: crea y edita contenido</option>
+                                <option value="administrador">Administrador: puede todo</option>
+                            </select>
                         </div>
                         <div>
                             <label className={etiqueta}>Clave (mínimo {MIN_CLAVE} caracteres)</label>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag, ClipboardList, KeyRound, Trash2, Landmark, BarChart3 } from "lucide-react";
 import { obtenerResumen } from "../../services/dashboardService";
+import { usuarioActual } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 
 const icono = (Icono) => <Icono className="w-8 h-8 text-red-700" />;
@@ -21,6 +22,8 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const { confirmar } = useAvisos();
     const [resumen, setResumen] = useState(null);
+    const yo = usuarioActual();
+    const esAdministrador = yo?.rol === "administrador";
 
     // Si falla (por ejemplo, servidor dormido) el panel funciona igual, solo sin cifras
     useEffect(() => {
@@ -81,6 +84,7 @@ const Dashboard = () => {
         },
         {
             title: "Datos del club",
+            soloAdmin: true,
             desc: "Cambiá la capacidad del estadio, la cantidad de socios y otras cifras del sitio.",
             icon: icono(BarChart3),
             linkList: "/admin/club",
@@ -88,12 +92,14 @@ const Dashboard = () => {
         },
         {
             title: "Auditoría",
+            soloAdmin: true,
             desc: "Mirá quién creó, editó o eliminó contenido y quién inició sesión.",
             icon: icono(ClipboardList),
             linkList: "/admin/auditoria"
         },
         {
             title: "Usuarios",
+            soloAdmin: true,
             desc: "Creá cuentas de administrador y cambiá claves. Todos los admins tienen los mismos permisos.",
             icon: icono(KeyRound),
             cantidad: resumen && `${resumen.usuarios} administradores`,
@@ -102,6 +108,7 @@ const Dashboard = () => {
         },
         {
             title: "Papelera",
+            soloAdmin: true,
             desc: "Lo que eliminás queda acá: restauralo si te equivocaste o borralo para siempre.",
             icon: icono(Trash2),
             cantidad: resumen && (resumen.papelera ? `${resumen.papelera} elemento${resumen.papelera > 1 ? "s" : ""}` : "Vacía"),
@@ -119,7 +126,9 @@ const Dashboard = () => {
                         <ShieldCheck className="w-8 h-8 text-red-700" />
                         <div>
                             <h1 className="text-2xl font-black text-gray-900 uppercase tracking-wider">Panel de Control</h1>
-                            <p className="text-gray-500 font-medium text-sm uppercase tracking-widest">Administración Oficial</p>
+                            <p className="text-gray-500 font-medium text-sm uppercase tracking-widest">
+                                {yo?.nombre ? `${yo.nombre} · ${esAdministrador ? "Administrador" : "Editor"}` : "Administración Oficial"}
+                            </p>
                         </div>
                     </div>
 
@@ -133,7 +142,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {modules.map((mod, idx) => (
+                    {modules.filter((mod) => esAdministrador || !mod.soloAdmin).map((mod, idx) => (
                         <div key={idx} className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-gray-200 border-t-4 border-t-red-700 hover:shadow-md transition-all flex flex-col h-full">
                             <div className="flex items-start justify-between gap-3 mb-4">
                                 {mod.icon}

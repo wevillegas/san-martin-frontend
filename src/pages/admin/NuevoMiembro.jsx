@@ -6,6 +6,7 @@ import { useSalidaSegura } from "../../hooks/useSalidaSegura";
 import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearMiembro } from "../../services/cuerpoTecnicoService";
+import { mensajeDeError } from "../../utils/errores";
 
 const NuevoMiembro = () => {
     const navigate = useNavigate();
@@ -45,7 +46,7 @@ const NuevoMiembro = () => {
             avisar("Integrante agregado.");
             navigate("/admin/cuerpo-tecnico");
         } catch (err) {
-            setError("Error al guardar el miembro del cuerpo técnico.");
+            setError(mensajeDeError(err, "Error al guardar el miembro del cuerpo técnico."));
             setCargando(false);
         }
     };

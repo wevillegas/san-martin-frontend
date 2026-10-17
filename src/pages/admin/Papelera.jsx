@@ -4,6 +4,7 @@ import { ArrowLeft, Trash2, Undo2, XCircle } from "lucide-react";
 import { obtenerPapelera, restaurarElemento, eliminarDefinitivo } from "../../services/papeleraService";
 import { useAvisos } from "../../components/Avisos";
 import { imagenPlaceholder } from "../../constants/placeholders";
+import { mensajeDeError } from "../../utils/errores";
 
 const SECCIONES = { noticias: "Noticia", jugadores: "Jugador", "cuerpo-tecnico": "Cuerpo técnico", productos: "Producto", autoridades: "Autoridad" };
 
@@ -31,7 +32,7 @@ const Papelera = () => {
             setAviso({ ok: true, texto: textoOk });
             cargar();
         } catch (err) {
-            setAviso({ ok: false, texto: err.response?.data?.mensaje || "No se pudo completar la acción" });
+            setAviso({ ok: false, texto: mensajeDeError(err) });
         }
     };
 

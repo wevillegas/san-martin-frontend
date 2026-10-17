@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { esAdmin } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { obtenerProductos, eliminarProducto } from "../../services/productoService";
+import { mensajeDeError } from "../../utils/errores";
 
 const TiendaAdmin = () => {
     const { confirmar, avisar } = useAvisos();
@@ -35,7 +37,7 @@ const TiendaAdmin = () => {
                 cargarProductos(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                avisar("Hubo un error al intentar borrar el producto.", "error");
+                avisar(mensajeDeError(error, "Hubo un error al intentar borrar el producto."), "error");
             }
         }
     };
@@ -131,13 +133,13 @@ const TiendaAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
-                                                <button
+                                                {esAdmin() && (<button
                                                     onClick={() => handleBorrar(producto._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Borrar"
                                                 >
                                                     <Trash2 className="w-5 h-5" />
-                                                </button>
+                                                </button>)}
                                             </td>
                                         </tr>
                                     ))
