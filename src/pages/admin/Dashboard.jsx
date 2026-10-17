@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag } from "lucide-react";
+import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag, ClipboardList } from "lucide-react";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -43,6 +43,12 @@ const Dashboard = () => {
             linkList: "/admin/tienda",
             linkNew: "/admin/tienda/nuevo",
             btnNewText: "Nuevo Producto"
+        },
+        {
+            title: "Auditoría",
+            desc: "Mirá quién creó, editó o eliminó contenido y quién inició sesión.",
+            icon: <ClipboardList className="w-8 h-8 text-red-700 mb-4" />,
+            linkList: "/admin/auditoria"
         }
     ];
 
@@ -76,9 +82,11 @@ const Dashboard = () => {
                             <p className="text-gray-500 text-sm mb-8 leading-relaxed">{mod.desc}</p>
                             
                             <div className="mt-auto flex flex-col gap-3">
-                                <Link to={mod.linkNew} className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 rounded flex items-center justify-center gap-2 transition-colors text-sm uppercase tracking-wider shadow-sm">
-                                    <Plus className="w-4 h-4" /> {mod.btnNewText}
-                                </Link>
+                                {mod.linkNew && (
+                                    <Link to={mod.linkNew} className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 rounded flex items-center justify-center gap-2 transition-colors text-sm uppercase tracking-wider shadow-sm">
+                                        <Plus className="w-4 h-4" /> {mod.btnNewText}
+                                    </Link>
+                                )}
                                 <Link to={mod.linkList} className="w-full bg-white hover:bg-gray-100 border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 font-bold py-2.5 rounded flex items-center justify-center gap-2 transition-all text-sm uppercase tracking-wider">
                                     Ver Listado <ArrowRight className="w-4 h-4" />
                                 </Link>
