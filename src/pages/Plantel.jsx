@@ -15,40 +15,12 @@ import EscudosFondo from "../components/EscudosFondo";
 import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
+import PlayerCard from "../components/PlayerCard";
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
 // --- COMPONENTES VISUALES ---
-
-const PlayerCard = ({ player, onSelectPlayer }) => (
-    <button
-        onClick={() => onSelectPlayer(player)}
-        className="group block w-full text-left cursor-pointer"
-    >
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo">
-            <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                <img
-                    src={player.imagenUrl ? `${player.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}
-                    alt={`${player.nombre} ${player.apellido}`}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                <div className="absolute right-3 top-3 flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-xl font-black text-white shadow-lg border-2 border-red-800">
-                    {player.numeroCamiseta || "-"}
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-xl font-black text-white uppercase tracking-wide leading-tight">
-                        {player.nombre} <br /> {player.apellido}
-                    </h3>
-                    <p className="text-sm font-bold text-red-400 mt-1 uppercase tracking-widest">{player.posicion}</p>
-                </div>
-            </div>
-        </div>
-    </button>
-);
 
 // ACTUALIZAMOS STAFFCARD PARA QUE LEA LOS DATOS REALES (nombre, apellido, rol, imagenUrl)
 const StaffCard = ({ staff }) => (

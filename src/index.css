@@ -86,3 +86,40 @@ p {
     mask: url(/images/escudo.png) center / contain no-repeat;
     pointer-events: none;
 }
+
+/* Ficha de jugador: el fondo aparece y el cuadro sube desde abajo */
+@keyframes ficha-fondo {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ficha-entrada {
+    from { opacity: 0; transform: translateY(32px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.ficha-fondo { animation: ficha-fondo 0.25s ease-out; }
+.ficha-entrada { animation: ficha-entrada 0.35s ease-out; }
+
+/* Ficha de jugador (solo con mouse y sin "reducir movimiento"): el cuadro se inclina hacia el cursor,
+   la foto y el dorsal se mueven con profundidad y un brillo sigue al puntero. Variables --px/--py (-1 a 1) */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .ficha-tilt {
+        transform: perspective(1200px) rotateX(calc(var(--py, 0) * -5deg)) rotateY(calc(var(--px, 0) * 6deg));
+        transition: transform 0.2s ease-out;
+    }
+
+    .ficha-foto {
+        transform: translate(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -14px)) scale(1.1);
+        transition: transform 0.2s ease-out;
+    }
+
+    .ficha-dorsal {
+        transform: translate(calc(var(--px, 0) * 22px), calc(var(--py, 0) * 14px));
+        transition: transform 0.2s ease-out;
+    }
+
+    .ficha-brillo {
+        background: radial-gradient(circle at calc(50% + var(--px, 0) * 50%) calc(50% + var(--py, 0) * 50%), rgba(255, 255, 255, 0.16), transparent 55%);
+    }
+}
