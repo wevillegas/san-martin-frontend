@@ -85,10 +85,10 @@ const Dashboard = () => {
         {
             title: "Datos del club",
             soloAdmin: true,
-            desc: "Cambiá la capacidad del estadio, la cantidad de socios y otras cifras del sitio.",
+            desc: "Cifras del club, cuotas de socios y horarios del museo: lo que cambia de vez en cuando.",
             icon: icono(BarChart3),
             linkList: "/admin/club",
-            btnListText: "Editar cifras"
+            btnListText: "Editar datos"
         },
         {
             title: "Auditoría",

@@ -1,35 +1,22 @@
 import { Trophy, Shirt, Clock, MapPin, Ticket, Award, History } from "lucide-react";
 import Reveal from "../components/Reveal";
+import { RELIQUIAS } from "../data/museo";
+import { useDatosClub } from "../data/club";
 import PageHero from "../components/PageHero";
 
+const ICONOS = {
+    trofeo: <Trophy className="w-5 h-5 md:w-6 md:h-6 text-red-700" />,
+    camiseta: <Shirt className="w-5 h-5 md:w-6 md:h-6 text-red-700" />,
+    premio: <Award className="w-5 h-5 md:w-6 md:h-6 text-red-700" />,
+};
+
 const Museo = () => {
+    const { horariosMuseo } = useDatosClub();
     // Imágenes (Cargalas en public/images/ con estos nombres)
     const imgHero = "/images/museo-hero.jpg"; 
-    const imgCopa44 = "/images/reliquia-copa.JPG";
-    const imgCamiseta = "/images/reliquia-camiseta.png";
-    const imgBotines = "/images/reliquia-nota.jpg";
     const imgInterior = "/images/museo-interior.jpg";
 
-    const reliquias = [
-        {
-            titulo: "Copa de la República 1944",
-            descripcion: "La máxima gloria nacional. El trofeo original ganado tras vencer a Newell's Old Boys por 3-1. Es el corazón de nuestra exposición.",
-            imagen: imgCopa44,
-            icono: <Trophy className="w-5 h-5 md:w-6 md:h-6 text-red-700" />
-        },
-        {
-            titulo: "Camiseta mítica del ascenso 2008",
-            descripcion: "Camiseta Kappa original utilizada en el partido ante Chacarita que nos dio el ascenso a la primera división en 2008.",
-            imagen: imgCamiseta,
-            icono: <Shirt className="w-5 h-5 md:w-6 md:h-6 text-red-700" />
-        },
-        {
-            titulo: "Declaración de fundación",
-            descripcion: "Entre aclamaciones de delirante entusiasmo, el 2 de noviembre de 1909 en casa de Secundino Dante Torossi, nacía el Club Atlético San Martín y Romelio Castro sería elegido como su Presidente.",
-            imagen: imgBotines,
-            icono: <Award className="w-5 h-5 md:w-6 md:h-6 text-red-700" />
-        }
-    ];
+    const reliquias = RELIQUIAS.map((r) => ({ ...r, icono: ICONOS[r.icono] }));
 
     return (
         <div className="min-h-screen font-sans bg-white">
@@ -65,7 +52,7 @@ const Museo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Horarios</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Lun a Sáb desde las 9:00</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">{horariosMuseo.resumen}</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -179,9 +166,10 @@ const Museo = () => {
                         <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">
                             <Clock className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Horarios</h3>
-                            <p className="text-base md:text-lg font-black text-gray-900 leading-tight mb-1">Lunes a Viernes: 9:00 - 17:00</p>
-                            <p className="text-base md:text-lg font-black text-gray-900 leading-tight">Sábado: 9:00 - 13:00</p>
-                            <p className="text-red-700 font-bold mt-2 text-[13px] md:text-sm">Cerrado los Domingos y días de partido</p>
+                            {horariosMuseo.lineas.map((linea) => (
+                                <p key={linea} className="text-base md:text-lg font-black text-gray-900 leading-tight mb-1">{linea}</p>
+                            ))}
+                            {horariosMuseo.aviso && <p className="text-red-700 font-bold mt-2 text-[13px] md:text-sm">{horariosMuseo.aviso}</p>}
                         </div>
                         
                         <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">

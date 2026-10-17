@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap } from "lucide-react";
 import Reveal from "../components/Reveal";
+import { MOMENTOS_ICONICOS, FOTOS_EVOLUCION } from "../data/estadio";
 import { useDatosClub } from "../data/club";
 import PageHero from "../components/PageHero";
 
@@ -8,21 +9,8 @@ const Estadio = () => {
     const { capacidadCiudadela } = useDatosClub();
     // 1. IMÁGENES
     const imgHero = "/images/portada.jpg";
-    const imgRoma = "/images/roma.jpg";
-    const img1932 = "/images/ciudadela1932.jpg";
-    const imgCosmos = "/images/cosmos.jpg";
-    const imgGuarani = "/images/guarani.jpg";
-    const imgDalmine = "/images/dalmine.jpg";
-    const imgClasico1 = "/images/1992clasico.jpg";
-    const imgClasico2 = "/images/1994clasico.jpg";
 
-    const fotosEvolucion = [
-        "/images/ciudadela1932.jpg",
-        "/images/ciudadela1932color.jpg",
-        "/images/ciudadelablanco.jpg",
-        "/images/ciudadelanoche.jpg",
-        "/images/ciudadeladentro.jpg"
-    ];
+    const fotosEvolucion = FOTOS_EVOLUCION;
 
     const [fotoActiva, setFotoActiva] = useState(0);
 
@@ -140,124 +128,21 @@ const Estadio = () => {
                     </Reveal>
 
                     <div className="space-y-6 md:space-y-8 w-full">
-                        {/* Tarjeta 0 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={img1932} alt="Inauguración" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>NACIMIENTO DEL ESTADIO MAS CALIENTE DEL PAIS</span>
+                        {MOMENTOS_ICONICOS.map((m) => (
+                            <Reveal key={m.titulo} className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
+                                <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
+                                    <img src={m.imagen} alt={m.alt} className="w-full h-full object-cover" />
                                 </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">INAUGURACION DE LA CIUDADELA</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    El 24 de marzo de 1932 marcó un antes y un después con la inauguración del mítico estadio. Un símbolo de la resistencia y pasión del pueblo ciruja.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 1 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgCosmos} alt="Maradona" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>Argentina vs Cosmos - 1978</span>
+                                <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
+                                    <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
+                                        <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
+                                        <span>{m.etiqueta}</span>
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">{m.titulo}</h3>
+                                    <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">{m.texto}</p>
                                 </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">MARADONA EN LA CIUDADELA</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    El 4 de noviembre de 1978 la Selección Juvenil derrotó 2-1 al Cosmos de Nueva York, con un golazo de tiro libre de Diego. Franz Beckenbauer jugaba para el equipo norteamericano.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 2 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgRoma} alt="Roma" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>San Martín vs Roma - 1994</span>
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">Victoria frente a la Roma</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    San Martín se impuso por 1 a 0 frente a la poderosa Roma de Italia con un gol inolvidable de Alfredo "Cachi" Zelaya en una Ciudadela repleta.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 3 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgClasico1} alt="Clásico 92" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>San Martín vs Atlético Tucumán - 1992</span>
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">Clasificación en el clásico tucumano</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    San Martín eliminó de forma directa a Atlético Tucumán tras igualar en el Monumental y empatar 0-0 en La Ciudadela, avanzando por ventaja deportiva camino al ascenso.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 4 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgClasico2} alt="Clásico 94" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>San Martín vs Atlético Tucumán - 1994</span>
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">Otra clasificación en el clásico</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    Dos años después se repitió la historia y el Santo volvió a eliminar a su clásico rival en cuartos de final haciendo valer nuevamente la ventaja deportiva tras dos empates.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 5 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgGuarani} alt="Guarani" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>San Martín vs Guaraní Antonio Franco - 2016</span>
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">GOL AGONICO Y ESTADIO COLAPSADO</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    Con un gol agónico de Iván Agudiak sobre el final, San Martín ganó la serie y pasó a semifinales del Federal A en una tarde de locura total en Tucumán.
-                                </p>
-                            </div>
-                        </Reveal>
-
-                        {/* Tarjeta 6 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
-                            <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
-                                <img src={imgDalmine} alt="Dalmine" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="md:w-3/5 p-6 md:p-10 flex flex-col justify-center min-w-0">
-                                <div className="flex items-center gap-2 text-red-700 font-bold mb-3 uppercase tracking-wider text-[10px] md:text-sm break-words">
-                                    <Swords className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                                    <span>San Martín vs Villa Dalmine - 2018</span>
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-3 md:mb-4 uppercase break-words">EMPATE AGONICO Y CLASIFICACION</h3>
-                                <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base break-words">
-                                    Uno de los partidos más épicos del ascenso: gol al último minuto de Galeano para empatar 3-3 y clasificar a semifinales del reducido donde el Santo volvería a Primera.
-                                </p>
-                            </div>
-                        </Reveal>
+                            </Reveal>
+                        ))}
                     </div>
                 </div>
             </div>

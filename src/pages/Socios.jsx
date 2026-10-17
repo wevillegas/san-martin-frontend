@@ -2,56 +2,26 @@ import { Users, TrendingUp, ShieldCheck, Ticket, ShoppingBag, Landmark, CheckCir
 import Reveal from "../components/Reveal";
 import { useDatosClub, añosDeHistoria } from "../data/club";
 import PageHero from "../components/PageHero";
+import { BENEFICIOS } from "../data/socios";
+
+const ICONOS_BENEFICIO = {
+    entradas: <Ticket className="w-8 h-8 text-red-700" />,
+    tienda: <ShoppingBag className="w-8 h-8 text-red-700" />,
+    complejo: <Landmark className="w-8 h-8 text-red-700" />,
+    voto: <ShieldCheck className="w-8 h-8 text-red-700" />,
+};
 
 const Socios = () => {
-    const { cantidadSocios } = useDatosClub();
+    const { cantidadSocios, cuotas } = useDatosClub();
     // Foto épica de la hinchada
     const imgHero = "/images/hinchada-socios.JPG"; 
 
     // URL de la página web externa de socios
     const urlPlataformaSocios = "https://socios.clubatleticosanmartin.com.ar/clubatleticosanmartin_socios/login";
 
-    // Lista de beneficios
-    const beneficios = [
-        {
-            icono: <Ticket className="w-8 h-8 text-red-700" />,
-            titulo: "Entradas más baratas",
-            descripcion: "Entradas a mitad de precio y prioridad para la compra de abonos. Acceso exclusivo a la plataforma de socios."
-        },
-        {
-            icono: <ShoppingBag className="w-8 h-8 text-red-700" />,
-            titulo: "Descuentos en Tienda",
-            descripcion: "15% de descuento en la Tienda Oficial del club en indumentaria oficial, merchandising y ropa de salida."
-        },
-        {
-            icono: <Landmark className="w-8 h-8 text-red-700" />,
-            titulo: "Complejo Natalio Mirkin",
-            descripcion: "Uso de las instalaciones, quinchos, asadores y descuentos en la cuota de todas las disciplinas deportivas del club."
-        },
-        {
-            icono: <ShieldCheck className="w-8 h-8 text-red-700" />,
-            titulo: "Voz y Voto",
-            descripcion: "Participación activa en las asambleas, poder de decisión y derecho a elegir a nuestras autoridades institucionales."
-        }
-    ];
+    // Lista de beneficios (el texto está en data/socios.js)
+    const beneficios = BENEFICIOS.map((b) => ({ ...b, icono: ICONOS_BENEFICIO[b.icono] }));
 
-    // Categorías de socios
-    const categorias = [
-        {
-            nombre: "Socio Tucumán (Activo)",
-            edades: "Mayores de 18 años",
-            precio: "$25.000",
-            destacado: true,
-            features: ["Entradas a mitad de precio", "Voz y voto en asambleas", "Descuento en tienda oficial", "Prioridad en plateas", "Acceso al Complejo"]
-        },
-        {
-            nombre: "Socio Filial (Interior)",
-            edades: "+50km de la Capital",
-            precio: "$15.000",
-            destacado: false,
-            features: ["Entradas a mitad de precio", "Voz y voto en asambleas", "Descuento en tienda oficial", "Gestión vía Filiales"]
-        }
-    ];
 
     return (
         <div className="min-h-screen bg-gray-50 pb-0 font-sans">
@@ -140,33 +110,33 @@ const Socios = () => {
                         <p className="text-gray-500 font-medium max-w-xl mx-auto">Valores referenciales de la cuota mensual para mayores de 18 años.</p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-                        {categorias.map((cat, index) => (
+                    <div className={`grid gap-8 mx-auto items-stretch ${cuotas.length === 1 ? "max-w-md" : cuotas.length === 2 ? "md:grid-cols-2 max-w-4xl" : "md:grid-cols-2 lg:grid-cols-3 max-w-6xl"}`}>
+                        {cuotas.map((cat, index) => (
                             <Reveal
                                 key={index}
                                 className={`rounded-2xl p-8 md:p-10 flex flex-col relative overflow-hidden border ${
-                                    cat.destacado
+                                    cat.destacada
                                     ? 'bg-red-700 text-white shadow-2xl border-red-600'
                                     : 'bg-gray-50 text-gray-900 border-gray-200 shadow-sm'
                                 }`}
                             >
-                                <h3 className={`text-2xl md:text-3xl font-black uppercase mb-1 ${cat.destacado ? 'text-white' : 'text-gray-900'}`}>
+                                <h3 className={`text-2xl md:text-3xl font-black uppercase mb-1 ${cat.destacada ? 'text-white' : 'text-gray-900'}`}>
                                     {cat.nombre}
                                 </h3>
-                                <p className={`text-sm font-bold uppercase tracking-widest mb-8 ${cat.destacado ? 'text-red-200' : 'text-gray-500'}`}>
+                                <p className={`text-sm font-bold uppercase tracking-widest mb-8 ${cat.destacada ? 'text-red-200' : 'text-gray-500'}`}>
                                     {cat.edades}
                                 </p>
                                 
-                                <div className={`mb-10 pb-8 border-b ${cat.destacado ? 'border-red-600' : 'border-gray-200'}`}>
-                                    <span className="text-5xl md:text-6xl font-black">{cat.precio}</span>
-                                    <span className={`text-base font-bold ${cat.destacado ? 'text-red-200' : 'text-gray-500'}`}> /mes</span>
+                                <div className={`mb-10 pb-8 border-b ${cat.destacada ? 'border-red-600' : 'border-gray-200'}`}>
+                                    <span className="text-5xl md:text-6xl font-black">${cat.precio.toLocaleString("es-AR")}</span>
+                                    <span className={`text-base font-bold ${cat.destacada ? 'text-red-200' : 'text-gray-500'}`}> /mes</span>
                                 </div>
 
                                 <ul className="space-y-4 flex-grow">
-                                    {cat.features.map((feature, fIndex) => (
+                                    {cat.ventajas.map((feature, fIndex) => (
                                         <li key={fIndex} className="flex items-start gap-3">
-                                            <CheckCircle2 className={`w-5 h-5 shrink-0 mt-0.5 ${cat.destacado ? 'text-red-300' : 'text-red-600'}`} />
-                                            <span className={`font-medium text-base ${cat.destacado ? 'text-gray-100' : 'text-gray-700'}`}>
+                                            <CheckCircle2 className={`w-5 h-5 shrink-0 mt-0.5 ${cat.destacada ? 'text-red-300' : 'text-red-600'}`} />
+                                            <span className={`font-medium text-base ${cat.destacada ? 'text-gray-100' : 'text-gray-700'}`}>
                                                 {feature}
                                             </span>
                                         </li>
