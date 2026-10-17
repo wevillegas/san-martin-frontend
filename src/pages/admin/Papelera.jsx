@@ -4,7 +4,7 @@ import { ArrowLeft, Trash2, Undo2, XCircle } from "lucide-react";
 import { obtenerPapelera, restaurarElemento, eliminarDefinitivo } from "../../services/papeleraService";
 import { imagenPlaceholder } from "../../constants/placeholders";
 
-const SECCIONES = { noticias: "Noticia", jugadores: "Jugador", "cuerpo-tecnico": "Cuerpo técnico", productos: "Producto" };
+const SECCIONES = { noticias: "Noticia", jugadores: "Jugador", "cuerpo-tecnico": "Cuerpo técnico", productos: "Producto", autoridades: "Autoridad" };
 
 const Papelera = () => {
     const [items, setItems] = useState([]);

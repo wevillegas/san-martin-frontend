@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, Eye } from "lucide-react";
 import { obtenerJugadores, eliminarJugador } from "../../services/jugadorService";
 import FichaJugadorModal from "../../components/FichaJugadorModal";
@@ -27,6 +28,8 @@ const getColorPosicion = (posicion) => {
 const PlantelAdmin = () => {
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [busqueda, setBusqueda] = useState("");
+    const [posicion, setPosicion] = useState("");
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
     useEffect(() => {
@@ -69,6 +72,13 @@ const PlantelAdmin = () => {
         }
     };
 
+    const visibles = jugadores.filter(
+        (jugador) =>
+            (!posicion || jugador.posicion === posicion) &&
+            (!busqueda || normalizar(`${jugador.nombre} ${jugador.apellido} ${jugador.numeroCamiseta}`).includes(normalizar(busqueda)))
+    );
+    const opciones = ["Arquero", "Defensor", "Volante", "Delantero"];
+
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando plantel...</div>;
 
     return (
@@ -94,6 +104,15 @@ const PlantelAdmin = () => {
                 </div>
 
                 {/* Tabla de Jugadores */}
+                <BarraFiltros
+                    busqueda={busqueda}
+                    onBusqueda={setBusqueda}
+                    placeholder="Buscar por nombre o dorsal..."
+                    mostrados={visibles.length}
+                    total={jugadores.length}
+                    filtros={[{ etiqueta: "Todas las posiciones", valor: posicion, onChange: setPosicion, opciones: opciones }]}
+                />
+
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative z-0">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -106,12 +125,12 @@ const PlantelAdmin = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {jugadores.length === 0 ? (
+                                {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="4" className="p-8 text-center text-gray-500">No hay jugadores registrados aún.</td>
+                                        <td colSpan="4" className="p-8 text-center text-gray-500">{jugadores.length ? "Nada coincide con la búsqueda." : "No hay jugadores registrados aún."}</td>
                                     </tr>
                                 ) : (
-                                    jugadores.map((jugador) => (
+                                    visibles.map((jugador) => (
                                         <tr key={jugador._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4 flex justify-center">
                                                 <span className="bg-red-700 text-white text-sm font-black w-9 h-9 flex items-center justify-center rounded-full shadow-md border-2 border-white">

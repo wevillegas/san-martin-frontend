@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ClipboardList } from "lucide-react";
-import { obtenerAuditoria } from "../../services/auditoriaService";
+import { ArrowLeft, ClipboardList, Download } from "lucide-react";
+import { obtenerAuditoria, exportarAuditoria } from "../../services/auditoriaService";
 
-const SECCIONES = { jugadores: "Plantel", "cuerpo-tecnico": "Cuerpo técnico", noticias: "Noticias", productos: "Tienda", usuarios: "Usuarios", auth: "Accesos" };
+const SECCIONES = { jugadores: "Plantel", "cuerpo-tecnico": "Cuerpo técnico", noticias: "Noticias", productos: "Tienda", usuarios: "Usuarios", autoridades: "Autoridades", club: "Datos del club", auth: "Accesos" };
 const ACCIONES = {
     crear: { texto: "Creó", color: "bg-green-100 text-green-800" },
     editar: { texto: "Editó", color: "bg-blue-100 text-blue-800" },
@@ -16,7 +16,7 @@ const selectClase = "border border-gray-300 rounded-md px-3 py-2 text-sm font-me
 
 const Auditoria = () => {
     const [datos, setDatos] = useState({ registros: [], paginas: 0, total: 0, usuarios: [] });
-    const [filtros, setFiltros] = useState({ entidad: "", accion: "", usuario: "", pagina: 1 });
+    const [filtros, setFiltros] = useState({ entidad: "", accion: "", usuario: "", desde: "", hasta: "", pagina: 1 });
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(false);
 
@@ -55,6 +55,20 @@ const Auditoria = () => {
                         <option value="">Todos los usuarios</option>
                         {datos.usuarios.map((u) => <option key={u} value={u}>{u}</option>)}
                     </select>
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        Desde
+                        <input type="date" value={filtros.desde} max={filtros.hasta || undefined} onChange={cambiar("desde")} className={selectClase} />
+                    </label>
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        Hasta
+                        <input type="date" value={filtros.hasta} min={filtros.desde || undefined} onChange={cambiar("hasta")} className={selectClase} />
+                    </label>
+                    <button
+                        onClick={() => exportarAuditoria(filtros)}
+                        className="ml-auto flex items-center gap-2 rounded-md bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800"
+                    >
+                        <Download className="w-4 h-4" /> Exportar CSV
+                    </button>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">

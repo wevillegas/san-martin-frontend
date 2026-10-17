@@ -1,11 +1,28 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Edit, Trash2, ArrowLeft, Star } from "lucide-react";
+import { Plus, Edit, Trash2, ArrowLeft, Star, Eye } from "lucide-react";
 import { obtenerNoticias, eliminarNoticia, actualizarNoticia } from "../../services/noticiaService";
+import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
+
+const POR_PAGINA = 15;
+const ESTADOS = [
+    { valor: "publicada", texto: "Publicadas" },
+    { valor: "borrador", texto: "Borradores" },
+    { valor: "programada", texto: "Programadas" },
+];
+
+// publicada, borrador o programada (publicada con fecha futura)
+const estadoDe = (n) => (n.estado === "borrador" ? "borrador" : n.publicarEn && new Date(n.publicarEn) > new Date() ? "programada" : "publicada");
+
+const formatoFecha = (f) => new Date(f).toLocaleString("es-AR", { dateStyle: "short", timeStyle: "short" });
 
 const NoticiasAdmin = () => {
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [busqueda, setBusqueda] = useState("");
+    const [etiqueta, setEtiqueta] = useState("");
+    const [estado, setEstado] = useState("");
+    const [limite, setLimite] = useState(POR_PAGINA);
 
     useEffect(() => {
         cargarNoticias();
@@ -13,7 +30,7 @@ const NoticiasAdmin = () => {
 
     const cargarNoticias = async () => {
         try {
-            const datos = await obtenerNoticias();
+            const datos = await obtenerNoticias({ todas: true });
             setNoticias(datos);
             setCargando(false);
         } catch (error) {
@@ -47,6 +64,18 @@ const NoticiasAdmin = () => {
         }
     };
 
+    // Cada cambio de filtro vuelve a mostrar desde las primeras
+    const filtrando = (setter) => (valor) => { setter(valor); setLimite(POR_PAGINA); };
+
+    const filtradas = noticias.filter(
+        (n) =>
+            (!etiqueta || n.etiqueta === etiqueta) &&
+            (!estado || estadoDe(n) === estado) &&
+            (!busqueda || normalizar(`${n.titulo} ${n.autor}`).includes(normalizar(busqueda)))
+    );
+    const visibles = filtradas.slice(0, limite);
+    const etiquetas = [...new Set(noticias.map((n) => n.etiqueta))].sort();
+
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando panel...</div>;
 
     return (
@@ -71,6 +100,18 @@ const NoticiasAdmin = () => {
                     </Link>
                 </div>
 
+                <BarraFiltros
+                    busqueda={busqueda}
+                    onBusqueda={filtrando(setBusqueda)}
+                    placeholder="Buscar por título o autor..."
+                    mostrados={visibles.length}
+                    total={filtradas.length}
+                    filtros={[
+                        { etiqueta: "Todas las categorías", valor: etiqueta, onChange: filtrando(setEtiqueta), opciones: etiquetas },
+                        { etiqueta: "Todos los estados", valor: estado, onChange: filtrando(setEstado), opciones: ESTADOS },
+                    ]}
+                />
+
                 {/* Tabla de Noticias */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div className="overflow-x-auto">
@@ -85,56 +126,86 @@ const NoticiasAdmin = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {noticias.length === 0 ? (
+                                {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="5" className="p-8 text-center text-gray-500">No hay noticias publicadas aún.</td>
+                                        <td colSpan="5" className="p-8 text-center text-gray-500">
+                                            {noticias.length ? "Ninguna noticia coincide con la búsqueda." : "No hay noticias publicadas aún."}
+                                        </td>
                                     </tr>
                                 ) : (
-                                    noticias.map((noticia) => (
-                                        <tr key={noticia._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="p-4 text-center">
-                                                <button 
-                                                    onClick={() => toggleDestacado(noticia)}
-                                                    className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-                                                    title={noticia.destacado ? "Quitar de destacados" : "Destacar noticia"}
-                                                >
-                                                    <Star className={`w-5 h-5 ${noticia.destacado ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
-                                                </button>
-                                            </td>
-                                            <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
-                                                {new Date(noticia.createdAt).toLocaleDateString('es-AR')}
-                                            </td>
-                                            <td className="p-4 font-bold text-gray-800">
-                                                {noticia.titulo}
-                                            </td>
-                                            <td className="p-4">
-                                                <span className="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
-                                                    {noticia.etiqueta}
-                                                </span>
-                                            </td>
-                                            <td className="p-4 flex items-center justify-center gap-3">
-                                                <Link
-                                                    to={`/admin/noticias/editar/${noticia._id}`}
-                                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                                                    title="Editar"
-                                                >
-                                                    <Edit className="w-5 h-5" />
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleBorrar(noticia._id)}
-                                                    className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                                                    title="Borrar"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
+                                    visibles.map((noticia) => {
+                                        const est = estadoDe(noticia);
+                                        return (
+                                            <tr key={noticia._id} className="hover:bg-gray-50 transition-colors">
+                                                <td className="p-4 text-center">
+                                                    <button
+                                                        onClick={() => toggleDestacado(noticia)}
+                                                        className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                                                        title={noticia.destacado ? "Quitar de destacados" : "Destacar noticia"}
+                                                    >
+                                                        <Star className={`w-5 h-5 ${noticia.destacado ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
+                                                    </button>
+                                                </td>
+                                                <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
+                                                    {new Date(est === "programada" ? noticia.publicarEn : noticia.createdAt).toLocaleDateString('es-AR')}
+                                                </td>
+                                                <td className="p-4 font-bold text-gray-800">
+                                                    {noticia.titulo}
+                                                    {est === "borrador" && (
+                                                        <span className="ml-2 rounded-full bg-gray-200 px-2.5 py-0.5 align-middle text-[11px] font-black uppercase tracking-wider text-gray-700">Borrador</span>
+                                                    )}
+                                                    {est === "programada" && (
+                                                        <span className="ml-2 rounded-full bg-blue-100 px-2.5 py-0.5 align-middle text-[11px] font-black uppercase tracking-wider text-blue-800">
+                                                            Se publica el {formatoFecha(noticia.publicarEn)}
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="p-4">
+                                                    <span className="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
+                                                        {noticia.etiqueta}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 flex items-center justify-center gap-3">
+                                                    <a
+                                                        href={`/noticias/${noticia._id}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="p-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                                                        title="Ver cómo queda en el sitio"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                    </a>
+                                                    <Link
+                                                        to={`/admin/noticias/editar/${noticia._id}`}
+                                                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                        title="Editar"
+                                                    >
+                                                        <Edit className="w-5 h-5" />
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleBorrar(noticia._id)}
+                                                        className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                                        title="Borrar"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
                                 )}
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                {filtradas.length > limite && (
+                    <div className="mt-6 text-center">
+                        <button onClick={() => setLimite(limite + POR_PAGINA)} className="rounded-md border border-gray-300 bg-white px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-gray-700 hover:border-red-700 hover:text-red-700">
+                            Mostrar más
+                        </button>
+                    </div>
+                )}
 
             </div>
         </div>

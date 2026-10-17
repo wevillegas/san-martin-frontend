@@ -23,6 +23,8 @@ import Dashboard from './pages/admin/Dashboard';
 import Auditoria from './pages/admin/Auditoria';
 import Usuarios from './pages/admin/Usuarios';
 import Papelera from './pages/admin/Papelera';
+import AutoridadesAdmin from './pages/admin/AutoridadesAdmin';
+import DatosClub from './pages/admin/DatosClub';
 import Noticias from './pages/Noticias';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -97,6 +99,22 @@ function App() {
               element={
                 <RutaProtegida>
                   <Usuarios />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/autoridades"
+              element={
+                <RutaProtegida>
+                  <AutoridadesAdmin />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/club"
+              element={
+                <RutaProtegida>
+                  <DatosClub />
                 </RutaProtegida>
               }
             />

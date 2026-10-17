@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { obtenerProductos, eliminarProducto } from "../../services/productoService";
 
 const TiendaAdmin = () => {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [busqueda, setBusqueda] = useState("");
+    const [categoria, setCategoria] = useState("");
 
     useEffect(() => {
         cargarProductos();
@@ -33,6 +36,13 @@ const TiendaAdmin = () => {
             }
         }
     };
+
+    const visibles = productos.filter(
+        (producto) =>
+            (!categoria || producto.categoria === categoria) &&
+            (!busqueda || normalizar(producto.nombre).includes(normalizar(busqueda)))
+    );
+    const opciones = [...new Set(productos.map((p) => p.categoria))].sort();
 
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando panel de la tienda...</div>;
 
@@ -62,6 +72,15 @@ const TiendaAdmin = () => {
                 </div>
 
                 {/* Tabla de Productos */}
+                <BarraFiltros
+                    busqueda={busqueda}
+                    onBusqueda={setBusqueda}
+                    placeholder="Buscar producto..."
+                    mostrados={visibles.length}
+                    total={productos.length}
+                    filtros={[{ etiqueta: "Todas las categorías", valor: categoria, onChange: setCategoria, opciones: opciones }]}
+                />
+
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -75,12 +94,12 @@ const TiendaAdmin = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {productos.length === 0 ? (
+                                {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="5" className="p-8 text-center text-gray-500">No hay productos publicados aún.</td>
+                                        <td colSpan="5" className="p-8 text-center text-gray-500">{productos.length ? "Nada coincide con la búsqueda." : "No hay productos publicados aún."}</td>
                                     </tr>
                                 ) : (
-                                    productos.map((producto) => (
+                                    visibles.map((producto) => (
                                         <tr key={producto._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4">
                                                 <div className="w-12 h-12 bg-gray-100 rounded-md overflow-hidden border border-gray-200">
