@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag, ClipboardList } from "lucide-react";
+import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag, ClipboardList, KeyRound, Trash2 } from "lucide-react";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -49,6 +49,20 @@ const Dashboard = () => {
             desc: "Mirá quién creó, editó o eliminó contenido y quién inició sesión.",
             icon: <ClipboardList className="w-8 h-8 text-red-700 mb-4" />,
             linkList: "/admin/auditoria"
+        },
+        {
+            title: "Usuarios",
+            desc: "Creá cuentas de administrador y cambiá claves. Todos los admins tienen los mismos permisos.",
+            icon: <KeyRound className="w-8 h-8 text-red-700 mb-4" />,
+            linkList: "/admin/usuarios",
+            btnListText: "Gestionar usuarios"
+        },
+        {
+            title: "Papelera",
+            desc: "Lo que eliminás queda acá: restauralo si te equivocaste o borralo para siempre.",
+            icon: <Trash2 className="w-8 h-8 text-red-700 mb-4" />,
+            linkList: "/admin/papelera",
+            btnListText: "Abrir papelera"
         }
     ];
 
@@ -88,7 +102,7 @@ const Dashboard = () => {
                                     </Link>
                                 )}
                                 <Link to={mod.linkList} className="w-full bg-white hover:bg-gray-100 border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 font-bold py-2.5 rounded flex items-center justify-center gap-2 transition-all text-sm uppercase tracking-wider">
-                                    Ver Listado <ArrowRight className="w-4 h-4" />
+                                    {mod.btnListText || "Ver Listado"} <ArrowRight className="w-4 h-4" />
                                 </Link>
                             </div>
                         </div>

@@ -34,7 +34,7 @@ const CuerpoTecnicoAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés dar de baja a este miembro del sistema?")) {
+        if (window.confirm("¿Estás seguro de que querés dar de baja a este miembro? Va a la papelera, desde donde podés restaurarlo.")) {
             try {
                 await eliminarMiembro(id);
                 cargarCT(); // Recargamos la tabla

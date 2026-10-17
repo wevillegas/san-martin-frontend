@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import SesionAdmin from "./SesionAdmin";
 
 const RutaProtegida = ({ children }) => {
     const token = localStorage.getItem("token");
@@ -29,7 +30,12 @@ const RutaProtegida = ({ children }) => {
     }
 
     // Si todo está en orden, lo dejamos pasar al panel
-    return children;
+    return (
+        <>
+            <SesionAdmin />
+            {children}
+        </>
+    );
 };
 
 export default RutaProtegida;

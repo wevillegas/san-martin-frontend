@@ -23,7 +23,7 @@ const NoticiasAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés borrar esta noticia? Esta acción no se puede deshacer.")) {
+        if (window.confirm("¿Estás seguro de que querés borrar esta noticia? Va a la papelera, desde donde podés restaurarla.")) {
             try {
                 await eliminarNoticia(id);
                 cargarNoticias();
