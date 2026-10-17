@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { obtenerProductos, eliminarProducto } from "../../services/productoService";
 
 const TiendaAdmin = () => {
+    const { confirmar, avisar } = useAvisos();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
@@ -26,13 +28,14 @@ const TiendaAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés borrar este producto de la tienda? Va a la papelera, desde donde podés restaurarlo.")) {
+        if (await confirmar({ titulo: "Enviar a la papelera", mensaje: "¿Estás seguro de que querés borrar este producto de la tienda? Va a la papelera, desde donde podés restaurarlo.", textoConfirmar: "Enviar a la papelera", peligro: true })) {
             try {
                 await eliminarProducto(id);
+                avisar("Enviado a la papelera.");
                 cargarProductos(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                alert("Hubo un error al intentar borrar el producto.");
+                avisar("Hubo un error al intentar borrar el producto.", "error");
             }
         }
     };

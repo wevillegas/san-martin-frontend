@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Landmark, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Check, X, Download } from "lucide-react";
 import { obtenerAutoridades, crearAutoridad, actualizarAutoridad, eliminarAutoridad, reordenarAutoridades, importarAutoridades } from "../../services/autoridadService";
+import { useAvisos } from "../../components/Avisos";
 import { AUTORIDADES_POR_DEFECTO } from "../../data/autoridades";
 
 const input = "w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none text-gray-800";
 const mensajeDe = (err) => err.response?.data?.mensaje || "No se pudo completar la acción";
 
 const AutoridadesAdmin = () => {
+    const { confirmar } = useAvisos();
     const [lista, setLista] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [aviso, setAviso] = useState(null);
@@ -43,8 +45,8 @@ const AutoridadesAdmin = () => {
     const guardar = () =>
         ejecutar(async () => { await actualizarAutoridad(editando.id, { cargo: editando.cargo, nombre: editando.nombre }); setEditando(null); }, "Cambios guardados.");
 
-    const borrar = (a) => {
-        if (!window.confirm(`¿Eliminar a ${a.nombre} (${a.cargo})? Va a la papelera, desde donde podés restaurarla.`)) return;
+    const borrar = async (a) => {
+        if (!(await confirmar({ titulo: "Enviar a la papelera", mensaje: `¿Eliminar a ${a.nombre} (${a.cargo})? Va a la papelera, desde donde podés restaurarla.`, textoConfirmar: "Enviar a la papelera", peligro: true }))) return;
         ejecutar(() => eliminarAutoridad(a._id), `${a.nombre} fue enviada a la papelera.`);
     };
 

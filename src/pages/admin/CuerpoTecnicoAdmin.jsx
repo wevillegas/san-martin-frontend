@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { obtenerCuerpoTecnico, eliminarMiembro } from "../../services/cuerpoTecnicoService";
@@ -16,6 +17,7 @@ const getColorRol = (rol) => {
 };
 
 const CuerpoTecnicoAdmin = () => {
+    const { confirmar, avisar } = useAvisos();
     const [cuerpoTecnico, setCuerpoTecnico] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
@@ -37,13 +39,14 @@ const CuerpoTecnicoAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés dar de baja a este miembro? Va a la papelera, desde donde podés restaurarlo.")) {
+        if (await confirmar({ titulo: "Enviar a la papelera", mensaje: "¿Estás seguro de que querés dar de baja a este miembro? Va a la papelera, desde donde podés restaurarlo.", textoConfirmar: "Enviar a la papelera", peligro: true })) {
             try {
                 await eliminarMiembro(id);
+                avisar("Enviado a la papelera.");
                 cargarCT(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                alert("Hubo un error al intentar eliminar.");
+                avisar("Hubo un error al intentar eliminar.", "error");
             }
         }
     };

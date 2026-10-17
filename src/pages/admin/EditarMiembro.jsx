@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
+import { useAvisos } from "../../components/Avisos";
+import { useSalidaSegura } from "../../hooks/useSalidaSegura";
+import { elegirFoto } from "../../utils/foto";
+import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerMiembroPorId, actualizarMiembro } from "../../services/cuerpoTecnicoService";
 
 const EditarMiembro = () => {
     const navigate = useNavigate();
+    const { avisar } = useAvisos();
+    const { marcar, limpiar, alVolver } = useSalidaSegura("/admin/cuerpo-tecnico");
     const { id } = useParams();
 
     const [cargando, setCargando] = useState(true);
@@ -45,13 +51,7 @@ const EditarMiembro = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImagen(file);
-            setPreview(URL.createObjectURL(file));
-        }
-    };
+    const handleImageChange = (e) => elegirFoto(e, { setImagen, setPreview, avisar });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -64,6 +64,8 @@ const EditarMiembro = () => {
 
         try {
             await actualizarMiembro(id, submitData);
+            limpiar();
+            avisar("Cambios guardados.");
             navigate("/admin/cuerpo-tecnico");
         } catch (err) {
             setError("Error al guardar los cambios.");
@@ -77,14 +79,14 @@ const EditarMiembro = () => {
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-8">
-                    <Link to="/admin/cuerpo-tecnico" className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max">
+                    <Link to="/admin/cuerpo-tecnico" onClick={alVolver} className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max">
                         <ArrowLeft className="w-4 h-4" /> Volver al listado
                     </Link>
                     <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">Editar Integrante</h1>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
+                    <form onChange={marcar} onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
                         {error && (
                             <div className="bg-red-50 border-l-4 border-red-500 p-4 flex items-center gap-3 text-red-700 font-bold">
                                 <AlertCircle className="w-5 h-5" /> {error}
@@ -92,13 +94,7 @@ const EditarMiembro = () => {
                         )}
 
                         <div className="flex flex-col md:flex-row gap-6 items-center bg-blue-50/30 p-6 rounded-lg border border-blue-100">
-                            <div className="w-32 h-32 flex-shrink-0 bg-gray-200 rounded-full border-4 border-white shadow-md flex items-center justify-center overflow-hidden">
-                                {preview ? (
-                                    <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
-                                ) : (
-                                    <ImageIcon className="w-10 h-10 text-gray-400" />
-                                )}
-                            </div>
+                            <VistaPreviaFoto src={preview} relacion="3/4" ancho="w-36" etiqueta="Así se recorta en la tarjeta" />
                             <div className="flex-1 text-center md:text-left">
                                 <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Foto Oficial</h3>
                                 <label className="cursor-pointer bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2">

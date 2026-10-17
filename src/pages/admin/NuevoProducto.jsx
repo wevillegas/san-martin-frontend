@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon, ShoppingBag } from "lucide-react";
+import { useAvisos } from "../../components/Avisos";
+import { useSalidaSegura } from "../../hooks/useSalidaSegura";
+import { elegirFoto } from "../../utils/foto";
+import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearProducto } from "../../services/productoService"; // Importamos el servicio que creaste recién
 
 const NuevoProducto = () => {
     const navigate = useNavigate();
+    const { avisar } = useAvisos();
+    const { marcar, limpiar, alVolver } = useSalidaSegura("/admin/tienda");
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState("");
 
@@ -30,13 +36,7 @@ const NuevoProducto = () => {
     };
 
     // FUNCIÓN PARA CAPTURAR LA FOTO CUANDO LA ELIGEN
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImagen(file);
-            setPreview(URL.createObjectURL(file));
-        }
-    };
+    const handleImageChange = (e) => elegirFoto(e, { setImagen, setPreview, avisar });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,6 +59,8 @@ const NuevoProducto = () => {
         try {
             // Mandamos el paquete completo usando tu servicio
             await crearProducto(submitData);
+            limpiar();
+            avisar("Producto creado.");
             navigate("/admin/tienda");
         } catch (err) {
             console.error(err);
@@ -72,7 +74,7 @@ const NuevoProducto = () => {
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
             <div className="max-w-5xl mx-auto">
                 <div className="mb-8">
-                    <Link to="/admin/tienda" className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max transition-colors">
+                    <Link to="/admin/tienda" onClick={alVolver} className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max transition-colors">
                         <ArrowLeft className="w-4 h-4" /> Volver a la Tienda
                     </Link>
                     <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">Nuevo Producto</h1>
@@ -80,7 +82,7 @@ const NuevoProducto = () => {
                 </div>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
+                    <form onChange={marcar} onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
 
                         {error && (
                             <div className="bg-red-50 border-l-4 border-red-500 p-4 flex items-center gap-3 text-red-700 font-bold">
@@ -91,18 +93,12 @@ const NuevoProducto = () => {
                         {/* --- SECCIÓN: FOTO DEL PRODUCTO --- */}
                         <div className="flex flex-col md:flex-row gap-6 items-center bg-red-50/30 p-6 rounded-lg border border-red-100">
                             {/* Círculo de Vista Previa */}
-                            <div className="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-lg border-4 border-white shadow-lg flex items-center justify-center overflow-hidden relative group">
-                                {preview ? (
-                                    <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
-                                ) : (
-                                    <ImageIcon className="w-10 h-10 text-gray-400" />
-                                )}
-                            </div>
+                            <VistaPreviaFoto src={preview} relacion="1/1" ancho="w-44" etiqueta="Así se ve en la tienda" />
 
                             {/* Input para subir archivo */}
                             <div className="flex-1 w-full text-center md:text-left">
                                 <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Imagen del Artículo</h3>
-                                <p className="text-sm text-gray-500 mb-4">Elegí una imagen en formato JPG o PNG. Preferentemente con fondo liso.</p>
+                                <p className="text-sm text-gray-500 mb-4">Mejor cuadrada y con fondo liso. JPG, PNG o WEBP de hasta 5 MB.</p>
 
                                 <label className="cursor-pointer bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-bold transition-colors inline-flex items-center gap-2">
                                     <Upload className="w-4 h-4" />

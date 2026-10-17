@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAvisos } from "../../components/Avisos";
 import { Plus, Edit, Trash2, ArrowLeft, Star, Eye } from "lucide-react";
 import { obtenerNoticias, eliminarNoticia, actualizarNoticia } from "../../services/noticiaService";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
@@ -17,6 +18,7 @@ const estadoDe = (n) => (n.estado === "borrador" ? "borrador" : n.publicarEn && 
 const formatoFecha = (f) => new Date(f).toLocaleString("es-AR", { dateStyle: "short", timeStyle: "short" });
 
 const NoticiasAdmin = () => {
+    const { confirmar, avisar } = useAvisos();
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
@@ -40,13 +42,14 @@ const NoticiasAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés borrar esta noticia? Va a la papelera, desde donde podés restaurarla.")) {
+        if (await confirmar({ titulo: "Enviar a la papelera", mensaje: "¿Estás seguro de que querés borrar esta noticia? Va a la papelera, desde donde podés restaurarla.", textoConfirmar: "Enviar a la papelera", peligro: true })) {
             try {
                 await eliminarNoticia(id);
+                avisar("Enviado a la papelera.");
                 cargarNoticias();
             } catch (error) {
                 console.error("Error al borrar", error);
-                alert("Hubo un error al intentar borrar la noticia.");
+                avisar("Hubo un error al intentar borrar la noticia.", "error");
             }
         }
     };
@@ -60,7 +63,7 @@ const NoticiasAdmin = () => {
             cargarNoticias(); // Recarga para que se acomoden según el backend
         } catch (error) {
             console.error("Error al destacar", error);
-            alert("No se pudo cambiar el estado de destacado.");
+            avisar("No se pudo cambiar el estado de destacado.", "error");
         }
     };
 

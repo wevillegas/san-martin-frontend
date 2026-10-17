@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Users, UserCog, Newspaper, LogOut, ShieldCheck, Plus, ArrowRight, ShoppingBag, ClipboardList, KeyRound, Trash2, Landmark, BarChart3 } from "lucide-react";
 import { obtenerResumen } from "../../services/dashboardService";
+import { useAvisos } from "../../components/Avisos";
 
 const icono = (Icono) => <Icono className="w-8 h-8 text-red-700" />;
 
@@ -18,6 +19,7 @@ const hace = (fecha) => {
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const { confirmar } = useAvisos();
     const [resumen, setResumen] = useState(null);
 
     // Si falla (por ejemplo, servidor dormido) el panel funciona igual, solo sin cifras
@@ -25,8 +27,8 @@ const Dashboard = () => {
         obtenerResumen().then(setResumen).catch(() => {});
     }, []);
 
-    const handleLogout = () => {
-        if (window.confirm("¿Seguro que querés cerrar sesión?")) {
+    const handleLogout = async () => {
+        if (await confirmar({ titulo: "Cerrar sesión", mensaje: "¿Seguro que querés cerrar sesión?", textoConfirmar: "Cerrar sesión" })) {
             localStorage.removeItem("token");
             navigate("/login");
         }

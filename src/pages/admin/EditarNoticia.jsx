@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
+import { useAvisos } from "../../components/Avisos";
+import { useSalidaSegura } from "../../hooks/useSalidaSegura";
+import { elegirFoto } from "../../utils/foto";
+import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerNoticiaPorId, actualizarNoticia } from "../../services/noticiaService";
 import EstadoPublicacion, { camposDeEstado, textoBoton, modoInicial, aInputLocal } from "../../components/EstadoPublicacion";
 
 const EditarNoticia = () => {
     const navigate = useNavigate();
+    const { avisar } = useAvisos();
+    const { marcar, limpiar, alVolver } = useSalidaSegura("/admin/noticias");
     const { id } = useParams();
 
     const [cargando, setCargando] = useState(true);
@@ -56,13 +62,7 @@ const EditarNoticia = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImagen(file);
-            setPreview(URL.createObjectURL(file));
-        }
-    };
+    const handleImageChange = (e) => elegirFoto(e, { setImagen, setPreview, avisar });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,6 +76,8 @@ const EditarNoticia = () => {
 
         try {
             await actualizarNoticia(id, submitData);
+            limpiar();
+            avisar("Cambios de la noticia guardados.");
             navigate("/admin/noticias");
         } catch (err) {
             console.error(err);
@@ -90,14 +92,14 @@ const EditarNoticia = () => {
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-8">
-                    <Link to="/admin/noticias" className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max">
+                    <Link to="/admin/noticias" onClick={alVolver} className="flex items-center gap-2 text-gray-500 hover:text-red-700 font-medium mb-4 w-max">
                         <ArrowLeft className="w-4 h-4" /> Volver a Noticias
                     </Link>
                     <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">Editar Noticia</h1>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
+                    <form onChange={marcar} onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
                         {error && (
                             <div className="bg-red-50 border-l-4 border-red-500 p-4 flex items-center gap-3 text-red-700 font-bold">
                                 <AlertCircle className="w-5 h-5" /> {error}
@@ -106,16 +108,7 @@ const EditarNoticia = () => {
 
                         {/* SECCIÓN IMAGEN */}
                         <div className="flex flex-col md:flex-row gap-6 items-center bg-blue-50/30 p-6 rounded-lg border border-blue-100">
-                            <div className="w-full md:w-64 aspect-video flex-shrink-0 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden relative">
-                                {preview ? (
-                                    <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="text-center text-gray-400 p-4">
-                                        <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                                        <span className="text-xs font-bold uppercase tracking-widest">Sin Imagen</span>
-                                    </div>
-                                )}
-                            </div>
+                            <VistaPreviaFoto src={preview} relacion="16/10" ancho="w-64" etiqueta="Así se recorta en las tarjetas" />
                             <div className="flex-1 w-full text-center md:text-left">
                                 <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest mb-2">Imagen de Portada</h3>
                                 <p className="text-sm text-gray-500 mb-4">Seleccioná una imagen nueva si deseás reemplazar la actual.</p>

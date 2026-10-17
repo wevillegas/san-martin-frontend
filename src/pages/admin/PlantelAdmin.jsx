@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, Eye } from "lucide-react";
 import { obtenerJugadores, eliminarJugador } from "../../services/jugadorService";
@@ -26,6 +27,7 @@ const getColorPosicion = (posicion) => {
 };
 
 const PlantelAdmin = () => {
+    const { confirmar, avisar } = useAvisos();
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
@@ -61,13 +63,14 @@ const PlantelAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés dar de baja a este jugador? Va a la papelera, desde donde podés restaurarlo.")) {
+        if (await confirmar({ titulo: "Enviar a la papelera", mensaje: "¿Estás seguro de que querés dar de baja a este jugador? Va a la papelera, desde donde podés restaurarlo.", textoConfirmar: "Enviar a la papelera", peligro: true })) {
             try {
                 await eliminarJugador(id);
+                avisar("Enviado a la papelera.");
                 cargarPlantel(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                alert("Hubo un error al intentar eliminar al jugador.");
+                avisar("Hubo un error al intentar eliminar al jugador.", "error");
             }
         }
     };

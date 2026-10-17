@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, KeyRound, UserPlus, Trash2, Eye, EyeOff, Dices } from "lucide-react";
 import { listarUsuarios, crearUsuario, cambiarMiClave, restablecerClave, eliminarUsuario } from "../../services/usuarioService";
+import { useAvisos } from "../../components/Avisos";
 
 const MIN_CLAVE = 8;
 const input = "w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none transition-all text-gray-800";
@@ -25,6 +26,7 @@ const Aviso = ({ aviso }) =>
     ) : null;
 
 const Usuarios = () => {
+    const { confirmar } = useAvisos();
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [avisoLista, setAvisoLista] = useState(null);
@@ -86,7 +88,7 @@ const Usuarios = () => {
     };
 
     const borrar = async (usuario) => {
-        if (!window.confirm(`¿Eliminar la cuenta de ${usuario.nombre} (${usuario.email})? Ya no va a poder entrar al panel.`)) return;
+        if (!(await confirmar({ titulo: "Eliminar cuenta", mensaje: `¿Eliminar la cuenta de ${usuario.nombre} (${usuario.email})? Ya no va a poder entrar al panel.`, textoConfirmar: "Eliminar", peligro: true }))) return;
         try {
             await eliminarUsuario(usuario._id);
             setAvisoLista({ ok: true, texto: `Se eliminó la cuenta de ${usuario.nombre}.` });
