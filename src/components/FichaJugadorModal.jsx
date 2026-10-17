@@ -57,28 +57,46 @@ const Basto = ({ className }) => (
     </svg>
 );
 
-// Palo según la posición: arquero oro, defensor basto, volante copa, delantero espada
+// Palo según la posición: arquero oro, defensor basto, volante copa, delantero espada (tinta = color de imprenta del palo)
 const PALOS = {
-    Arquero: { nombre: "Oro", Icono: Oro, color: "text-amber-500" },
-    Defensor: { nombre: "Basto", Icono: Basto, color: "text-green-800" },
-    Volante: { nombre: "Copa", Icono: Copa, color: "text-red-700" },
-    Delantero: { nombre: "Espada", Icono: Espada, color: "text-sky-800" },
+    Arquero: { nombre: "Oros", Icono: Oro, tinta: "#b8860b" },
+    Defensor: { nombre: "Bastos", Icono: Basto, tinta: "#2d5a35" },
+    Volante: { nombre: "Copas", Icono: Copa, tinta: "#b3261e" },
+    Delantero: { nombre: "Espadas", Icono: Espada, tinta: "#1e3f6e" },
 };
+const TINTA = "#2b1a12";
 
 // Número y palo en la esquina, como en las cartas
 const Indice = ({ numero, palo, className }) => (
     <div className={`absolute flex flex-col items-center leading-none ${className}`}>
-        <span className="font-titulo text-3xl md:text-4xl font-black text-red-800">{numero}</span>
-        <palo.Icono className={`mt-1 h-6 w-6 md:h-7 md:w-7 ${palo.color}`} />
+        <span className="fuente-naipe text-3xl md:text-4xl font-black" style={{ color: TINTA }}>{numero}</span>
+        <span className="mt-1 block" style={{ color: palo.tinta }}>
+            <palo.Icono className="h-6 w-6 md:h-7 md:w-7" />
+        </span>
     </div>
 );
 
+// Rayos y anillos alrededor del palo, como los ases de la baraja
+const Rayos = ({ color }) => (
+    <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <g stroke={color} strokeWidth="1.4" strokeLinecap="round" opacity="0.7">
+            {Array.from({ length: 36 }, (_, i) => {
+                const ang = (i * 10 * Math.PI) / 180;
+                const largo = i % 2 ? 90 : 98;
+                return <line key={i} x1={100 + 66 * Math.cos(ang)} y1={100 + 66 * Math.sin(ang)} x2={100 + largo * Math.cos(ang)} y2={100 + largo * Math.sin(ang)} />;
+            })}
+        </g>
+        <circle cx="100" cy="100" r="62" fill="none" stroke={color} strokeWidth="2.5" />
+        <circle cx="100" cy="100" r="56" fill="none" stroke={color} strokeWidth="1.2" strokeDasharray="1.5 4" strokeLinecap="round" />
+    </svg>
+);
+
 // Renglón del dorso con puntos guía entre la etiqueta y el valor
-const Fila = ({ etiqueta, valor }) => (
+const Fila = ({ etiqueta, valor, tinta }) => (
     <li className="flex items-baseline gap-2">
-        <span className="shrink-0 text-[11px] md:text-xs font-black uppercase tracking-widest text-red-800">{etiqueta}</span>
-        <span className="flex-1 border-b border-dotted border-red-800/40" />
-        <span className="text-right text-sm md:text-base font-bold text-gray-800">{valor}</span>
+        <span className="fuente-naipe-sc shrink-0 text-sm md:text-base tracking-wider" style={{ color: tinta }}>{etiqueta}</span>
+        <span className="flex-1 border-b border-dotted" style={{ borderColor: `${tinta}88` }} />
+        <span className="fuente-naipe-texto text-right text-base md:text-lg" style={{ color: TINTA }}>{valor}</span>
     </li>
 );
 
@@ -219,7 +237,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         <div className="relative flex flex-col justify-center md:w-3/5 overflow-y-auto p-5 md:p-6">
                             {/* El escudo sobresale del panel: se recorta en un contenedor para que no genere scroll */}
                             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-                                <div className="escudo-marca-roja absolute bottom-3 -right-4 h-32 w-32 md:h-44 md:w-44 rotate-12" />
+                                <div className="escudo-marca-roja absolute bottom-3 right-6 h-40 w-40 md:right-12 md:h-56 md:w-56 rotate-12" />
                             </div>
 
                             <div className="relative space-y-6">
@@ -258,12 +276,12 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         </div>
                     </div>
 
-                    {/* ================= DORSO: CARTA DE TRUCO ================= */}
+                    {/* ================= DORSO: CARTA DE BARAJA ESPAÑOLA ================= */}
                     <div
                         onClick={girar}
                         inert={!girada}
                         style={{ transform: "rotateY(180deg)" }}
-                        className="cara absolute inset-0 overflow-hidden rounded-t-3xl md:rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 p-2.5 md:p-4 cursor-pointer"
+                        className="cara papel-naipe absolute inset-0 overflow-hidden rounded-t-3xl md:rounded-2xl p-2.5 md:p-3.5 cursor-pointer"
                     >
                         {/* Cerrar en el dorso: dentro del marco, sobre el papel */}
                         <button
@@ -273,48 +291,65 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         >
                             <X className="w-4 h-4" />
                         </button>
-                        <div className="h-full rounded-xl border-[5px] border-red-800 p-1.5">
-                            <div className="relative h-full overflow-hidden rounded-lg border-2 border-amber-600/70 bg-[radial-gradient(circle,rgba(180,83,9,0.10)_1.5px,transparent_1.5px)] [background-size:16px_16px]">
 
-                                <Indice numero={jugador.numeroCamiseta} palo={palo} className="left-3 top-2" />
-                                <Indice numero={jugador.numeroCamiseta} palo={palo} className="right-3 bottom-2 rotate-180" />
+                        {/* Línea fina exterior, orla del color del palo y línea fina interior */}
+                        <div className="h-full rounded-md border p-1" style={{ borderColor: TINTA }}>
+                            <div className="h-full border-[3px] p-1" style={{ borderColor: palo.tinta }}>
+                                <div className="relative h-full overflow-hidden border" style={{ borderColor: `${TINTA}b3` }}>
 
-                                <div className="flex h-full flex-col items-center justify-center gap-4 overflow-y-auto px-14 py-6 md:flex-row md:gap-10 md:px-28">
-                                    {/* Medallón con el palo (solo en pantallas grandes) */}
-                                    <div className="hidden shrink-0 flex-col items-center gap-3 md:flex">
-                                        <div className="flex h-44 w-44 items-center justify-center rounded-full border-4 border-double border-amber-600/70 bg-amber-50 shadow-inner lg:h-52 lg:w-52">
-                                            <palo.Icono className={`h-24 w-24 lg:h-28 lg:w-28 drop-shadow ${palo.color}`} />
-                                        </div>
-                                        <p className="font-titulo text-lg font-black uppercase tracking-widest text-red-800">
-                                            {jugador.numeroCamiseta ? `${jugador.numeroCamiseta} de ${palo.nombre}` : palo.nombre}
-                                        </p>
-                                    </div>
+                                    <Indice numero={jugador.numeroCamiseta} palo={palo} className="left-3 top-2" />
+                                    <Indice numero={jugador.numeroCamiseta} palo={palo} className="right-3 bottom-6 rotate-180" />
 
-                                    <div className="w-full min-w-0 max-w-md">
-                                        <div className="flex items-center gap-3">
-                                            <img src="/images/escudo.png" alt="" className="h-10 w-10 shrink-0 object-contain" />
-                                            <div className="min-w-0 flex-1 text-center">
-                                                <p className="text-xs font-bold uppercase tracking-widest leading-none text-gray-600">{jugador.nombre}</p>
-                                                <h2 className="font-titulo text-3xl md:text-4xl font-black uppercase leading-none text-red-800 break-words">{jugador.apellido}</h2>
+                                    <p className="fuente-naipe-sc absolute inset-x-0 bottom-1 text-center text-[9px] md:text-[10px] tracking-[0.3em] opacity-70" style={{ color: TINTA }}>
+                                        Club Atlético San Martín · Tucumán · 1909
+                                    </p>
+
+                                    <div className="flex h-full flex-col items-center justify-center gap-4 overflow-y-auto px-14 pb-7 pt-5 md:flex-row md:gap-10 md:px-28">
+                                        {/* As: rayos, palo y banderola con el número (solo en pantallas grandes) */}
+                                        <div className="hidden shrink-0 flex-col items-center md:flex">
+                                            <div className="relative h-44 w-44 lg:h-52 lg:w-52">
+                                                <Rayos color={palo.tinta} />
+                                                <div className="absolute inset-0 flex items-center justify-center" style={{ color: palo.tinta }}>
+                                                    <palo.Icono className="h-24 w-24 lg:h-28 lg:w-28 drop-shadow" />
+                                                </div>
                                             </div>
-                                            <palo.Icono className={`h-10 w-10 shrink-0 ${palo.color}`} />
+                                            <div className="banderola -mt-2 px-9 py-1.5" style={{ backgroundColor: palo.tinta }}>
+                                                <p className="fuente-naipe text-sm lg:text-base font-black uppercase tracking-widest text-amber-50">
+                                                    {jugador.numeroCamiseta ? `${jugador.numeroCamiseta} de ${palo.nombre}` : palo.nombre}
+                                                </p>
+                                            </div>
                                         </div>
 
-                                        {/* Adorno */}
-                                        <div className="my-3 flex items-center gap-3" aria-hidden="true">
-                                            <span className="h-px flex-1 bg-amber-600/60" />
-                                            <palo.Icono className={`h-4 w-4 ${palo.color}`} />
-                                            <span className="h-px flex-1 bg-amber-600/60" />
-                                        </div>
+                                        <div className="w-full min-w-0 max-w-md">
+                                            <div className="flex items-center gap-3">
+                                                <img src="/images/escudo.png" alt="" className="h-10 w-10 shrink-0 object-contain" />
+                                                <div className="min-w-0 flex-1 text-center">
+                                                    <p className="fuente-naipe-sc text-sm tracking-[0.25em] leading-none" style={{ color: TINTA }}>{jugador.nombre}</p>
+                                                    <h2 className="fuente-naipe-titulo mt-1 text-3xl md:text-4xl font-black uppercase leading-none break-words" style={{ color: palo.tinta }}>{jugador.apellido}</h2>
+                                                </div>
+                                                <span className="shrink-0" style={{ color: palo.tinta }}>
+                                                    <palo.Icono className="h-10 w-10" />
+                                                </span>
+                                            </div>
 
-                                        <ul className="space-y-2.5">
-                                            <Fila etiqueta="Posición" valor={jugador.posicion} />
-                                            {edad !== null && <Fila etiqueta="Edad" valor={`${edad} años`} />}
-                                            {altura && <Fila etiqueta="Altura" valor={altura} />}
-                                            {jugador.lugarNacimiento && <Fila etiqueta="Nació en" valor={jugador.lugarNacimiento} />}
-                                            {jugador.procedencia && <Fila etiqueta="Viene de" valor={jugador.procedencia} />}
-                                            {jugador.debutEnClub && <Fila etiqueta="Debut" valor={jugador.debutEnClub} />}
-                                        </ul>
+                                            {/* Adorno: filetes con rombos */}
+                                            <div className="my-3 flex items-center gap-2" aria-hidden="true" style={{ color: palo.tinta }}>
+                                                <span className="h-0.5 flex-1" style={{ backgroundColor: palo.tinta }} />
+                                                <span className="text-[10px] leading-none">◆</span>
+                                                <span className="h-0.5 w-8" style={{ backgroundColor: palo.tinta }} />
+                                                <span className="text-[10px] leading-none">◆</span>
+                                                <span className="h-0.5 flex-1" style={{ backgroundColor: palo.tinta }} />
+                                            </div>
+
+                                            <ul className="space-y-2.5">
+                                                <Fila etiqueta="Posición" valor={jugador.posicion} tinta={palo.tinta} />
+                                                {edad !== null && <Fila etiqueta="Edad" valor={`${edad} años`} tinta={palo.tinta} />}
+                                                {altura && <Fila etiqueta="Altura" valor={altura} tinta={palo.tinta} />}
+                                                {jugador.lugarNacimiento && <Fila etiqueta="Nació en" valor={jugador.lugarNacimiento} tinta={palo.tinta} />}
+                                                {jugador.procedencia && <Fila etiqueta="Viene de" valor={jugador.procedencia} tinta={palo.tinta} />}
+                                                {jugador.debutEnClub && <Fila etiqueta="Debut" valor={jugador.debutEnClub} tinta={palo.tinta} />}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
