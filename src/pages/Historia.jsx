@@ -1,5 +1,6 @@
 import { Calendar, Trophy, Star, ArrowUpCircle, Church } from "lucide-react";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
@@ -94,35 +95,13 @@ const hitosHistoricos = [
     }
 ];
 
-// [left%, top%, tamaño px, duración s, delay s]
-// Grilla 6x10 con variación determinista de posición, tamaño y velocidad
-const escudosFondo = Array.from({ length: 60 }, (_, i) => {
-    const col = i % 6, row = Math.floor(i / 6);
-    return [
-        col * 17 + ((i * 37) % 11) - 3,
-        row * 10 + ((i * 53) % 7),
-        70 + ((i * 29) % 90),
-        10 + ((i * 13) % 8),
-        (i * 7) % 15,
-    ];
-});
-
 const Historia = () => {
     const imagenCabecera = "/images/copa-republica-color.jpg";
 
     return (
-        <div className="relative overflow-hidden min-h-screen bg-gradient-to-b from-gray-200 via-gray-50 to-white pb-24">
+        <div className="relative isolate overflow-hidden min-h-screen bg-gradient-to-b from-gray-200 via-gray-50 to-white pb-24">
 
-            {/* Escudos flotantes de fondo */}
-            <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-                {escudosFondo.map(([left, top, size, dur, delay], i) => (
-                    <div
-                        key={i}
-                        className="escudo-flotante"
-                        style={{ left: `${left}%`, top: `${top}%`, width: size, height: size, animationDuration: `${dur}s`, animationDelay: `-${delay}s`, '--dx': `${(size % 2 ? 1 : -1) * (15 + size / 6)}px`, '--dy': `${(delay % 2 ? 1 : -1) * (20 + size / 5)}px` }}
-                    />
-                ))}
-            </div>
+            <EscudosFondo />
 
             {/* Cabecera Épica */}
             <div className="relative w-full h-[500px] md:h-[600px] shadow-xl">
@@ -178,7 +157,7 @@ const Historia = () => {
                                     <div className={`w-full md:w-5/12 pl-16 md:pl-0 ${isEven ? 'order-2 md:order-1 mt-6 md:mt-0' : 'order-1 md:order-1'}`}>
                                         {isEven ? (
                                             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left md:text-right card-santo">
-                                                <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
+                                                <span className="inline-block text-3xl md:text-4xl font-black font-titulo text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}
                                                 </span>
                                                 <h3 className="text-xl md:text-2xl font-black text-gray-800 uppercase tracking-wide mb-3">
@@ -219,7 +198,7 @@ const Historia = () => {
                                             </div>
                                         ) : (
                                             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left card-santo">
-                                                <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
+                                                <span className="inline-block text-3xl md:text-4xl font-black font-titulo text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}
                                                 </span>
                                                 <h3 className="text-xl md:text-2xl font-black text-gray-800 uppercase tracking-wide mb-3">

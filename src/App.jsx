@@ -23,6 +23,7 @@ import Dashboard from './pages/admin/Dashboard';
 import Noticias from './pages/Noticias';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import BarraProgreso from './components/BarraProgreso';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Plantel from './pages/Plantel';
@@ -49,6 +50,7 @@ function App() {
         Debe ir sí o sí dentro del BrowserRouter para poder leer la URL.
       */}
       <ScrollToTop />
+      <BarraProgreso />
 
       {/* min-h-screen: Ocupa al menos el 100% del alto de la pantalla
         flex flex-col: Nos permite empujar el footer hacia abajo

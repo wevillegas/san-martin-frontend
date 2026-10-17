@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, ExternalLink, Shirt, Tag, Truck } from "lucide-react";
 import { obtenerProductos } from "../services/productoService";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 import PageHero from "../components/PageHero";
 
 const Tienda = () => {
@@ -28,7 +29,8 @@ const Tienda = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-0 font-sans">
+        <div className="relative min-h-screen bg-gray-50 pb-0 font-sans isolate">
+            <EscudosFondo />
             
             {/* 1. CABECERA HERO */}
             <PageHero

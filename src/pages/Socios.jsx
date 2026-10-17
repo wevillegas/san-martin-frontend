@@ -1,5 +1,7 @@
 import { Users, TrendingUp, ShieldCheck, Ticket, ShoppingBag, Landmark, CheckCircle2, ExternalLink, Trophy } from "lucide-react";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
+import { CANTIDAD_SOCIOS, añosDeHistoria } from "../data/club";
 import PageHero from "../components/PageHero";
 
 const Socios = () => {
@@ -52,7 +54,8 @@ const Socios = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-0 font-sans">
+        <div className="relative min-h-screen bg-gray-50 pb-0 font-sans isolate">
+            <EscudosFondo />
             
             {/* 1. CABECERA HERO */}
             {/* Aumentamos un poco la altura en móvil para que entre todo bien (h-[550px]) */}
@@ -86,17 +89,17 @@ const Socios = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-red-500/50 text-white text-center">
                     <div className="flex flex-col items-center px-4">
                         <Users className="w-10 h-10 text-red-200 mb-2" />
-                        <span className="text-4xl font-black">+15.000</span>
+                        <span className="text-4xl font-black font-titulo">+{CANTIDAD_SOCIOS.toLocaleString("es-AR")}</span>
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Socios Activos</span>
                     </div>
                     <div className="flex flex-col items-center px-4 pt-8 md:pt-0">
                         <TrendingUp className="w-10 h-10 text-red-200 mb-2" />
-                        <span className="text-4xl font-black">100%</span>
+                        <span className="text-4xl font-black font-titulo">100%</span>
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Gestión Transparente</span>
                     </div>
                     <div className="flex flex-col items-center px-4 pt-8 md:pt-0">
                         <ShieldCheck className="w-10 h-10 text-red-200 mb-2" />
-                        <span className="text-4xl font-black">116</span>
+                        <span className="text-4xl font-black font-titulo">{añosDeHistoria()}</span>
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Años de Grandeza</span>
                     </div>
                 </div>

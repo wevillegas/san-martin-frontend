@@ -12,19 +12,13 @@ import FichaJugadorModal from "../components/FichaJugadorModal";
 import Loader from "../components/Loader";
 import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
+import { CAPACIDAD_CIUDADELA, CANTIDAD_SOCIOS, añosDeHistoria } from "../data/club";
 import Contador from "../components/Contador";
 
-// Años cumplidos desde una fecha: suma uno recién al llegar al aniversario (mes 1-12)
-const aniversarios = (año, mes, dia) => {
-    const hoy = new Date();
-    const cumplido = hoy >= new Date(hoy.getFullYear(), mes - 1, dia);
-    return hoy.getFullYear() - año - (cumplido ? 0 : 1);
-};
-
 const datosClub = [
-    { valor: aniversarios(1909, 11, 2), etiqueta: "Años de historia" },
-    { valor: 27000, prefijo: "+", etiqueta: "Capacidad de La Ciudadela" },
-    { valor: 15000, prefijo: "+", etiqueta: "Socios" },
+    { valor: añosDeHistoria(), etiqueta: "Años de historia" },
+    { valor: CAPACIDAD_CIUDADELA, prefijo: "+", etiqueta: "Capacidad de La Ciudadela" },
+    { valor: CANTIDAD_SOCIOS, prefijo: "+", etiqueta: "Socios" },
     { valor: 1, etiqueta: "Copa Nacional Oficial" },
 ];
 

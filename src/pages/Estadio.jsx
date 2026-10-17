@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap } from "lucide-react";
 import Reveal from "../components/Reveal";
+import { CAPACIDAD_CIUDADELA } from "../data/club";
 import PageHero from "../components/PageHero";
 
 const Estadio = () => {
@@ -49,7 +50,7 @@ const Estadio = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Inauguración</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">24 de Mar 1932</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">24 de Mar 1932</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -58,7 +59,7 @@ const Estadio = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Capacidad</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">+27.000</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+{CAPACIDAD_CIUDADELA.toLocaleString("es-AR")}</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -67,7 +68,7 @@ const Estadio = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Dimensiones</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">105 x 70 m</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">105 x 70 m</p>
                         </div>
                     </div>
                 </div>
