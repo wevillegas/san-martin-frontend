@@ -19,3 +19,18 @@ h1, h2, h3 {
         scroll-behavior: auto !important;
     }
 }
+/* Escudos monocromáticos flotantes (fondo de Historia): el escudo se usa como máscara */
+.escudo-flotante {
+    position: absolute;
+    background-color: #fca5a5;
+    opacity: 0.45;
+    -webkit-mask: url(/images/escudo.png) center / contain no-repeat;
+    mask: url(/images/escudo.png) center / contain no-repeat;
+    animation: flotar 12s ease-in-out infinite alternate;
+}
+
+@keyframes flotar {
+    0% { transform: translate(0, 0) rotate(-6deg); }
+    50% { transform: translate(var(--dx), calc(var(--dy) * -0.5)) rotate(4deg); }
+    100% { transform: translate(calc(var(--dx) * -0.5), var(--dy)) rotate(-2deg); }
+}
