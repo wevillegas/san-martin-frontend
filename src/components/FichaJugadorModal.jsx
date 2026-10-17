@@ -287,7 +287,8 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         <button
                             onClick={(e) => { e.stopPropagation(); onClose(); }}
                             aria-label="Cerrar ficha"
-                            className={`absolute top-8 right-8 md:top-9 md:right-9 z-20 p-1.5 ${botonRojo}`}
+                            style={{ backgroundColor: palo.tinta }}
+                            className="absolute top-8 right-8 md:top-9 md:right-9 z-20 rounded-full border border-amber-50/70 p-1.5 text-amber-50 shadow-md transition hover:brightness-125 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-50"
                         >
                             <X className="w-4 h-4" />
                         </button>
