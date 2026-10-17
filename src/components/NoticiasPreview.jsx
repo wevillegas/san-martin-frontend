@@ -2,6 +2,18 @@ import { Link } from "react-router-dom";
 import { Calendar, ArrowRight, Star } from "lucide-react";
 import { imagenPlaceholder } from "../constants/placeholders";
 
+// Marca de agua: inclinada y teñida de rojo; al pasar el cursor por la tarjeta (group) se endereza y se pinta el escudo real
+const EscudoMarca = ({ className }) => (
+    <div className={`absolute rotate-12 transition-transform duration-700 ease-out group-hover:rotate-0 ${className}`} aria-hidden="true">
+        <div className="escudo-marca-roja absolute inset-0 transition-opacity duration-700 group-hover:opacity-0" />
+        <img
+            src="/images/escudo.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-contain opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+        />
+    </div>
+);
+
 const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
     if (!noticiaPrincipal) return null;
 
@@ -27,7 +39,7 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
                 <div className="grid gap-6 lg:grid-cols-2">
                     {/* Noticia Principal */}
                     <Link to={`/noticias/${noticiaPrincipal._id}`} className="group">
-                        <div className="h-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-xl flex flex-col relative">
+                        <div className="h-full overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo flex flex-col relative">
                             
                             {noticiaPrincipal.destacado && (
                                 <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-yellow-400 text-yellow-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
@@ -49,7 +61,7 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
                                 </div>
                             </div>
                             <div className="relative p-6 flex-1 flex flex-col justify-between">
-                                <div className="escudo-marca-roja absolute bottom-3 right-3 rotate-12 h-28 w-28 md:h-36 md:w-36" aria-hidden="true" />
+                                <EscudoMarca className="bottom-3 right-3 h-28 w-28 md:h-36 md:w-36" />
                                 <p className="relative mb-4 line-clamp-3 text-gray-600">{noticiaPrincipal.resumen || noticiaPrincipal.cuerpo}</p>
                                 <div className="relative flex items-center gap-2 text-sm text-gray-500 font-medium">
                                     <Calendar className="h-4 w-4" />
@@ -63,9 +75,9 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
                     <div className="flex flex-col gap-4">
                         {ultimasNoticias.map((noticia) => (
                             <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group">
-                                <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+                                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo">
                                     <div className="relative flex gap-4 p-4">
-                                        <div className="escudo-marca-roja absolute right-3 top-1/2 -translate-y-1/2 rotate-12 h-20 w-20" aria-hidden="true" />
+                                        <EscudoMarca className="right-3 top-1/2 -translate-y-1/2 h-20 w-20" />
                                         <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg">
                                             <img
                                                 src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}

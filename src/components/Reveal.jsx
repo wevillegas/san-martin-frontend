@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // Hace aparecer su contenido con un fade + slide suave cuando entra en pantalla al scrollear
-const Reveal = ({ children, className = "" }) => {
+const Reveal = ({ children, className = "", ...resto }) => {
     const ref = useRef(null);
     const [visible, setVisible] = useState(false);
 
@@ -26,6 +26,7 @@ const Reveal = ({ children, className = "" }) => {
     return (
         <div
             ref={ref}
+            {...resto}
             className={`transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${className}`}
         >
             {children}

@@ -20,6 +20,7 @@ import NuevaNoticia from './pages/admin/NuevaNoticia';
 import NoticiasAdmin from './pages/admin/NoticiasAdmin';
 import RutaProtegida from './components/RutaProtegida';
 import Dashboard from './pages/admin/Dashboard';
+import Auditoria from './pages/admin/Auditoria';
 import Noticias from './pages/Noticias';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -86,6 +87,14 @@ function App() {
               element={
                 <RutaProtegida>
                   <Dashboard />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/auditoria"
+              element={
+                <RutaProtegida>
+                  <Auditoria />
                 </RutaProtegida>
               }
             />
