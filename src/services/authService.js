@@ -11,3 +11,6 @@ export const loginUsuario = async (email, password) => {
         throw error.response?.data?.mensaje || 'Error de conexión';
     }
 };
+
+// Cambia el token vigente por uno nuevo (extiende la sesión una hora más)
+export const renovarSesion = async () => (await api.post('/auth/renovar')).data;

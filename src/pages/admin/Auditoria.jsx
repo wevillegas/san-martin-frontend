@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ClipboardList } from "lucide-react";
 import { obtenerAuditoria } from "../../services/auditoriaService";
 
-const SECCIONES = { jugadores: "Plantel", "cuerpo-tecnico": "Cuerpo técnico", noticias: "Noticias", productos: "Tienda", auth: "Accesos" };
+const SECCIONES = { jugadores: "Plantel", "cuerpo-tecnico": "Cuerpo técnico", noticias: "Noticias", productos: "Tienda", usuarios: "Usuarios", auth: "Accesos" };
 const ACCIONES = {
     crear: { texto: "Creó", color: "bg-green-100 text-green-800" },
     editar: { texto: "Editó", color: "bg-blue-100 text-blue-800" },
     eliminar: { texto: "Eliminó", color: "bg-red-100 text-red-800" },
+    restaurar: { texto: "Restauró", color: "bg-green-100 text-green-800" },
     login: { texto: "Inició sesión", color: "bg-gray-100 text-gray-700" },
 };
 

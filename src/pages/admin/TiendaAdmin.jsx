@@ -23,7 +23,7 @@ const TiendaAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés borrar este producto de la tienda? Esta acción no se puede deshacer.")) {
+        if (window.confirm("¿Estás seguro de que querés borrar este producto de la tienda? Va a la papelera, desde donde podés restaurarlo.")) {
             try {
                 await eliminarProducto(id);
                 cargarProductos(); // Recargamos la tabla

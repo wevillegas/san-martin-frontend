@@ -58,7 +58,7 @@ const PlantelAdmin = () => {
     };
 
     const handleBorrar = async (id) => {
-        if (window.confirm("¿Estás seguro de que querés dar de baja a este jugador del sistema?")) {
+        if (window.confirm("¿Estás seguro de que querés dar de baja a este jugador? Va a la papelera, desde donde podés restaurarlo.")) {
             try {
                 await eliminarJugador(id);
                 cargarPlantel(); // Recargamos la tabla
