@@ -1,5 +1,6 @@
 import { Users, TrendingUp, ShieldCheck, Ticket, ShoppingBag, Landmark, CheckCircle2, ExternalLink, Trophy } from "lucide-react";
 import Reveal from "../components/Reveal";
+import PageHero from "../components/PageHero";
 
 const Socios = () => {
     // Foto épica de la hinchada
@@ -55,38 +56,29 @@ const Socios = () => {
             
             {/* 1. CABECERA HERO */}
             {/* Aumentamos un poco la altura en móvil para que entre todo bien (h-[550px]) */}
-            <div className="relative w-full h-[550px] md:h-[600px]">
-                <img
-                    src={imgHero || "https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?q=80&w=2000&auto=format&fit=crop"}
-                    alt="Hinchada de San Martín"
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent" />
-
-                {/* ARREGLO: pb-24 en móvil para empujar el botón hacia arriba y que no choque */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-10 pb-24 md:pb-16">
-                    <span className="bg-red-700 text-white text-xs md:text-sm font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-lg border border-red-500">
-                        Departamento de Socios
-                    </span>
-                    {/* Texto más escalable en móvil (text-4xl) */}
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-3 md:mb-4">
-                        SER SOCIO ES UN ORGULLO
-                    </h1>
-                    <p className="text-lg md:text-2xl text-gray-200 font-bold max-w-2xl text-balance drop-shadow-lg mb-8 md:mb-10">
-                        Hacerte socio es el acto de amor más grande. Defendé los colores, cuidá la institución y hacé más grande a San Martín.
-                    </p>
-                    {/* Botón Hero */}
-                    <a 
-                        href={urlPlataformaSocios}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-sm md:text-base py-3.5 px-8 md:py-4 md:px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all transform hover:scale-105 flex items-center gap-2 md:gap-3"
-                    >
-                        Asociate Online
-                        <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
-                    </a>
-                </div>
-            </div>
+            <PageHero
+                img={imgHero || "https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?q=80&w=2000&auto=format&fit=crop"}
+                alt="Hinchada de San Martín"
+                badge="Departamento de Socios"
+                title="SER SOCIO ES UN ORGULLO"
+                subtitle="Hacerte socio es el acto de amor más grande. Defendé los colores, cuidá la institución y hacé más grande a San Martín."
+                height="h-[550px] md:h-[600px]"
+                overlay="bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"
+                contentClassName="pt-10 pb-24 md:pb-16"
+                titleClassName="text-4xl sm:text-5xl md:text-7xl"
+                subtitleClassName="text-lg md:text-2xl max-w-2xl mb-8 md:mb-10"
+                fill="text-gray-50"
+            >
+                <a
+                    href={urlPlataformaSocios}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest text-sm md:text-base py-3.5 px-8 md:py-4 md:px-10 rounded-full shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all transform hover:scale-105 flex items-center gap-2 md:gap-3"
+                >
+                    Asociate Online
+                    <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
+                </a>
+            </PageHero>
 
             {/* 2. BARRA DE ESTADÍSTICAS (ROJA) */}
             {/* ARREGLO: z-20 y -mt-16 para que se monte elegante sin chocar */}
@@ -94,7 +86,7 @@ const Socios = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-red-500/50 text-white text-center">
                     <div className="flex flex-col items-center px-4">
                         <Users className="w-10 h-10 text-red-200 mb-2" />
-                        <span className="text-4xl font-black">+10.000</span>
+                        <span className="text-4xl font-black">+15.000</span>
                         <span className="text-sm font-bold uppercase tracking-widest text-red-200 mt-1">Socios Activos</span>
                     </div>
                     <div className="flex flex-col items-center px-4 pt-8 md:pt-0">
@@ -121,7 +113,7 @@ const Socios = () => {
 
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {beneficios.map((item, index) => (
-                            <Reveal key={index} className="bg-gray-50 p-8 rounded-2xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center border border-gray-100">
+                            <Reveal key={index} className="bg-gray-50 p-8 rounded-2xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center border border-gray-100 card-santo">
                                 <div className="bg-red-50 p-4 rounded-full mb-6 border border-red-100">
                                     {item.icono}
                                 </div>

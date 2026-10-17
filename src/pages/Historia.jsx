@@ -177,7 +177,7 @@ const Historia = () => {
                                     {/* LÓGICA: Si es par, es Texto (order-2 en móvil, order-1 en PC). Si es impar, es Imagen (order-1 en móvil, order-1 en PC). */}
                                     <div className={`w-full md:w-5/12 pl-16 md:pl-0 ${isEven ? 'order-2 md:order-1 mt-6 md:mt-0' : 'order-1 md:order-1'}`}>
                                         {isEven ? (
-                                            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left md:text-right">
+                                            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left md:text-right card-santo">
                                                 <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}
                                                 </span>
@@ -189,7 +189,7 @@ const Historia = () => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <div className="overflow-hidden rounded-2xl shadow-xl aspect-video w-full bg-white border border-gray-100">
+                                            <div className="overflow-hidden rounded-2xl shadow-xl aspect-video foto-zoom w-full bg-white border border-gray-100">
                                                 <img
                                                     src={hito.imagenUrl || imagenPlaceholder}
                                                     alt={hito.titulo}
@@ -210,7 +210,7 @@ const Historia = () => {
                                     {/* LÓGICA: Si es par, es Imagen (order-1 en móvil, order-3 en PC). Si es impar, es Texto (order-2 en móvil, order-3 en PC). */}
                                     <div className={`w-full md:w-5/12 pl-16 md:pl-0 ${isEven ? 'order-1 md:order-3' : 'order-2 md:order-3 mt-6 md:mt-0'}`}>
                                         {isEven ? (
-                                            <div className="overflow-hidden rounded-2xl shadow-xl aspect-video w-full bg-white border border-gray-100">
+                                            <div className="overflow-hidden rounded-2xl shadow-xl aspect-video foto-zoom w-full bg-white border border-gray-100">
                                                 <img
                                                     src={hito.imagenUrl || imagenPlaceholder}
                                                     alt={hito.titulo}
@@ -218,7 +218,7 @@ const Historia = () => {
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left">
+                                            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-red-700 text-left card-santo">
                                                 <span className="inline-block text-3xl md:text-4xl font-black text-red-100 mb-2" style={{ WebkitTextStroke: '1px #b91c1c' }}>
                                                     {hito.año}
                                                 </span>

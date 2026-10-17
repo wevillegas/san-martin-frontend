@@ -1,6 +1,6 @@
-import { Users } from "lucide-react";
 import Reveal from "../components/Reveal";
 
+import PageBanner from "../components/PageBanner";
 // Lista de autoridades (Podés agregar o quitar los que necesites)
 const autoridades = [
     { cargo: "Presidente", nombre: "Oscar Mirkin" },
@@ -33,31 +33,19 @@ const autoridades = [
 
 const Autoridades = () => {
     return (
-        <div className="min-h-screen bg-gray-50 py-24 font-sans">
-            <div className="max-w-6xl mx-auto px-4">
-                
-                {/* Encabezado Simple */}
-                <div className="text-center mb-16">
-                    <div className="flex justify-center mb-4">
-                        <div className="bg-red-100 p-3 rounded-full text-red-700">
-                            <Users className="w-8 h-8" />
-                        </div>
-                    </div>
-                    <h1 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-wider mb-4">
-                        Comisión Directiva
-                    </h1>
-                    <div className="w-24 h-1.5 bg-red-700 mx-auto rounded-full mb-4"></div>
-                    <p className="text-gray-500 font-medium max-w-2xl mx-auto">
-                        Las autoridades encargadas de guiar el destino institucional y deportivo del Club Atlético San Martín.
-                    </p>
-                </div>
+        <div className="min-h-screen bg-gray-50 font-sans">
+            <PageBanner
+                title="Comisión Directiva"
+                subtitle="Las autoridades encargadas de guiar el destino institucional y deportivo del Club Atlético San Martín."
+            />
+            <div className="max-w-6xl mx-auto px-4 py-16">
 
                 {/* Grilla de Tarjetas */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {autoridades.map((autoridad, index) => (
                         <Reveal
                             key={index}
-                            className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center hover:shadow-md transition-shadow"
+                            className="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-700 flex flex-col items-center text-center card-santo"
                         >
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
                                 {autoridad.cargo}

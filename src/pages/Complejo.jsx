@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { GiBoxingGlove } from "react-icons/gi";
 import Reveal from "../components/Reveal";
+import PageHero from "../components/PageHero";
 
 const Complejo = () => {
     // 1. IMAGEN PRINCIPAL (Hero)
@@ -45,35 +46,20 @@ const Complejo = () => {
             {/* =========================================
                 SECCIÓN 1: CABECERA HERO UNIFICADA
             ========================================== */}
-            <div className="relative w-full h-[450px] md:h-[600px]">
-                <div className="absolute inset-0 w-full h-full z-0">
-                    <img
-                        src={imgHero || "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=2000&auto=format&fit=crop"}
-                        alt="Complejo Natalio Mirkin"
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/50 md:bg-gradient-to-t md:from-black/90 md:via-black/50 md:to-transparent" />
-                </div>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pb-16 md:pb-0 z-10 w-full">
-                    <span className="bg-red-700 text-white text-xs md:text-sm font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-lg border border-red-500">
-                        Complejo polideportivo
-                    </span>
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-2 md:mb-4">
-                        Natalio Mirkin
-                    </h1>
-                    <p className="text-lg sm:text-xl md:text-3xl text-gray-200 font-bold uppercase tracking-widest drop-shadow-lg text-balance">
-                        Nuestro corazón social y deportivo
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                img={imgHero}
+                alt="Complejo Natalio Mirkin"
+                badge="Complejo polideportivo"
+                title="Natalio Mirkin"
+                subtitle="Nuestro corazón social y deportivo"
+            />
 
             {/* =========================================
                 TARJETAS FLOTANTES (Margen Negativo)
             ========================================== */}
             <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <MapPin className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -82,7 +68,7 @@ const Complejo = () => {
                             <p className="text-lg md:text-2xl font-black text-gray-900">Yerba Buena</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Activity className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -91,7 +77,7 @@ const Complejo = () => {
                             <p className="text-lg md:text-2xl font-black text-gray-900">+10 Disciplinas</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Maximize className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -125,7 +111,7 @@ const Complejo = () => {
 
                         {/* Columna Galería */}
                         <div className="flex flex-col gap-3 w-full min-w-0">
-                            <div className="w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-100">
+                            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg foto-zoom border border-gray-200 bg-gray-100">
                                 <img
                                     src={fotosComplejo[fotoActiva]}
                                     alt="Instalaciones"
@@ -186,22 +172,22 @@ const Complejo = () => {
                     </div>
 
                     <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-10 md:mt-16 w-full">
-                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
+                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">
                             <Waves className="w-8 h-8 md:w-10 md:h-10 text-red-700 mx-auto mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Piletas</h3>
                             <p className="text-gray-700 text-sm font-medium">Olímpica e infantil.</p>
                         </div>
-                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
+                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">
                             <Flame className="w-8 h-8 md:w-10 md:h-10 text-red-700 mx-auto mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Asadores</h3>
                             <p className="text-gray-700 text-sm font-medium">Quinchos equipados.</p>
                         </div>
-                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
+                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">
                             <Construction className="w-8 h-8 md:w-10 md:h-10 text-red-700 mx-auto mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Canchas</h3>
                             <p className="text-gray-700 text-sm font-medium">Fútbol, básquet, tenis, rugby, voley.</p>
                         </div>
-                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md">
+                        <div className="p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md card-santo">
                             <Trees className="w-8 h-8 md:w-10 md:h-10 text-red-700 mx-auto mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase text-xs text-gray-500 mb-2">Naturaleza</h3>
                             <p className="text-gray-700 text-sm font-medium">Predio parquizado.</p>

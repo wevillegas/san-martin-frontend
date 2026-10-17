@@ -34,3 +34,34 @@ h1, h2, h3 {
     50% { transform: translate(var(--dx), calc(var(--dy) * -0.5)) rotate(4deg); }
     100% { transform: translate(calc(var(--dx) * -0.5), var(--dy)) rotate(-2deg); }
 }
+
+/* Franja de título: bastones rojiblancos tenues + escudo grande como marca de agua */
+.banner-bastones {
+    background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 48px, transparent 48px 96px);
+}
+
+.escudo-marca {
+    background-color: rgba(255, 255, 255, 0.12);
+    -webkit-mask: url(/images/escudo.png) center / contain no-repeat;
+    mask: url(/images/escudo.png) center / contain no-repeat;
+}
+
+/* Tarjetas unificadas: levantan con sombra roja tenue; fotos con zoom lento. Las props de Reveal (opacity/translate) se mantienen. */
+.card-santo {
+    transition: opacity 0.7s ease-out, translate 0.7s ease-out, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) {
+    .card-santo:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 32px -12px rgba(185, 28, 28, 0.3);
+    }
+
+    .foto-zoom img {
+        transition: transform 0.7s ease;
+    }
+
+    .foto-zoom:hover img {
+        transform: scale(1.06);
+    }
+}

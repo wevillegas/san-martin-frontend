@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Users, Maximize, History, Lightbulb, Radio, ShieldCheck, Swords, Zap } from "lucide-react";
 import Reveal from "../components/Reveal";
+import PageHero from "../components/PageHero";
 
 const Estadio = () => {
     // 1. IMÁGENES
@@ -29,33 +30,20 @@ const Estadio = () => {
             {/* =========================================
                 SECCIÓN 1: CABECERA HERO UNIFICADA
             ========================================== */}
-            <div className="relative w-full h-[450px] md:h-[600px]">
-                <div className="absolute inset-0 w-full h-full z-0">
-                    <img
-                        src={imgHero || "https://images.unsplash.com/photo-1518605368461-1e1e38ce8058?q=80&w=2000&auto=format&fit=crop"}
-                        alt="Estadio La Ciudadela"
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/50 md:bg-gradient-to-t md:from-black/90 md:via-black/50 md:to-transparent" />
-                </div>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pb-16 md:pb-0 z-10 w-full">
-                    <span className="bg-red-700 text-white text-xs md:text-sm font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-lg border border-red-500">LA FORTALEZA</span>
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-2 md:mb-4">
-                        La Ciudadela
-                    </h1>
-                    <p className="text-lg sm:text-xl md:text-3xl text-gray-200 font-bold uppercase tracking-widest drop-shadow-lg text-balance">
-                        El estadio más caliente del país
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                img={imgHero}
+                alt="Estadio La Ciudadela"
+                badge="LA FORTALEZA"
+                title="La Ciudadela"
+                subtitle="El estadio más caliente del país"
+            />
 
             {/* =========================================
                 TARJETAS FLOTANTES
             ========================================== */}
             <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <History className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -64,16 +52,16 @@ const Estadio = () => {
                             <p className="text-lg md:text-2xl font-black text-gray-900">24 de Mar 1932</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Users className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Capacidad</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">30.000</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900">+27.000</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700">
+                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Maximize className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
@@ -113,7 +101,7 @@ const Estadio = () => {
 
                         {/* Columna de Galería */}
                         <div className="flex flex-col gap-3 order-1 lg:order-2 w-full min-w-0">
-                            <div className="w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-100">
+                            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg foto-zoom border border-gray-200 bg-gray-100">
                                 <img
                                     src={fotosEvolucion[fotoActiva] || "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop"}
                                     alt="Evolución del estadio"
@@ -151,7 +139,7 @@ const Estadio = () => {
 
                     <div className="space-y-6 md:space-y-8 w-full">
                         {/* Tarjeta 0 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={img1932} alt="Inauguración" className="w-full h-full object-cover" />
                             </div>
@@ -168,7 +156,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 1 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgCosmos} alt="Maradona" className="w-full h-full object-cover" />
                             </div>
@@ -185,7 +173,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 2 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgRoma} alt="Roma" className="w-full h-full object-cover" />
                             </div>
@@ -202,7 +190,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 3 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgClasico1} alt="Clásico 92" className="w-full h-full object-cover" />
                             </div>
@@ -219,7 +207,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 4 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgClasico2} alt="Clásico 94" className="w-full h-full object-cover" />
                             </div>
@@ -236,7 +224,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 5 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgGuarani} alt="Guarani" className="w-full h-full object-cover" />
                             </div>
@@ -253,7 +241,7 @@ const Estadio = () => {
                         </Reveal>
 
                         {/* Tarjeta 6 */}
-                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 w-full min-w-0">
+                        <Reveal className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row card-santo foto-zoom w-full min-w-0">
                             <div className="md:w-2/5 h-48 sm:h-64 md:h-auto shrink-0 w-full md:max-w-[40%]">
                                 <img src={imgDalmine} alt="Dalmine" className="w-full h-full object-cover" />
                             </div>
@@ -291,28 +279,28 @@ const Estadio = () => {
                     </div>
 
                     <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
-                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center card-santo">
                             <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Sectores</h3>
                             <p className="text-gray-700 text-sm leading-relaxed font-medium">
                                 Cuatro imponentes tribunas de cemento: Rondeau, Bolívar, Pellegrini y la histórica Matienzo.
                             </p>
                         </div>
-                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center card-santo">
                             <Lightbulb className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Iluminación</h3>
                             <p className="text-gray-700 text-sm leading-relaxed font-medium">
                                 Sistema LED de última generación apto para transmisiones HD y competencias internacionales.
                             </p>
                         </div>
-                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center card-santo">
                             <Radio className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Prensa</h3>
                             <p className="text-gray-700 text-sm leading-relaxed font-medium">
                                 Cabinas de transmisión equipadas, sala de conferencias y zona mixta de alto nivel.
                             </p>
                         </div>
-                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center">
+                        <div className="flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl border-t-4 border-red-700 shadow-md text-center card-santo">
                             <Zap className="w-8 h-8 md:w-10 md:h-10 text-red-700 mb-3 md:mb-4 shrink-0" />
                             <h3 className="font-bold uppercase tracking-widest text-xs text-gray-500 mb-2 md:mb-3">Comodidades</h3>
                             <p className="text-gray-700 text-sm leading-relaxed font-medium">

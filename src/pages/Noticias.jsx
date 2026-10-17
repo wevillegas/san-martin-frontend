@@ -9,6 +9,7 @@ import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
 import { imagenPlaceholder } from "../constants/placeholders";
 
+import PageBanner from "../components/PageBanner";
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
@@ -50,16 +51,10 @@ const Noticias = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
-            <section className="bg-red-800 py-12 border-b-4 border-red-900">
-                <div className="mx-auto max-w-7xl px-4">
-                    <h1 className="text-3xl font-black text-white md:text-5xl uppercase tracking-wider ">
-                        Noticias
-                    </h1>
-                    <p className="mt-3 text-red-100 font-medium text-lg">
-                        Toda la actualidad del Club Atlético San Martín
-                    </p>
-                </div>
-            </section>
+            <PageBanner
+                title="Noticias"
+                subtitle="Toda la actualidad del Club Atlético San Martín"
+            />
 
             <section className="py-10">
                 <div className="mx-auto max-w-7xl px-4">
@@ -95,7 +90,7 @@ const Noticias = () => {
                             {noticiasMostradas.map((noticia) => (
                                 <Reveal key={noticia._id}>
                                 <Link to={`/noticias/${noticia._id}`} className="group flex flex-col h-full relative">
-                                    <div className="flex-1 overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col">
+                                    <div className="flex-1 overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo flex flex-col">
                                         
                                         {/* CARTELITO DE DESTACADO */}
                                         {noticia.destacado && (
