@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { obtenerJugadores } from "../services/jugadorService";
-import { imagenPlaceholder } from "../constants/placeholders";
+import PlayerCard from "./PlayerCard";
 
 const getPesoPosicion = (posicion) => {
     const pos = posicion.toLowerCase();
@@ -72,35 +72,12 @@ const SquadPreview = ({ onSelectPlayer }) => {
 
                 {/* EL ARREGLO ESTÁ ACÁ: Agregamos md:px-14 para crear el pasillo de las flechas */}
                 <div className="relative group md:px-14">
-                    <div className="overflow-hidden rounded-xl" ref={emblaRef}>
+                    <div className="overflow-hidden rounded-xl py-3" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
                             {jugadores.map((player) => (
                                 <div key={player._id} className="relative min-w-0 flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
 
-                                    <button
-                                        onClick={() => onSelectPlayer(player)}
-                                        className="block h-full group/card w-full text-left"
-                                    >
-                                        <div className="relative aspect-[3/4] overflow-hidden rounded-xl border border-red-500 bg-red-800 transition-all hover:shadow-2xl">
-                                            <img
-                                                src={player.imagenUrl || imagenPlaceholder}
-                                                alt={`${player.nombre} ${player.apellido}`}
-                                                className="w-full h-full object-cover transition-all duration-500 group-hover/card:opacity-100 group-hover/card:scale-105"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-red-950 via-black/20 to-transparent" />
-
-                                            <div className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-lg font-black text-white shadow-lg border-2 border-red-400">
-                                                {player.numeroCamiseta || "-"}
-                                            </div>
-
-                                            <div className="absolute bottom-0 left-0 right-0 p-5">
-                                                <p className="text-xs font-bold text-red-300 mb-1 uppercase tracking-widest">{player.posicion}</p>
-                                                <h3 className="text-xl font-black text-white uppercase tracking-wide leading-none">
-                                                    {player.nombre} <br /> {player.apellido}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </button>
+                                    <PlayerCard player={player} onSelectPlayer={onSelectPlayer} />
 
                                 </div>
                             ))}
