@@ -52,7 +52,7 @@ const Noticias = () => {
 
     return (
         <div className="relative flex flex-col min-h-screen bg-gray-50 pb-20 isolate">
-            <EscudosFondo />
+            <EscudosFondo cantidad={18} />
             <PageBanner
                 title="Noticias"
                 subtitle="Toda la actualidad del Club Atlético San Martín"

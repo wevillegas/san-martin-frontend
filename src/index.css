@@ -78,3 +78,11 @@ h1, h2, h3 {
 p {
     text-wrap: pretty;
 }
+
+/* Escudo como marca de agua dentro de tarjetas (rojo tenue) */
+.escudo-marca-roja {
+    background-color: rgba(220, 38, 38, 0.13);
+    -webkit-mask: url(/images/escudo.png) center / contain no-repeat;
+    mask: url(/images/escudo.png) center / contain no-repeat;
+    pointer-events: none;
+}
