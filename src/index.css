@@ -65,3 +65,16 @@ h1, h2, h3 {
         transform: scale(1.06);
     }
 }
+
+/* Tipografía: títulos y números destacados en Oswald, mejor corte de líneas */
+.font-titulo {
+    font-family: "Oswald", sans-serif;
+}
+
+h1, h2, h3 {
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}

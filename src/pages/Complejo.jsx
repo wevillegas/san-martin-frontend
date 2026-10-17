@@ -65,7 +65,7 @@ const Complejo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Ubicación</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">Yerba Buena</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Yerba Buena</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -74,7 +74,7 @@ const Complejo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Deportes</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">+10 Disciplinas</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+10 Disciplinas</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -83,7 +83,7 @@ const Complejo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Extensión</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">+23 Hectáreas</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+23 Hectáreas</p>
                         </div>
                     </div>
                 </div>

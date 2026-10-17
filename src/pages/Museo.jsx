@@ -56,7 +56,7 @@ const Museo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Entrada</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">Libre y gratuita</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Libre y gratuita</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -65,7 +65,7 @@ const Museo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Horarios</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">Lun a Sáb desde las 9:00</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Lun a Sáb desde las 9:00</p>
                         </div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
@@ -74,7 +74,7 @@ const Museo = () => {
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Reliquia estrella</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900">Copa 1944</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Copa 1944</p>
                         </div>
                     </div>
                 </div>

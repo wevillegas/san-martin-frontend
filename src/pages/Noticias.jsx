@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import Loader from "../components/Loader";
 import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
@@ -50,7 +51,8 @@ const Noticias = () => {
                 : noticias.filter((n) => n.etiqueta === filtroActivo); // Si tocás otra, filtra por etiqueta
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
+        <div className="relative flex flex-col min-h-screen bg-gray-50 pb-20 isolate">
+            <EscudosFondo />
             <PageBanner
                 title="Noticias"
                 subtitle="Toda la actualidad del Club Atlético San Martín"

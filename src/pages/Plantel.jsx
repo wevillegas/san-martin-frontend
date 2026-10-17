@@ -11,6 +11,7 @@ import FichaJugadorModal from "../components/FichaJugadorModal";
 import Loader from "../components/Loader";
 import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
@@ -128,7 +129,8 @@ const Plantel = () => {
     if (error) return <ErrorState texto="No pudimos cargar el plantel. Probá recargar la página." />;
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50 pb-20 relative">
+        <div className="flex flex-col min-h-screen bg-gray-50 pb-20 relative isolate">
+            <EscudosFondo cantidad={activeTab === "cuerpo-tecnico" ? 18 : 60} />
             <PageBanner
                 title="Plantel Profesional"
                 subtitle="Conocé a los jugadores y cuerpo técnico de San Martín para la temporada 2026"

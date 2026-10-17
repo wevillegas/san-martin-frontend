@@ -1,4 +1,5 @@
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 
 import PageBanner from "../components/PageBanner";
 // Lista de autoridades (Podés agregar o quitar los que necesites)
@@ -33,7 +34,8 @@ const autoridades = [
 
 const Autoridades = () => {
     return (
-        <div className="min-h-screen bg-gray-50 font-sans">
+        <div className="relative min-h-screen bg-gray-50 font-sans isolate">
+            <EscudosFondo />
             <PageBanner
                 title="Comisión Directiva"
                 subtitle="Las autoridades encargadas de guiar el destino institucional y deportivo del Club Atlético San Martín."
