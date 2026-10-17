@@ -94,11 +94,35 @@ const hitosHistoricos = [
     }
 ];
 
+// [left%, top%, tamaño px, duración s, delay s]
+// Grilla 6x10 con variación determinista de posición, tamaño y velocidad
+const escudosFondo = Array.from({ length: 60 }, (_, i) => {
+    const col = i % 6, row = Math.floor(i / 6);
+    return [
+        col * 17 + ((i * 37) % 11) - 3,
+        row * 10 + ((i * 53) % 7),
+        70 + ((i * 29) % 90),
+        10 + ((i * 13) % 8),
+        (i * 7) % 15,
+    ];
+});
+
 const Historia = () => {
     const imagenCabecera = "/images/copa-republica-color.jpg";
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-200 via-gray-50 to-white pb-24">
+        <div className="relative overflow-hidden min-h-screen bg-gradient-to-b from-gray-200 via-gray-50 to-white pb-24">
+
+            {/* Escudos flotantes de fondo */}
+            <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                {escudosFondo.map(([left, top, size, dur, delay], i) => (
+                    <div
+                        key={i}
+                        className="escudo-flotante"
+                        style={{ left: `${left}%`, top: `${top}%`, width: size, height: size, animationDuration: `${dur}s`, animationDelay: `-${delay}s`, '--dx': `${(size % 2 ? 1 : -1) * (15 + size / 6)}px`, '--dy': `${(delay % 2 ? 1 : -1) * (20 + size / 5)}px` }}
+                    />
+                ))}
+            </div>
 
             {/* Cabecera Épica */}
             <div className="relative w-full h-[500px] md:h-[600px] shadow-xl">
