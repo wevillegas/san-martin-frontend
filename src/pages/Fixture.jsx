@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Calendar, MapPin, AlertCircle, ShieldCheck, Trophy, Clock } from "lucide-react";
 import Reveal from "../components/Reveal";
+import EscudosFondo from "../components/EscudosFondo";
 
 const Escudo = ({ src, alt, esSanMartin, size = "w-12 h-12" }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -61,7 +62,8 @@ const Fixture = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-900 py-16">
+        <div className="relative isolate min-h-screen bg-gray-50 text-gray-900 py-16">
+            <EscudosFondo cantidad={120} />
             <div className="max-w-5xl mx-auto px-4">
                 
                 <div className="flex flex-col items-center justify-center mb-16">

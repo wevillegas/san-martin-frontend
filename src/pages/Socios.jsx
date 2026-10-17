@@ -1,6 +1,5 @@
 import { Users, TrendingUp, ShieldCheck, Ticket, ShoppingBag, Landmark, CheckCircle2, ExternalLink, Trophy } from "lucide-react";
 import Reveal from "../components/Reveal";
-import EscudosFondo from "../components/EscudosFondo";
 import { CANTIDAD_SOCIOS, añosDeHistoria } from "../data/club";
 import PageHero from "../components/PageHero";
 
@@ -54,8 +53,7 @@ const Socios = () => {
     ];
 
     return (
-        <div className="relative min-h-screen bg-gray-50 pb-0 font-sans isolate">
-            <EscudosFondo />
+        <div className="min-h-screen bg-gray-50 pb-0 font-sans">
             
             {/* 1. CABECERA HERO */}
             {/* Aumentamos un poco la altura en móvil para que entre todo bien (h-[550px]) */}

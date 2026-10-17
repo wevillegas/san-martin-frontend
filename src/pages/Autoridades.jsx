@@ -35,7 +35,7 @@ const autoridades = [
 const Autoridades = () => {
     return (
         <div className="relative min-h-screen bg-gray-50 font-sans isolate">
-            <EscudosFondo />
+            <EscudosFondo cantidad={20} />
             <PageBanner
                 title="Comisión Directiva"
                 subtitle="Las autoridades encargadas de guiar el destino institucional y deportivo del Club Atlético San Martín."
