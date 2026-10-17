@@ -8,6 +8,7 @@ import ErrorState from "../components/ErrorState";
 import { imagenPlaceholder } from "../constants/placeholders";
 import Reveal from "../components/Reveal";
 import PageHero from "../components/PageHero";
+import { useAvisos } from "../components/Avisos";
 import EscudoMarca from "../components/EscudoMarca";
 
 const formatearFecha = (fecha) =>
@@ -21,6 +22,7 @@ const botonCompartir = "inline-flex items-center gap-2 rounded-full border borde
 const NoticiaDetalle = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { avisar } = useAvisos();
     const location = useLocation();
 
     const [noticia, setNoticia] = useState(null);
@@ -71,7 +73,7 @@ const NoticiaDetalle = () => {
             setCopiado(true);
             setTimeout(() => setCopiado(false), 2000);
         } catch {
-            window.prompt("Copiá el enlace:", url);
+            avisar("No se pudo copiar. Copialo desde la barra de direcciones.", "error");
         }
     };
 

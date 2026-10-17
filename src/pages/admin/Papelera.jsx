@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Trash2, Undo2, XCircle } from "lucide-react";
 import { obtenerPapelera, restaurarElemento, eliminarDefinitivo } from "../../services/papeleraService";
+import { useAvisos } from "../../components/Avisos";
 import { imagenPlaceholder } from "../../constants/placeholders";
 
 const SECCIONES = { noticias: "Noticia", jugadores: "Jugador", "cuerpo-tecnico": "Cuerpo técnico", productos: "Producto", autoridades: "Autoridad" };
 
 const Papelera = () => {
+    const { confirmar } = useAvisos();
     const [items, setItems] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [filtro, setFiltro] = useState("");
@@ -34,8 +36,8 @@ const Papelera = () => {
     };
 
     const restaurar = (item) => ejecutar(restaurarElemento, item, `"${item.titulo}" volvió a su lugar.`);
-    const borrar = (item) => {
-        if (!window.confirm(`¿Eliminar "${item.titulo}" para siempre? También se borra su foto y no se puede recuperar.`)) return;
+    const borrar = async (item) => {
+        if (!(await confirmar({ titulo: "Eliminar para siempre", mensaje: `¿Eliminar "${item.titulo}" para siempre? También se borra su foto y no se puede recuperar.`, textoConfirmar: "Eliminar para siempre", peligro: true }))) return;
         ejecutar(eliminarDefinitivo, item, `"${item.titulo}" se eliminó definitivamente.`);
     };
 

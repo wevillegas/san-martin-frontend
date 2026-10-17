@@ -28,6 +28,7 @@ import DatosClub from './pages/admin/DatosClub';
 import Noticias from './pages/Noticias';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import { AvisosProvider } from './components/Avisos';
 import BarraProgreso from './components/BarraProgreso';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -51,6 +52,7 @@ const ScrollToTop = () => {
 function App() {
   return (
     <BrowserRouter>
+      <AvisosProvider>
       {/* Acá ubicamos el componente silencioso.
         Debe ir sí o sí dentro del BrowserRouter para poder leer la URL.
       */}
@@ -235,6 +237,7 @@ function App() {
         <Footer />
 
       </div>
+      </AvisosProvider>
     </BrowserRouter>
   )
 }
