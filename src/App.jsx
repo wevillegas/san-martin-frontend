@@ -99,7 +99,7 @@ function App() {
             <Route
               path="/admin/usuarios"
               element={
-                <RutaProtegida>
+                <RutaProtegida soloAdmin>
                   <Usuarios />
                 </RutaProtegida>
               }
@@ -115,7 +115,7 @@ function App() {
             <Route
               path="/admin/club"
               element={
-                <RutaProtegida>
+                <RutaProtegida soloAdmin>
                   <DatosClub />
                 </RutaProtegida>
               }
@@ -123,7 +123,7 @@ function App() {
             <Route
               path="/admin/papelera"
               element={
-                <RutaProtegida>
+                <RutaProtegida soloAdmin>
                   <Papelera />
                 </RutaProtegida>
               }
@@ -131,7 +131,7 @@ function App() {
             <Route
               path="/admin/auditoria"
               element={
-                <RutaProtegida>
+                <RutaProtegida soloAdmin>
                   <Auditoria />
                 </RutaProtegida>
               }

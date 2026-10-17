@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BarChart3, Save } from "lucide-react";
 import { obtenerDatosClub, guardarDatosClub } from "../../services/clubService";
+import { mensajeDeError } from "../../utils/errores";
 
 const CAMPOS = [
     { clave: "capacidadCiudadela", etiqueta: "Capacidad de La Ciudadela", ayuda: "Se muestra con un “+” en el inicio y en la página del estadio." },
@@ -27,7 +28,7 @@ const DatosClub = () => {
             setValores(await guardarDatosClub(valores));
             setAviso({ ok: true, texto: "Listo. Los cambios ya se ven en el sitio." });
         } catch (err) {
-            setAviso({ ok: false, texto: err.response?.data?.mensaje || "No se pudo guardar" });
+            setAviso({ ok: false, texto: mensajeDeError(err, "No se pudo guardar") });
         } finally {
             setGuardando(false);
         }

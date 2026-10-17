@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { esAdmin } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import { Plus, Edit, Trash2, ArrowLeft, Star, Eye } from "lucide-react";
 import { obtenerNoticias, eliminarNoticia, actualizarNoticia } from "../../services/noticiaService";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
+import { mensajeDeError } from "../../utils/errores";
 
 const POR_PAGINA = 15;
 const ESTADOS = [
@@ -49,7 +51,7 @@ const NoticiasAdmin = () => {
                 cargarNoticias();
             } catch (error) {
                 console.error("Error al borrar", error);
-                avisar("Hubo un error al intentar borrar la noticia.", "error");
+                avisar(mensajeDeError(error, "Hubo un error al intentar borrar la noticia."), "error");
             }
         }
     };
@@ -63,7 +65,7 @@ const NoticiasAdmin = () => {
             cargarNoticias(); // Recarga para que se acomoden según el backend
         } catch (error) {
             console.error("Error al destacar", error);
-            avisar("No se pudo cambiar el estado de destacado.", "error");
+            avisar(mensajeDeError(error, "No se pudo cambiar el estado de destacado."), "error");
         }
     };
 
@@ -185,13 +187,13 @@ const NoticiasAdmin = () => {
                                                     >
                                                         <Edit className="w-5 h-5" />
                                                     </Link>
-                                                    <button
+                                                    {esAdmin() && (<button
                                                         onClick={() => handleBorrar(noticia._id)}
                                                         className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                         title="Borrar"
                                                     >
                                                         <Trash2 className="w-5 h-5" />
-                                                    </button>
+                                                    </button>)}
                                                 </td>
                                             </tr>
                                         );

@@ -9,4 +9,6 @@ export const cambiarMiClave = async (actual, nueva) => (await api.put('/usuarios
 
 export const restablecerClave = async (id, nueva) => (await api.put(`/usuarios/${id}/password`, { nueva })).data;
 
+export const cambiarRol = async (id, rol) => (await api.put(`/usuarios/${id}/rol`, { rol })).data;
+
 export const eliminarUsuario = async (id) => (await api.delete(`/usuarios/${id}`)).data;

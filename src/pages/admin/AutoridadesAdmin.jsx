@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { esAdmin } from "../../utils/sesion";
 import { ArrowLeft, Landmark, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Check, X, Download } from "lucide-react";
 import { obtenerAutoridades, crearAutoridad, actualizarAutoridad, eliminarAutoridad, reordenarAutoridades, importarAutoridades } from "../../services/autoridadService";
 import { useAvisos } from "../../components/Avisos";
 import { AUTORIDADES_POR_DEFECTO } from "../../data/autoridades";
+import { mensajeDeError } from "../../utils/errores";
 
 const input = "w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none text-gray-800";
-const mensajeDe = (err) => err.response?.data?.mensaje || "No se pudo completar la acción";
+const mensajeDe = (err) => mensajeDeError(err);
 
 const AutoridadesAdmin = () => {
     const { confirmar } = useAvisos();
@@ -131,7 +133,7 @@ const AutoridadesAdmin = () => {
                                             <p className="font-black text-gray-900 uppercase break-words">{a.nombre}</p>
                                         </div>
                                         <button onClick={() => setEditando({ id: a._id, cargo: a.cargo, nombre: a.nombre })} aria-label={`Editar a ${a.nombre}`} className="p-2 text-blue-600 hover:bg-blue-50 rounded-md"><Pencil className="w-4 h-4" /></button>
-                                        <button onClick={() => borrar(a)} aria-label={`Eliminar a ${a.nombre}`} className="p-2 text-red-600 hover:bg-red-50 rounded-md"><Trash2 className="w-4 h-4" /></button>
+                                        {esAdmin() && <button onClick={() => borrar(a)} aria-label={`Eliminar a ${a.nombre}`} className="p-2 text-red-600 hover:bg-red-50 rounded-md"><Trash2 className="w-4 h-4" /></button>}
                                     </>
                                 )}
                             </li>

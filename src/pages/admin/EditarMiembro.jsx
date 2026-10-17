@@ -6,6 +6,7 @@ import { useSalidaSegura } from "../../hooks/useSalidaSegura";
 import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerMiembroPorId, actualizarMiembro } from "../../services/cuerpoTecnicoService";
+import { mensajeDeError } from "../../utils/errores";
 
 const EditarMiembro = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const EditarMiembro = () => {
                 if (miembro.imagenUrl) setPreview(miembro.imagenUrl);
                 setCargando(false);
             } catch (error) {
-                setError("No se pudo cargar la información.");
+                setError(mensajeDeError(error, "No se pudo cargar la información."));
                 setCargando(false);
             }
         };
@@ -68,7 +69,7 @@ const EditarMiembro = () => {
             avisar("Cambios guardados.");
             navigate("/admin/cuerpo-tecnico");
         } catch (err) {
-            setError("Error al guardar los cambios.");
+            setError(mensajeDeError(err, "Error al guardar los cambios."));
             setGuardando(false);
         }
     };

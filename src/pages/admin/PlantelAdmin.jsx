@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { esAdmin } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, Eye } from "lucide-react";
 import { obtenerJugadores, eliminarJugador } from "../../services/jugadorService";
 import FichaJugadorModal from "../../components/FichaJugadorModal";
+import { mensajeDeError } from "../../utils/errores";
 
 // 1. FUNCIÓN PARA ORDENAR POR POSICIÓN
 const getPesoPosicion = (posicion) => {
@@ -70,7 +72,7 @@ const PlantelAdmin = () => {
                 cargarPlantel(); // Recargamos la tabla
             } catch (error) {
                 console.error("Error al borrar", error);
-                avisar("Hubo un error al intentar eliminar al jugador.", "error");
+                avisar(mensajeDeError(error, "Hubo un error al intentar eliminar al jugador."), "error");
             }
         }
     };
@@ -167,13 +169,13 @@ const PlantelAdmin = () => {
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
 
-                                                <button
+                                                {esAdmin() && (<button
                                                     onClick={() => handleBorrar(jugador._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Dar de baja"
                                                 >
                                                     <Trash2 className="w-5 h-5" />
-                                                </button>
+                                                </button>)}
                                             </td>
                                         </tr>
                                     ))

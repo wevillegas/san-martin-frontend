@@ -6,6 +6,7 @@ import { useSalidaSegura } from "../../hooks/useSalidaSegura";
 import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearProducto } from "../../services/productoService"; // Importamos el servicio que creaste recién
+import { mensajeDeError } from "../../utils/errores";
 
 const NuevoProducto = () => {
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ const NuevoProducto = () => {
             navigate("/admin/tienda");
         } catch (err) {
             console.error(err);
-            const errorBack = err.response?.data?.mensaje || "Error al publicar el producto. Revisá los datos.";
+            const errorBack = mensajeDeError(err, "Error al publicar el producto. Revisá los datos.");
             setError(errorBack);
             setCargando(false);
         }

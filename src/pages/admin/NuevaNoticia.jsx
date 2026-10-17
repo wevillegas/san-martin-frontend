@@ -7,6 +7,7 @@ import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearNoticia } from "../../services/noticiaService";
 import EstadoPublicacion, { camposDeEstado, textoBoton } from "../../components/EstadoPublicacion";
+import { mensajeDeError } from "../../utils/errores";
 
 const NuevaNoticia = () => {
     const navigate = useNavigate();
@@ -57,7 +58,7 @@ const NuevaNoticia = () => {
             navigate("/admin/noticias");
         } catch (err) {
             console.error("Error del servidor:", err.response?.data);
-            setError("Hubo un error al publicar la noticia. Verificá tu conexión o sesión.");
+            setError(mensajeDeError(err, "Hubo un error al publicar la noticia. Verificá tu conexión o sesión."));
             setCargando(false);
         }
     };

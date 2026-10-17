@@ -7,6 +7,7 @@ import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 // Asegurate de tener estas funciones en tu servicio de productos
 import { obtenerProductoPorId, actualizarProducto } from "../../services/productoService";
+import { mensajeDeError } from "../../utils/errores";
 
 const EditarProducto = () => {
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ const EditarProducto = () => {
                 setCargando(false);
             } catch (error) {
                 console.error(error);
-                setError("No se pudo cargar el producto.");
+                setError(mensajeDeError(error, "No se pudo cargar el producto."));
                 setCargando(false);
             }
         };
@@ -76,7 +77,7 @@ const EditarProducto = () => {
             navigate("/admin/tienda");
         } catch (err) {
             console.error(err);
-            setError("Error al guardar los cambios.");
+            setError(mensajeDeError(err, "Error al guardar los cambios."));
             setGuardando(false);
         }
     };

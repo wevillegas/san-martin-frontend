@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock, AlertTriangle } from "lucide-react";
 import { renovarSesion } from "../services/authService";
+import { leerToken } from "../utils/sesion";
 
 const AVISO = 5 * 60 * 1000; // avisa cuando faltan 5 minutos
 const AUTORENOVAR = 15 * 60 * 1000; // si hay actividad y faltan menos de 15 minutos, renueva sola
 const ACTIVO = 2 * 60 * 1000; // "activo" = hizo algo en los últimos 2 minutos
 
-const vencimiento = () => {
-    try {
-        return JSON.parse(atob(localStorage.getItem("token").split(".")[1])).exp * 1000;
-    } catch {
-        return 0;
-    }
-};
+const vencimiento = () => (leerToken()?.exp || 0) * 1000;
 
 // Cuida la sesión del panel: renueva sola mientras se trabaja y avisa antes de que venza,
 // para no perder lo escrito en un formulario.

@@ -6,6 +6,7 @@ import { useSalidaSegura } from "../../hooks/useSalidaSegura";
 import { elegirFoto } from "../../utils/foto";
 import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerJugadorPorId, actualizarJugador } from "../../services/jugadorService";
+import { mensajeDeError } from "../../utils/errores";
 
 const EditarJugador = () => {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ const EditarJugador = () => {
 
                 setCargando(false);
             } catch (err) {
-                setError("No se pudo cargar la información del jugador.");
+                setError(mensajeDeError(err, "No se pudo cargar la información del jugador."));
                 setCargando(false);
             }
         };
@@ -83,7 +84,7 @@ const EditarJugador = () => {
             avisar("Cambios del jugador guardados.");
             navigate("/admin/plantel");
         } catch (err) {
-            const errorBack = err.response?.data?.mensaje || "Error al guardar los cambios.";
+            const errorBack = mensajeDeError(err, "Error al guardar los cambios.");
             setError(errorBack);
             setGuardando(false);
         }
