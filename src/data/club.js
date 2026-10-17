@@ -1,7 +1,20 @@
-// Datos del club usados en varias páginas: se editan acá una sola vez.
+import { useEffect, useState } from "react";
+import api from "../services/api";
 
-export const CAPACIDAD_CIUDADELA = 27000; // se muestra como "+27.000"
-export const CANTIDAD_SOCIOS = 15000; // se muestra como "+15.000"
+// Cifras del club. Se editan desde el panel (Datos del club); estas son las de respaldo si la API no responde.
+export const CIFRAS_POR_DEFECTO = { capacidadCiudadela: 27000, cantidadSocios: 15000, copasNacionales: 1 };
+
+export const useDatosClub = () => {
+    const [cifras, setCifras] = useState(CIFRAS_POR_DEFECTO);
+
+    useEffect(() => {
+        api.get("/club")
+            .then((r) => setCifras({ ...CIFRAS_POR_DEFECTO, ...r.data }))
+            .catch(() => {});
+    }, []);
+
+    return cifras;
+};
 
 // Años cumplidos desde una fecha: suma uno recién al llegar al aniversario (mes 1-12)
 export const aniversarios = (año, mes, dia) => {

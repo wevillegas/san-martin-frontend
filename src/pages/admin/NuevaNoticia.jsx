@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { crearNoticia } from "../../services/noticiaService";
+import EstadoPublicacion, { camposDeEstado, textoBoton } from "../../components/EstadoPublicacion";
 
 const NuevaNoticia = () => {
     const navigate = useNavigate();
     const [cargando, setCargando] = useState(false);
     const [error, setError] = useState("");
+
+    const [modo, setModo] = useState("ahora");
+    const [fecha, setFecha] = useState("");
 
     const [imagen, setImagen] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -43,6 +47,7 @@ const NuevaNoticia = () => {
 
         const submitData = new FormData();
         Object.keys(formData).forEach(key => submitData.append(key, formData[key]));
+        Object.entries(camposDeEstado(modo, fecha)).forEach(([k, v]) => submitData.append(k, v));
         if (imagen) submitData.append("imagen", imagen);
 
         try {
@@ -151,9 +156,9 @@ const NuevaNoticia = () => {
                             <div>
                                 <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor</label>
                                 <input
-                                    type="text" name="autor" required value={formData.autor} onChange={handleChange}
+                                    type="text" name="autor" value={formData.autor} onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none transition-all font-bold text-gray-700 bg-gray-50"
-                                    placeholder="Ej: Dpto. de Prensa"
+                                    placeholder="Si lo dejás vacío firma con tu nombre"
                                 />
                             </div>
                         </div>
@@ -167,12 +172,14 @@ const NuevaNoticia = () => {
                             ></textarea>
                         </div>
 
+                        <EstadoPublicacion modo={modo} fecha={fecha} onModo={setModo} onFecha={setFecha} />
+
                         <div className="pt-6 border-t border-gray-100 flex justify-end">
                             <button
                                 type="submit" disabled={cargando}
                                 className="bg-red-700 hover:bg-red-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
                             >
-                                {cargando ? "Publicando..." : <><Save className="w-5 h-5" /> Publicar Noticia</>}
+                                {cargando ? "Guardando..." : <><Save className="w-5 h-5" /> {textoBoton(modo, "Publicar Noticia")}</>}
                             </button>
                         </div>
                     </form>

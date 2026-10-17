@@ -12,17 +12,11 @@ import FichaJugadorModal from "../components/FichaJugadorModal";
 import Loader from "../components/Loader";
 import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
-import { CAPACIDAD_CIUDADELA, CANTIDAD_SOCIOS, añosDeHistoria } from "../data/club";
+import { useDatosClub, añosDeHistoria } from "../data/club";
 import Contador from "../components/Contador";
 
-const datosClub = [
-    { valor: añosDeHistoria(), etiqueta: "Años de historia" },
-    { valor: CAPACIDAD_CIUDADELA, prefijo: "+", etiqueta: "Capacidad de La Ciudadela" },
-    { valor: CANTIDAD_SOCIOS, prefijo: "+", etiqueta: "Socios" },
-    { valor: 1, etiqueta: "Copa Nacional Oficial" },
-];
-
 const Home = () => {
+    const club = useDatosClub();
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(false);
@@ -45,6 +39,13 @@ const Home = () => {
 
     if (cargando) return <Loader texto="Cargando novedades del club..." />;
     if (error) return <ErrorState texto="No pudimos cargar las novedades del club. Probá recargar la página." />;
+
+    const datosClub = [
+        { valor: añosDeHistoria(), etiqueta: "Años de historia" },
+        { valor: club.capacidadCiudadela, prefijo: "+", etiqueta: "Capacidad de La Ciudadela" },
+        { valor: club.cantidadSocios, prefijo: "+", etiqueta: "Socios" },
+        { valor: club.copasNacionales, etiqueta: "Copa Nacional Oficial" },
+    ];
 
     // LÓGICA DE DISTRIBUCIÓN
     // El Hero agarra las 3 primeras (destacadas o recientes)

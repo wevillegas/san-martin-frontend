@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Calendar, User, Clock, Star, Link2, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, User, Clock, Star, Link2, Check, Eye } from "lucide-react";
 import { FaWhatsapp, FaFacebookF, FaXTwitter } from "react-icons/fa6";
 import { obtenerNoticiaPorId, obtenerNoticias } from "../services/noticiaService";
 import Loader from "../components/Loader";
@@ -58,6 +58,9 @@ const NoticiaDetalle = () => {
     if (cargando) return <Loader texto="Cargando nota..." />;
     if (error || !noticia) return <ErrorState texto="No se encontró la noticia que buscás." />;
 
+    // Solo los administradores llegan acá con una nota que todavía no es pública
+    const sinPublicar = noticia.estado === "borrador" ? "es un borrador" : noticia.publicarEn && new Date(noticia.publicarEn) > new Date() ? `se publica el ${new Date(noticia.publicarEn).toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" })}` : null;
+
     const parrafos = noticia.cuerpo.split(/\n+/).filter((p) => p.trim());
     const url = window.location.href;
     const textoCompartir = `${noticia.titulo} - Club Atlético San Martín`;
@@ -74,13 +77,18 @@ const NoticiaDetalle = () => {
 
     return (
         <>
+            {sinPublicar && (
+                <div role="status" className="flex items-center justify-center gap-2 bg-amber-100 px-4 py-2.5 text-sm font-bold text-amber-900">
+                    <Eye className="h-4 w-4 shrink-0" /> Vista previa: esta nota {sinPublicar} y todavía no la ve el público.
+                </div>
+            )}
             <article className="bg-white pb-16">
                 <PageHero
                     img={noticia.imagenUrl || imagenPlaceholder}
                     alt={noticia.titulo}
                     badge={noticia.etiqueta}
                     title={noticia.titulo}
-                    subtitle={formatearFecha(noticia.createdAt)}
+                    subtitle={formatearFecha(noticia.publicarEn || noticia.createdAt)}
                     height="h-[450px] md:h-[550px]"
                     contentClassName="pb-14 md:pb-10"
                     titleClassName="text-3xl sm:text-4xl md:text-5xl lg:text-6xl max-w-4xl text-balance leading-tight"

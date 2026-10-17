@@ -1,8 +1,9 @@
 import api from './api';
 
 // Traer todas las noticias
-export const obtenerNoticias = async () => {
-    const response = await api.get('/noticias');
+// Con { todas: true } y sesión de administrador también trae borradores y programadas
+export const obtenerNoticias = async ({ todas = false } = {}) => {
+    const response = await api.get('/noticias', { params: todas ? { todas: 1 } : {} });
     return response.data;
 };
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { obtenerCuerpoTecnico, eliminarMiembro } from "../../services/cuerpoTecnicoService";
 
@@ -17,6 +18,8 @@ const getColorRol = (rol) => {
 const CuerpoTecnicoAdmin = () => {
     const [cuerpoTecnico, setCuerpoTecnico] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [busqueda, setBusqueda] = useState("");
+    const [rol, setRol] = useState("");
 
     useEffect(() => {
         cargarCT();
@@ -45,6 +48,13 @@ const CuerpoTecnicoAdmin = () => {
         }
     };
 
+    const visibles = cuerpoTecnico.filter(
+        (miembro) =>
+            (!rol || miembro.rol === rol) &&
+            (!busqueda || normalizar(`${miembro.nombre} ${miembro.apellido}`).includes(normalizar(busqueda)))
+    );
+    const opciones = [...new Set(cuerpoTecnico.map((m) => m.rol))].sort();
+
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando datos...</div>;
 
     return (
@@ -70,6 +80,15 @@ const CuerpoTecnicoAdmin = () => {
                 </div>
 
                 {/* Tabla */}
+                <BarraFiltros
+                    busqueda={busqueda}
+                    onBusqueda={setBusqueda}
+                    placeholder="Buscar por nombre..."
+                    mostrados={visibles.length}
+                    total={cuerpoTecnico.length}
+                    filtros={[{ etiqueta: "Todos los roles", valor: rol, onChange: setRol, opciones: opciones }]}
+                />
+
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -81,12 +100,12 @@ const CuerpoTecnicoAdmin = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {cuerpoTecnico.length === 0 ? (
+                                {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="3" className="p-8 text-center text-gray-500">No hay miembros registrados aún.</td>
+                                        <td colSpan="3" className="p-8 text-center text-gray-500">{cuerpoTecnico.length ? "Nada coincide con la búsqueda." : "No hay miembros registrados aún."}</td>
                                     </tr>
                                 ) : (
-                                    cuerpoTecnico.map((miembro) => (
+                                    visibles.map((miembro) => (
                                         <tr key={miembro._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4 font-bold text-gray-800">
                                                 {miembro.nombre} {miembro.apellido}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Save, AlertCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { obtenerNoticiaPorId, actualizarNoticia } from "../../services/noticiaService";
+import EstadoPublicacion, { camposDeEstado, textoBoton, modoInicial, aInputLocal } from "../../components/EstadoPublicacion";
 
 const EditarNoticia = () => {
     const navigate = useNavigate();
@@ -10,6 +11,10 @@ const EditarNoticia = () => {
     const [cargando, setCargando] = useState(true);
     const [guardando, setGuardando] = useState(false);
     const [error, setError] = useState("");
+
+    const [modo, setModo] = useState("ahora");
+    const [fecha, setFecha] = useState("");
+    const [publicarEnOriginal, setPublicarEnOriginal] = useState(null);
 
     const [imagen, setImagen] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -33,6 +38,9 @@ const EditarNoticia = () => {
                     etiqueta: nota.etiqueta,
                     autor: nota.autor || ""
                 });
+                setModo(modoInicial(nota));
+                setFecha(nota.publicarEn ? aInputLocal(nota.publicarEn) : "");
+                setPublicarEnOriginal(nota.publicarEn);
                 if (nota.imagenUrl) setPreview(nota.imagenUrl);
                 setCargando(false);
             } catch (error) {
@@ -63,6 +71,7 @@ const EditarNoticia = () => {
 
         const submitData = new FormData();
         Object.keys(formData).forEach(key => submitData.append(key, formData[key]));
+        Object.entries(camposDeEstado(modo, fecha, publicarEnOriginal)).forEach(([k, v]) => submitData.append(k, v));
         if (imagen) submitData.append("imagen", imagen);
 
         try {
@@ -144,7 +153,7 @@ const EditarNoticia = () => {
                             </div>
                             <div>
                                 <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor</label>
-                                <input type="text" name="autor" required value={formData.autor} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none" />
+                                <input type="text" name="autor" value={formData.autor} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none" />
                             </div>
                         </div>
 
@@ -153,9 +162,11 @@ const EditarNoticia = () => {
                             <textarea name="cuerpo" required rows="8" value={formData.cuerpo} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none resize-y"></textarea>
                         </div>
 
+                        <EstadoPublicacion modo={modo} fecha={fecha} onModo={setModo} onFecha={setFecha} />
+
                         <div className="pt-6 border-t flex justify-end">
                             <button type="submit" disabled={guardando} className="bg-red-700 hover:bg-red-800 text-white font-black px-8 py-3 rounded-lg uppercase tracking-widest transition-all shadow-md flex items-center gap-2 disabled:opacity-50">
-                                {guardando ? "Guardando..." : <><Save className="w-5 h-5" /> Guardar Cambios</>}
+                                {guardando ? "Guardando..." : <><Save className="w-5 h-5" /> {textoBoton(modo, "Guardar Cambios")}</>}
                             </button>
                         </div>
                     </form>
