@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, ExternalLink, Shirt, Tag, Truck } from "lucide-react";
 import { obtenerProductos } from "../services/productoService";
 import Reveal from "../components/Reveal";
+import PageHero from "../components/PageHero";
 
 const Tienda = () => {
     const urlTiendaOficial = "https://marathon.com.ar/collections/casm?filter.v.availability=1";
@@ -30,29 +31,19 @@ const Tienda = () => {
         <div className="min-h-screen bg-gray-50 pb-0 font-sans">
             
             {/* 1. CABECERA HERO */}
-            <div className="relative w-full h-[550px] md:h-[600px]">
-                <img
-                    src="/images/tiendahero.png"
-                    alt="Nueva Colección San Martín"
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/20" />
-                
-                {/* ARREGLO: pb-24 en móvil para evitar que choque con la tarjeta blanca */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-10 pb-24 md:pb-16 z-10">
-                    <span className="bg-red-700 text-white text-xs md:text-sm font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-lg border border-red-500 flex items-center gap-2">
-                        <ShoppingBag className="w-4 h-4" />
-                        Tienda Oficial
-                    </span>
-                    <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter drop-shadow-2xl mb-3 md:mb-4">
-                        SANTO STORE
-                    </h1>
-                    <p className="text-lg md:text-2xl text-gray-200 font-bold max-w-2xl text-balance drop-shadow-lg mb-8 md:mb-10">
-                        Llevá los colores del Santo a todos lados. Toda la indumentaria oficial, ropa de entrenamiento y accesorios los encontrarás en las páginas web oficiales de Marathon y Kappa.
-                    </p>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-            </div>
+            <PageHero
+                img="/images/tiendahero.png"
+                alt="Nueva Colección San Martín"
+                badge={<><ShoppingBag className="w-4 h-4" />Tienda Oficial</>}
+                title="SANTO STORE"
+                subtitle="Llevá los colores del Santo a todos lados. Toda la indumentaria oficial, ropa de entrenamiento y accesorios los encontrarás en las páginas web oficiales de Marathon y Kappa."
+                height="h-[550px] md:h-[600px]"
+                overlay="bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+                contentClassName="pt-10 pb-24 md:pb-16"
+                titleClassName="text-5xl md:text-7xl"
+                subtitleClassName="text-lg md:text-2xl max-w-2xl mb-8 md:mb-10"
+                fill="text-gray-50"
+            />
 
             {/* 2. VENTAJAS (Cuadro flotante) */}
             {/* ARREGLO: z-20, -mt-16, overflow-hidden y padding simétrico en los hijos */}
@@ -114,7 +105,7 @@ const Tienda = () => {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {productos.map((producto) => (
-                            <Reveal key={producto._id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden group shadow-sm hover:shadow-lg transition-shadow duration-300">
+                            <Reveal key={producto._id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden group shadow-sm card-santo">
                                 <div className="aspect-square bg-gray-100 relative overflow-hidden">
                                     <img 
                                         src={producto.imagenUrl} 
