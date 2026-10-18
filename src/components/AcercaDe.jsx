@@ -105,7 +105,7 @@ const AcercaDe = ({ abierto, onCerrar }) => {
                         <span className="rounded-xl bg-white/15 p-3"><Code className="h-7 w-7 md:h-8 md:w-8" /></span>
                         <div>
                             <h3 id="acerca-titulo" className="font-titulo text-2xl font-black uppercase leading-none tracking-wider md:text-3xl">Acerca de este sitio</h3>
-                            <p className="mt-1.5 text-[11px] font-bold uppercase tracking-widest text-red-100 md:text-xs">Proyecto de portfolio · Full stack</p>
+                            <p className="mt-1.5 text-[11px] font-bold uppercase tracking-widest text-red-100 md:text-xs">Proyecto Full stack</p>
                         </div>
                     </div>
                 </div>
