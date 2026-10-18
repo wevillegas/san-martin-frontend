@@ -9,8 +9,8 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
     return (
         <section className="bg-gray-50 py-12 md:py-16">
             <div className="mx-auto max-w-7xl px-4">
-                <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-                    <div>
+                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:items-center">
+                    <div className="w-full text-center md:w-auto md:text-left">
                         <h2 className="text-2xl font-black text-gray-900 md:text-4xl uppercase tracking-wider">
                             Últimas Noticias
                         </h2>
@@ -50,7 +50,7 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
                                 </div>
                             </div>
                             <div className="relative p-6 flex-1 flex flex-col justify-between">
-                                <EscudoMarca className="bottom-3 right-3 h-28 w-28 md:h-36 md:w-36" />
+                                <EscudoMarca className="bottom-2 right-3 h-14 w-14 md:bottom-3 md:h-36 md:w-36" />
                                 <p className="relative mb-4 line-clamp-3 text-gray-600">{noticiaPrincipal.resumen || noticiaPrincipal.cuerpo}</p>
                                 <div className="relative flex items-center gap-2 text-sm text-gray-500 font-medium">
                                     <Calendar className="h-4 w-4" />
@@ -66,7 +66,7 @@ const NoticiasPreview = ({ noticiaPrincipal, ultimasNoticias }) => {
                             <Link key={noticia._id} to={`/noticias/${noticia._id}`} className="group">
                                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo">
                                     <div className="relative flex gap-4 p-4">
-                                        <EscudoMarca className="right-3 top-1/2 -translate-y-1/2 h-20 w-20" />
+                                        <EscudoMarca className="bottom-0 right-0 h-10 w-10 md:bottom-auto md:right-3 md:top-1/2 md:-translate-y-1/2 md:h-20 md:w-20" />
                                         <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg">
                                             <img
                                                 src={noticia.imagenUrl ? `${noticia.imagenUrl}?t=${new Date().getTime()}` : imagenPlaceholder}

@@ -83,8 +83,8 @@ const WidgetFixture = () => {
         <section className="bg-white py-16 overflow-hidden border-t border-gray-200">
             <div className="mx-auto max-w-7xl px-4">
 
-                <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-                    <div>
+                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
+                    <div className="w-full text-center md:w-auto md:text-left">
                         <h2 className="text-3xl font-black text-gray-900 md:text-4xl uppercase tracking-wider">
                             Fixture Oficial
                         </h2>
@@ -108,14 +108,14 @@ const WidgetFixture = () => {
                                 const esProximo = partido.estado !== 'post' && (index === 0 || partidos[index - 1].estado === 'post');
 
                                 return (
-                                    <div key={partido.id} className="relative min-w-0 flex-[0_0_90%] sm:flex-[0_0_60%] md:flex-[0_0_40%] lg:flex-[0_0_30%]">
+                                    <div key={partido.id} className="relative min-w-0 flex-[0_0_80%] min-[480px]:flex-[0_0_58%] sm:flex-[0_0_50%] md:flex-[0_0_40%] lg:flex-[0_0_30%]">
 
-                                        <div className={`h-full flex flex-col bg-gradient-to-br from-red-900 to-red-950 rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl overflow-hidden border
+                                        <div className={`h-full flex flex-col bg-gradient-to-br from-red-900 to-red-950 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl overflow-hidden border
                                             ${esProximo ? 'border-red-500 shadow-xl' : 'border-red-800'}`}>
 
                                             <div className="absolute -right-5 -bottom-5 w-24 h-24 bg-red-700/20 rounded-full blur-3xl" />
 
-                                            <div className="relative z-10 flex justify-between items-center mb-5 border-b border-white/10 pb-3 font-bold uppercase tracking-widest text-[10px]">
+                                            <div className="relative z-10 flex justify-between items-center mb-4 md:mb-5 border-b border-white/10 pb-3 font-bold uppercase tracking-wider md:tracking-widest text-[10px]">
                                                 <div className="flex items-center gap-1.5 text-white">
                                                     <Calendar className="w-3.5 h-3.5" />
                                                     {partido.fecha}
@@ -127,7 +127,7 @@ const WidgetFixture = () => {
                                                     </span>
                                                 ) : esProximo ? (
                                                     <span className="text-white bg-red-600 px-2.5 py-1 rounded-sm flex items-center gap-1 animate-pulse border border-red-500 shadow-sm">
-                                                        <Clock className="w-3 h-3" /> PRÓXIMO PARTIDO
+                                                        <Clock className="w-3 h-3" /> PRÓXIMO<span className="hidden sm:inline">&nbsp;PARTIDO</span>
                                                     </span>
                                                 ) : (
                                                     <span className="text-red-400 flex items-center gap-1">
@@ -136,20 +136,20 @@ const WidgetFixture = () => {
                                                 )}
                                             </div>
 
-                                            <div className="relative z-10 flex-grow flex items-center justify-between gap-3 my-3">
+                                            <div className="relative z-10 flex-grow flex items-center justify-between gap-2 md:gap-3 my-3">
 
-                                                <div className="flex flex-col items-center w-2/5 text-center gap-2">
+                                                <div className="flex flex-col items-center flex-1 min-w-0 text-center gap-2">
                                                     <Escudo src={partido.local.escudoUrl} alt={partido.local.nombre} esSanMartin={partido.local.esSanMartin} />
                                                     <p className={`font-black text-xs md:text-sm tracking-tight leading-tight line-clamp-2 ${partido.local.esSanMartin ? 'text-white' : 'text-white'}`}>
                                                         {partido.local.nombre}
                                                     </p>
                                                 </div>
 
-                                                <div className="bg-white text-gray-950 font-black text-xl md:text-2xl px-4 py-2 rounded-xl min-w-[5rem] text-center tracking-widest shadow-inner border border-red-800/40">
+                                                <div className="bg-white text-gray-950 font-black text-lg md:text-2xl px-2 md:px-4 py-2 rounded-xl min-w-[3.5rem] md:min-w-[5rem] text-center tracking-widest shrink-0 shadow-inner border border-red-800/40">
                                                     {partido.local.goles}<span className="text-red-600 mx-1">:</span>{partido.visitante.goles}
                                                 </div>
 
-                                                <div className="flex flex-col items-center w-2/5 text-center gap-2">
+                                                <div className="flex flex-col items-center flex-1 min-w-0 text-center gap-2">
                                                     <Escudo src={partido.visitante.escudoUrl} alt={partido.visitante.nombre} esSanMartin={partido.visitante.esSanMartin} />
                                                     <p className={`font-black text-xs md:text-sm tracking-tight leading-tight line-clamp-2 ${partido.visitante.esSanMartin ? 'text-white' : 'text-white'}`}>
                                                         {partido.visitante.nombre}
@@ -157,7 +157,7 @@ const WidgetFixture = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="relative z-10 mt-5 pt-3 border-t border-white/10 flex justify-center">
+                                            <div className="relative z-10 mt-3 md:mt-5 pt-3 border-t border-white/10 flex justify-center">
                                                 <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white">
                                                     <MapPin className="w-3.5 h-3.5 text-white" />
                                                     {partido.local.esSanMartin ? 'La Ciudadela' : 'Visitante'}

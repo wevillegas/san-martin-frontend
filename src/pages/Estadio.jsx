@@ -35,31 +35,31 @@ const Estadio = () => {
             ========================================== */}
             <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <History className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Inauguración</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">24 de Mar 1932</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">24 de Mar 1932</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Users className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Capacidad</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+{capacidadCiudadela.toLocaleString("es-AR")}</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">+{capacidadCiudadela.toLocaleString("es-AR")}</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Maximize className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Dimensiones</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">105 x 70 m</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">105 x 70 m</p>
                         </div>
                     </div>
                 </div>
@@ -75,14 +75,14 @@ const Estadio = () => {
                         
                         {/* Columna de Texto */}
                         <div className="order-2 lg:order-1 w-full min-w-0">
-                            <div className="flex items-center gap-3 mb-4">
+                            <div className="flex items-center justify-center gap-3 mb-4 lg:justify-start">
                                 <MapPin className="w-6 h-6 md:w-8 md:h-8 text-red-700 shrink-0" />
                                 {/* Título un toque más chico en cel para que no rompa la caja */}
-                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words">
+                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words text-center lg:text-left">
                                     soy de ciudadela
                                 </h2>
                             </div>
-                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8"></div>
+                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8 mx-auto lg:mx-0"></div>
                             <p className="text-gray-600 leading-relaxed mb-6 text-[15px] md:text-lg font-medium break-words">
                                 Emplazado en el barrio homónimo, el estadio se levanta exactamente en los terrenos donde se libró la histórica Batalla de Tucumán en 1812. Esa herencia de lucha y resistencia parece haber impregnado los cimientos de nuestra cancha.
                             </p>
@@ -101,13 +101,13 @@ const Estadio = () => {
                                 />
                             </div>
                             {/* EL ARREGLO CARRUSEL: max-w-full explícito */}
-                            <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide w-full max-w-full snap-x">
+                            <div className="flex justify-center gap-2 overflow-x-auto pb-4 scrollbar-hide w-full max-w-full snap-x">
                                 {fotosEvolucion.map((foto, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setFotoActiva(index)}
                                         /* Miniaturas más proporcionadas para celular (w-16 h-12) */
-                                        className={`cursor-pointer snap-center relative w-16 h-12 sm:w-20 sm:h-14 md:w-24 md:h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                                        className={`cursor-pointer snap-center relative w-12 h-9 min-[360px]:w-14 min-[360px]:h-10 sm:w-20 sm:h-14 md:w-24 md:h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
                                     >
                                         <img src={foto || "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop"} alt="Miniatura" className="w-full h-full object-cover" />
                                     </button>

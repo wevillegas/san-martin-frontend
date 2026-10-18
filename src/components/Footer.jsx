@@ -152,11 +152,24 @@ const Footer = () => {
                     </div>
                     <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4 shrink-0" />
-                        <span>+54 (0381) 4247817</span>
+                        <a
+                            href="https://wa.me/5493815580873"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Escribinos por WhatsApp al +54 9 381 558-0873"
+                            className="hover:text-white transition-colors"
+                        >
+                            +54 9 381 558-0873
+                        </a>
                     </div>
                     <div className="flex items-center gap-2 break-all">
                         <Mail className="h-4 w-4 shrink-0" />
-                        <span>institucional@clubatleticosanmartin.com.ar</span>
+                        <a
+                            href="mailto:institucional@clubatleticosanmartin.com.ar"
+                            className="hover:text-white transition-colors"
+                        >
+                            institucional@clubatleticosanmartin.com.ar
+                        </a>
                     </div>
                 </div>
             </div>

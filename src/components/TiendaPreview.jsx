@@ -41,8 +41,8 @@ const TiendaPreview = () => {
         <section className="bg-white py-16 overflow-hidden border-t border-gray-200">
             <div className="mx-auto max-w-7xl px-4">
 
-                <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-                    <div>
+                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
+                    <div className="w-full text-center md:w-auto md:text-left">
                         <h2 className="text-3xl font-black text-gray-900 md:text-4xl uppercase tracking-wider">
                             Santo Store
                         </h2>
@@ -64,7 +64,7 @@ const TiendaPreview = () => {
                     <div className="overflow-hidden rounded-xl" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
                             {productos.map((producto) => (
-                                <div key={producto._id} className="relative min-w-0 flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
+                                <div key={producto._id} className="relative min-w-0 flex-[0_0_60%] min-[480px]:flex-[0_0_45%] sm:flex-[0_0_38%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
 
                                     <a
                                         href={producto.linkExterno || urlTiendaOficial}

@@ -171,8 +171,9 @@ const Socios = () => {
                         <ExternalLink className="w-5 h-5 md:w-6 md:h-6" />
                     </a>
                     
-                    <p className="text-gray-400 text-sm mt-8 font-bold uppercase tracking-widest">
-                        socios.clubatleticosanmartin.com.ar/clubatleticosanmartin_socios
+                    {/* En celular la dirección se corta después de ".ar/" y el resto sigue abajo; nunca ensancha la página */}
+                    <p className="text-gray-400 text-[10px] min-[360px]:text-xs md:text-sm mt-8 font-bold uppercase tracking-wider md:tracking-widest [overflow-wrap:anywhere]">
+                        socios.clubatleticosanmartin.com.ar/<br className="md:hidden" />clubatleticosanmartin_socios
                     </p>
                 </div>
             </Reveal>

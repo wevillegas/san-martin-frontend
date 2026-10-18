@@ -39,31 +39,34 @@ const Museo = () => {
             ========================================== */}
             <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Ticket className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Entrada</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Libre y gratuita</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">Libre y gratuita</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Clock className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Horarios</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">{horariosMuseo.resumen}</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo leading-tight whitespace-pre-line md:whitespace-normal">
+                                {/* En celular el horario se parte antes de "desde"/"hasta" para que no quede cortado a la mitad */}
+                                {horariosMuseo.resumen.replace(/ (desde|hasta|de|a las)\b/, "\n$1")}
+                            </p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Trophy className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Reliquia estrella</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Copa 1944</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">Copa 1944</p>
                         </div>
                     </div>
                 </div>
@@ -79,14 +82,14 @@ const Museo = () => {
                         
                         {/* Columna de Texto */}
                         <div className="order-2 lg:order-1 w-full min-w-0">
-                            <div className="flex items-center gap-3 mb-4">
+                            <div className="flex flex-col items-center gap-2 mb-4 sm:flex-row sm:justify-center sm:gap-3 lg:justify-start">
                                 <History className="w-6 h-6 md:w-8 md:h-8 text-red-700 shrink-0" />
                                 {/* Título responsivo igual que "Soy de Ciudadela" */}
-                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words">
+                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words text-center lg:text-left">
                                     El Guardián de la Historia
                                 </h2>
                             </div>
-                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8"></div>
+                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8 mx-auto lg:mx-0"></div>
                             
                             {/* Textos reducidos a 15px en móvil, 18px en PC (Estándar Estadio) */}
                             <p className="text-gray-600 leading-relaxed mb-6 text-[15px] md:text-lg font-medium break-words">

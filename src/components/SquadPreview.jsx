@@ -52,8 +52,8 @@ const SquadPreview = ({ onSelectPlayer }) => {
         <section className="bg-red-800 py-16 overflow-hidden">
             <div className="mx-auto max-w-7xl px-4">
 
-                <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-                    <div>
+                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
+                    <div className="w-full text-center md:w-auto md:text-left">
                         <h2 className="text-3xl font-black text-white md:text-4xl uppercase tracking-wider">
                             Nuestro Plantel
                         </h2>
@@ -75,7 +75,7 @@ const SquadPreview = ({ onSelectPlayer }) => {
                     <div className="overflow-hidden rounded-xl py-3" ref={emblaRef}>
                         <div className="flex gap-4 touch-pan-y">
                             {jugadores.map((player) => (
-                                <div key={player._id} className="relative min-w-0 flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
+                                <div key={player._id} className="relative min-w-0 flex-[0_0_60%] min-[480px]:flex-[0_0_45%] sm:flex-[0_0_38%] md:flex-[0_0_30%] lg:flex-[0_0_23%]">
 
                                     <PlayerCard player={player} onSelectPlayer={onSelectPlayer} />
 

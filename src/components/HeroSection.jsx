@@ -67,14 +67,14 @@ const HeroSection = ({ noticiasHero }) => {
                             alt={noticia.titulo}
                             className="object-cover w-full h-full"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
+                        <div className="absolute inset-0 bg-black/70 md:bg-transparent md:bg-gradient-to-r md:from-black/90 md:via-black/60 md:to-transparent" />
                     </div>
 
                     <div className="relative flex h-full items-center">
                         <div className="mx-auto w-full max-w-7xl px-4">
-                            <div className="max-w-xl">
+                            <div className="mx-auto max-w-xl text-center md:mx-0 md:text-left">
 
-                                <div className="mb-4 flex items-center gap-2 text-sm text-gray-300 font-medium">
+                                <div className="mb-4 flex items-center justify-center gap-2 text-sm text-gray-300 font-medium md:justify-start">
                                     <Calendar className="h-4 w-4 text-red-500" />
                                     <span>{new Date(noticia.createdAt).toLocaleDateString('es-AR')}</span>
                                 </div>

@@ -12,11 +12,11 @@ const AsociateBanner = () => {
                     className="w-full h-full object-cover"
                 />
                 {/* Degradado oscuro para que el texto sea 100% legible */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-red-900/40" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-red-900/50 md:bg-gradient-to-r md:from-black/95 md:via-black/80 md:to-red-900/40" />
             </div>
 
             {/* Contenido */}
-            <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-start justify-center">
+            <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center md:items-start md:text-left">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter mb-4 max-w-3xl leading-tight drop-shadow-lg">
                     HACERTE SOCIO ES EL <br /> MAYOR ACTO DE AMOR
                 </h2>

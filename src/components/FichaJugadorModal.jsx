@@ -100,6 +100,17 @@ const Fila = ({ etiqueta, valor, tinta }) => (
     </li>
 );
 
+// Nombre que ocupa todo el ancho disponible: la letra se ajusta al largo del texto (cqw = ancho del contenedor).
+// Casi siempre entra en una línea; si un nombre es larguísimo y llega al tamaño mínimo, se parte en dos como último recurso.
+const TextoAjustado = ({ como: Etiqueta = "p", texto, maxRem, minRem, ancho, className = "", style }) => (
+    <Etiqueta
+        className={className}
+        style={{ fontSize: `clamp(${minRem}rem, calc(100cqw / ${Math.max(texto.length * ancho, 1).toFixed(2)}), ${maxRem}rem)`, ...style }}
+    >
+        {texto}
+    </Etiqueta>
+);
+
 // Cifra de la franja roja de datos personales (edad, altura)
 const Cifra = ({ etiqueta, valor, detalle }) => (
     <div className="px-2 text-center">
@@ -168,7 +179,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
 
     return (
         <div
-            className="ficha-fondo fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/80 md:p-4 backdrop-blur-sm"
+            className="ficha-fondo fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 md:p-4 backdrop-blur-sm"
             style={{ perspective: "1600px" }}
             onClick={(e) => e.target === e.currentTarget && onClose()}
         >
@@ -179,7 +190,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                 role="dialog"
                 aria-modal="true"
                 aria-label={`Ficha de ${jugador.nombre} ${jugador.apellido}`}
-                className="ficha-entrada ficha-tilt relative w-full max-w-5xl rounded-t-3xl md:rounded-2xl shadow-2xl"
+                className="ficha-entrada ficha-tilt relative w-full max-w-5xl rounded-2xl shadow-2xl"
             >
                 <div className="ficha-giro relative" style={{ transform: girada ? "rotateY(180deg)" : "none" }}>
 
@@ -187,7 +198,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                     <div
                         onClick={girar}
                         inert={girada}
-                        className="cara relative flex flex-col md:flex-row overflow-hidden rounded-t-3xl md:rounded-2xl bg-gray-50 max-h-[92vh] md:max-h-[88vh] md:min-h-[28rem] cursor-pointer"
+                        className="cara relative flex flex-col md:flex-row overflow-hidden rounded-2xl bg-gray-50 max-h-[calc(100dvh-1.5rem)] md:max-h-[88vh] md:min-h-[28rem] cursor-pointer"
                     >
                         <div className="ficha-brillo absolute inset-0 z-10 pointer-events-none" aria-hidden="true" />
 
@@ -281,7 +292,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                         onClick={girar}
                         inert={!girada}
                         style={{ transform: "rotateY(180deg)" }}
-                        className="cara papel-naipe absolute inset-0 overflow-hidden rounded-t-3xl md:rounded-2xl p-2.5 md:p-3.5 cursor-pointer"
+                        className="cara papel-naipe absolute inset-0 overflow-hidden rounded-2xl p-2.5 md:p-3.5 cursor-pointer"
                     >
                         {/* Cerrar en el dorso: dentro del marco, sobre el papel */}
                         <button
@@ -305,7 +316,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                                         Club Atlético San Martín · Tucumán · 1909
                                     </p>
 
-                                    <div className="flex h-full flex-col items-center justify-center gap-4 overflow-y-auto px-14 pb-7 pt-5 md:flex-row md:gap-10 md:px-28">
+                                    <div className="flex h-full flex-col items-center justify-center gap-4 overflow-y-auto px-4 pb-24 pt-4 md:flex-row md:gap-10 md:px-28 md:pb-7 md:pt-5">
                                         {/* As: rayos, palo y banderola con el número (solo en pantallas grandes) */}
                                         <div className="hidden shrink-0 flex-col items-center md:flex">
                                             <div className="relative h-44 w-44 lg:h-52 lg:w-52">
@@ -321,16 +332,18 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                                             </div>
                                         </div>
 
-                                        <div className="w-full min-w-0 max-w-md">
-                                            <div className="flex items-center gap-3">
-                                                <img src="/images/escudo.png" alt="" className="h-10 w-10 shrink-0 object-contain" />
-                                                <div className="min-w-0 flex-1 text-center">
-                                                    <p className="fuente-naipe-sc text-sm tracking-[0.25em] leading-none" style={{ color: TINTA }}>{jugador.nombre}</p>
-                                                    <h2 className="fuente-naipe-titulo mt-1 text-3xl md:text-4xl font-black uppercase leading-none break-words" style={{ color: palo.tinta }}>{jugador.apellido}</h2>
+                                        <div className="w-full min-w-0 md:max-w-lg">
+                                            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+                                                <div className="flex items-center justify-center gap-5 md:contents">
+                                                    <img src="/images/escudo.png" alt="" className="h-10 w-10 shrink-0 object-contain md:order-1" />
+                                                    <span className="shrink-0 md:order-3" style={{ color: palo.tinta }}>
+                                                        <palo.Icono className="h-10 w-10" />
+                                                    </span>
                                                 </div>
-                                                <span className="shrink-0" style={{ color: palo.tinta }}>
-                                                    <palo.Icono className="h-10 w-10" />
-                                                </span>
+                                                <div className="w-full min-w-0 text-center [container-type:inline-size] md:order-2 md:flex-1">
+                                                    <TextoAjustado texto={jugador.nombre} maxRem={0.875} minRem={0.7} ancho={0.85} className="fuente-naipe-sc tracking-[0.25em] leading-none" style={{ color: TINTA }} />
+                                                    <TextoAjustado como="h2" texto={jugador.apellido} maxRem={2.5} minRem={1.1} ancho={0.9} className="fuente-naipe-titulo mt-1 font-black uppercase leading-[1.12]" style={{ color: palo.tinta }} />
+                                                </div>
                                             </div>
 
                                             {/* Adorno: filetes con rombos */}

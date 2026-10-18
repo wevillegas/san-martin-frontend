@@ -61,31 +61,31 @@ const Complejo = () => {
             ========================================== */}
             <Reveal className="relative z-20 max-w-5xl mx-auto px-4 w-full -mt-20 md:-mt-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <MapPin className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Ubicación</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">Yerba Buena</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">Yerba Buena</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Activity className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Deportes</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+10 Disciplinas</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">+10 Disciplinas</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl p-5 md:p-6 flex items-center gap-4 border-b-4 border-red-700 card-santo">
+                    <div className="w-3/5 min-w-[11rem] mx-auto md:w-auto md:mx-0 bg-white rounded-2xl shadow-xl p-4 md:p-6 flex flex-col md:flex-row items-center text-center md:text-left gap-2 md:gap-4 border-b-4 border-red-700 card-santo">
                         <div className="bg-red-100 p-3 rounded-lg text-red-700 shrink-0">
                             <Maximize className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
                             <p className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-wider">Extensión</p>
-                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo">+23 Hectáreas</p>
+                            <p className="text-lg md:text-2xl font-black text-gray-900 font-titulo text-balance leading-tight">+23 Hectáreas</p>
                         </div>
                     </div>
                 </div>
@@ -101,11 +101,11 @@ const Complejo = () => {
                         
                         {/* Columna Texto */}
                         <div className="w-full min-w-0">
-                            <div className="flex items-center gap-3 mb-4">
+                            <div className="flex items-center justify-center gap-3 mb-4 lg:justify-start">
                                 <Users className="w-6 h-6 md:w-8 md:h-8 text-red-700 shrink-0" />
-                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words">La segunda casa</h2>
+                                <h2 className="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-wide break-words text-center lg:text-left">La segunda casa</h2>
                             </div>
-                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8"></div>
+                            <div className="w-16 md:w-20 h-1.5 bg-red-600 rounded-full mb-6 md:mb-8 mx-auto lg:mx-0"></div>
                             <p className="text-gray-600 leading-relaxed text-[15px] md:text-lg font-medium break-words">
                                 En los últimos años, el predio ha experimentado un crecimiento histórico en su infraestructura para el beneficio de todos los socios. Entre las obras más destacadas se encuentra la inauguración del nuevo Microestadio, equipado con piso de parquet profesional e iluminación LED de última generación para potenciar nuestras disciplinas bajo techo. Además, la apertura del moderno pórtico de acceso sobre la Avenida Perón no solo jerarquiza nuestra entrada principal, sino que brinda mayor comodidad, seguridad y un acceso estratégico a nuestra segunda casa. Tambien se fundó la pensión Eusebio Jacinto Roldán para que nuestros jovenes se desarrollen tanto personal como profesionalmente.
                             </p>
@@ -121,12 +121,12 @@ const Complejo = () => {
                                 />
                             </div>
                             {/* CARRUSEL DE MINIATURAS CORREGIDO */}
-                            <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide w-full max-w-full snap-x">
+                            <div className="flex justify-center gap-2 overflow-x-auto pb-4 scrollbar-hide w-full max-w-full snap-x">
                                 {fotosComplejo.map((foto, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setFotoActiva(index)}
-                                        className={`cursor-pointer snap-center relative w-16 h-12 sm:w-20 sm:h-14 md:w-24 md:h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                                        className={`cursor-pointer snap-center relative w-12 h-9 min-[360px]:w-14 min-[360px]:h-10 sm:w-20 sm:h-14 md:w-24 md:h-16 shrink-0 rounded-lg overflow-hidden border-4 transition-all ${fotoActiva === index ? 'border-red-600 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
                                     >
                                         <img src={foto} alt="Miniatura" className="w-full h-full object-cover" />
                                     </button>
