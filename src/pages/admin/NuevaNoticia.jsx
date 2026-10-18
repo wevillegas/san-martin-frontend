@@ -108,7 +108,8 @@ const NuevaNoticia = () => {
                             />
                         </div>
 
-                        {/* CHECKBOX DESTACADO */}
+                        {/* CHECKBOX DESTACADO: solo el administrador elige las destacadas */}
+                        {esAdmin() && (
                         <div className="flex items-center gap-3 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                             <input 
                                 type="checkbox" 
@@ -122,6 +123,7 @@ const NuevaNoticia = () => {
                                 Destacar esta noticia en la página principal (máximo 5 a la vez)
                             </label>
                         </div>
+                        )}
 
                         <div>
                             <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Resumen (Copete)</label>

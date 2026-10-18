@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { puedeModificar, nombreCreador } from "../../utils/sesion";
+import { esAdmin, puedeModificar, nombreCreador } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import { Plus, Edit, Trash2, ArrowLeft, Star, Eye } from "lucide-react";
 import { obtenerNoticias, eliminarNoticia, actualizarNoticia } from "../../services/noticiaService";
@@ -156,6 +156,7 @@ const NoticiasAdmin = () => {
                                         return (
                                             <tr key={noticia._id} className="hover:bg-gray-50 transition-colors">
                                                 <td className="p-4 text-center">
+                                                    {esAdmin() ? (
                                                     <button
                                                         onClick={() => toggleDestacado(noticia)}
                                                         className="p-2 rounded-full hover:bg-gray-200 transition-colors"
@@ -163,6 +164,9 @@ const NoticiasAdmin = () => {
                                                     >
                                                         <Star className={`w-5 h-5 ${noticia.destacado ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} />
                                                     </button>
+                                                    ) : (
+                                                        noticia.destacado && <Star className="mx-auto h-5 w-5 fill-yellow-500 text-yellow-500" aria-label="Destacada" />
+                                                    )}
                                                 </td>
                                                 <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
                                                     {new Date(est === "programada" ? noticia.publicarEn : noticia.createdAt).toLocaleDateString('es-AR')}
