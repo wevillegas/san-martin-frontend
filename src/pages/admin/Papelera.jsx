@@ -28,15 +28,16 @@ const Papelera = () => {
 
     const ejecutar = async (accion, item, textoOk) => {
         try {
-            await accion(item.tipo, item.id);
-            setAviso({ ok: true, texto: textoOk });
+            const respuesta = await accion(item.tipo, item.id);
+            setAviso({ ok: true, texto: typeof textoOk === "function" ? textoOk(respuesta) : textoOk });
             cargar();
         } catch (err) {
             setAviso({ ok: false, texto: mensajeDeError(err) });
         }
     };
 
-    const restaurar = (item) => ejecutar(restaurarElemento, item, `"${item.titulo}" volvió a su lugar.`);
+    const restaurar = (item) =>
+        ejecutar(restaurarElemento, item, (r) => (r?.mensaje?.includes("sin la estrella") ? r.mensaje : `"${item.titulo}" volvió a su lugar.`));
     const borrar = async (item) => {
         if (!(await confirmar({ titulo: "Eliminar para siempre", mensaje: `¿Eliminar "${item.titulo}" para siempre? También se borra su foto y no se puede recuperar.`, textoConfirmar: "Eliminar para siempre", peligro: true }))) return;
         ejecutar(eliminarDefinitivo, item, `"${item.titulo}" se eliminó definitivamente.`);

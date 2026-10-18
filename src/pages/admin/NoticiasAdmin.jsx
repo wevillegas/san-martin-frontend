@@ -8,6 +8,7 @@ import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { mensajeDeError } from "../../utils/errores";
 
 const POR_PAGINA = 15;
+const MAX_DESTACADAS = 5; // el mismo tope que aplica el servidor: lo que llena "Últimas Noticias" del inicio
 const ESTADOS = [
     { valor: "publicada", texto: "Publicadas" },
     { valor: "borrador", texto: "Borradores" },
@@ -58,6 +59,10 @@ const NoticiasAdmin = () => {
 
     // Función rápida para cambiar el estado "Destacado" desde la tabla
     const toggleDestacado = async (noticia) => {
+        if (!noticia.destacado && destacadas >= MAX_DESTACADAS) {
+            avisar(`Ya hay ${MAX_DESTACADAS} noticias destacadas. Quitale la estrella a una antes de destacar otra.`, "error", 6000);
+            return;
+        }
         try {
             const formData = new FormData();
             formData.append('destacado', !noticia.destacado);
@@ -80,6 +85,7 @@ const NoticiasAdmin = () => {
     );
     const visibles = filtradas.slice(0, limite);
     const etiquetas = [...new Set(noticias.map((n) => n.etiqueta))].sort();
+    const destacadas = noticias.filter((n) => n.destacado).length;
 
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando panel...</div>;
 
@@ -94,6 +100,13 @@ const NoticiasAdmin = () => {
                             <ArrowLeft className="w-4 h-4" /> Volver al Dashboard principal
                         </Link>
                         <h1 className="text-3xl font-black text-gray-800 uppercase tracking-wider">Gestión de Noticias</h1>
+                        <p
+                            className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider ${destacadas >= MAX_DESTACADAS ? "bg-yellow-100 text-yellow-900" : "bg-gray-100 text-gray-600"}`}
+                            title="Las destacadas son las que se muestran primero en el inicio"
+                        >
+                            <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />
+                            Destacadas: {destacadas} de {MAX_DESTACADAS}
+                        </p>
                     </div>
 
                     <Link

@@ -60,7 +60,7 @@ const Dashboard = () => {
             title: "Portal de Noticias",
             desc: "Redactá y publicá comunicados, crónicas y novedades institucionales.",
             icon: icono(Newspaper),
-            cantidad: resumen && [`${resumen.noticias} publicadas`, resumen.borradores && `${resumen.borradores} borrador${resumen.borradores > 1 ? "es" : ""}`, resumen.programadas && `${resumen.programadas} programada${resumen.programadas > 1 ? "s" : ""}`].filter(Boolean).join(" · "),
+            cantidad: resumen && [`${resumen.noticias} publicadas`, `${resumen.destacadas ?? 0}/5 destacadas`, resumen.borradores && `${resumen.borradores} borrador${resumen.borradores > 1 ? "es" : ""}`, resumen.programadas && `${resumen.programadas} programada${resumen.programadas > 1 ? "s" : ""}`].filter(Boolean).join(" · "),
             linkList: "/admin/noticias",
             linkNew: "/admin/noticias/nueva",
             btnNewText: "Redactar Nota"

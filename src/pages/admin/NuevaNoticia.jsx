@@ -118,7 +118,7 @@ const NuevaNoticia = () => {
                                 className="w-5 h-5 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
                             />
                             <label htmlFor="destacado" className="font-bold text-yellow-800 cursor-pointer select-none">
-                                Destacar esta noticia en la página principal
+                                Destacar esta noticia en la página principal (máximo 5 a la vez)
                             </label>
                         </div>
 
