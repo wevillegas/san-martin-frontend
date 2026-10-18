@@ -55,6 +55,7 @@ const Navbar = () => {
 
         setIsLoggedIn(checkToken());
         setNombreDelPanel(etiquetaPanel());
+        setMobileMenuOpen(false);
     }, [location]);
 
     // LÓGICA MAESTRA: Controlador de clic para el Inicio
@@ -77,7 +78,7 @@ const Navbar = () => {
                         <span>02 de Noviembre de 1909</span>
                     </div>
                     <div className="flex items-center gap-6 ml-auto">
-                        <Link to="./socios" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
+                        <Link to="/socios" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
                             <User className="h-4 w-4" />
                             <span>Hacete Socio</span>
                         </Link>
