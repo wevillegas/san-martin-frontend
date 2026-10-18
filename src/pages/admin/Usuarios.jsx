@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, KeyRound, UserPlus, Trash2, Eye, EyeOff, Dices } from "lucide-react";
-import { listarUsuarios, crearUsuario, cambiarMiClave, cambiarRol, restablecerClave, eliminarUsuario } from "../../services/usuarioService";
+import { listarUsuarios, crearUsuario, cambiarRol, restablecerClave, eliminarUsuario } from "../../services/usuarioService";
 import { useAvisos } from "../../components/Avisos";
+import CambiarMiClave from "../../components/CambiarMiClave";
 import { mensajeDeError } from "../../utils/errores";
 
 const MIN_CLAVE = 8;
@@ -36,8 +37,6 @@ const Usuarios = () => {
     const [verClave, setVerClave] = useState(false);
     const [avisoNuevo, setAvisoNuevo] = useState(null);
 
-    const [mia, setMia] = useState({ actual: "", nueva: "", repetir: "" });
-    const [avisoMia, setAvisoMia] = useState(null);
 
     const [editando, setEditando] = useState(null); // id del usuario al que se le restablece la clave
     const [claveOtro, setClaveOtro] = useState("");
@@ -62,19 +61,6 @@ const Usuarios = () => {
             cargar();
         } catch (err) {
             setAvisoNuevo({ ok: false, texto: mensajeDe(err) });
-        }
-    };
-
-    const cambiarMia = async (e) => {
-        e.preventDefault();
-        if (mia.nueva !== mia.repetir) return setAvisoMia({ ok: false, texto: "Las claves nuevas no coinciden" });
-        try {
-            const { token } = await cambiarMiClave(mia.actual, mia.nueva);
-            if (token) localStorage.setItem("token", token); // al cambiar la clave se cierran las demás sesiones; esta sigue
-            setAvisoMia({ ok: true, texto: "Listo, cambiaste tu clave." });
-            setMia({ actual: "", nueva: "", repetir: "" });
-        } catch (err) {
-            setAvisoMia({ ok: false, texto: mensajeDe(err) });
         }
     };
 
@@ -189,10 +175,10 @@ const Usuarios = () => {
                 </section>
 
                 <div className="grid gap-8 md:grid-cols-2">
-                    {/* NUEVO ADMIN */}
+                    {/* NUEVO USUARIO */}
                     <form onSubmit={crear} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 md:p-6 space-y-4">
                         <h2 className="font-titulo text-xl font-black uppercase tracking-widest text-gray-800 flex items-center gap-2">
-                            <UserPlus className="w-5 h-5 text-red-700" /> Nuevo administrador
+                            <UserPlus className="w-5 h-5 text-red-700" /> Nuevo usuario
                         </h2>
                         <Aviso aviso={avisoNuevo} />
                         <div>
@@ -230,26 +216,7 @@ const Usuarios = () => {
                         <button type="submit" className={boton}>Crear cuenta</button>
                     </form>
 
-                    {/* MI CLAVE */}
-                    <form onSubmit={cambiarMia} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 md:p-6 space-y-4">
-                        <h2 className="font-titulo text-xl font-black uppercase tracking-widest text-gray-800 flex items-center gap-2">
-                            <KeyRound className="w-5 h-5 text-red-700" /> Cambiar mi clave
-                        </h2>
-                        <Aviso aviso={avisoMia} />
-                        <div>
-                            <label className={etiqueta}>Clave actual</label>
-                            <input required type="password" autoComplete="current-password" value={mia.actual} onChange={(e) => setMia({ ...mia, actual: e.target.value })} className={input} />
-                        </div>
-                        <div>
-                            <label className={etiqueta}>Clave nueva (mínimo {MIN_CLAVE})</label>
-                            <input required minLength={MIN_CLAVE} type="password" autoComplete="new-password" value={mia.nueva} onChange={(e) => setMia({ ...mia, nueva: e.target.value })} className={input} />
-                        </div>
-                        <div>
-                            <label className={etiqueta}>Repetir la clave nueva</label>
-                            <input required type="password" autoComplete="new-password" value={mia.repetir} onChange={(e) => setMia({ ...mia, repetir: e.target.value })} className={input} />
-                        </div>
-                        <button type="submit" className={boton}>Guardar clave</button>
-                    </form>
+                    <CambiarMiClave />
                 </div>
             </div>
         </div>

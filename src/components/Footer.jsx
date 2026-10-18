@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MapPin, Phone, Mail, ChevronDown, X, Code, GraduationCap, User } from "lucide-react";
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
+import { etiquetaPanel } from "../utils/sesion";
 
 const footerLinks = {
     club: [
@@ -180,7 +181,7 @@ const Footer = () => {
                             to={isLoggedIn ? "/admin" : "/login"} 
                             className="hover:text-white transition-colors font-medium tracking-wider uppercase text-xs"
                         >
-                            {isLoggedIn ? "Panel Admin" : "Acceso Staff"}
+                            {isLoggedIn ? etiquetaPanel() : "Acceso Staff"}
                         </Link>
                     </div>
                 </div>

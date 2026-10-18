@@ -14,8 +14,10 @@ import ErrorState from "../components/ErrorState";
 import Reveal from "../components/Reveal";
 import { useDatosClub, añosDeHistoria } from "../data/club";
 import Contador from "../components/Contador";
+import { usePagina } from "../hooks/usePagina";
 
 const Home = () => {
+    usePagina({});
     const club = useDatosClub();
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);

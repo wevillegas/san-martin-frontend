@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUsuario } from "../services/authService";
 import { LogIn, AlertCircle } from "lucide-react";
+import { usePagina } from "../hooks/usePagina";
 
 const Login = () => {
+    usePagina({"titulo": "Acceso Staff", "noindex": true});
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");

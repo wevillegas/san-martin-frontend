@@ -33,30 +33,28 @@ const navigation = [
     { name: "Socios", href: "/socios" },
 ];
 
+import { leerToken, etiquetaPanel } from "../utils/sesion";
+
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [nombreDelPanel, setNombreDelPanel] = useState("Panel Admin");
     const location = useLocation();
 
     // Verificación inteligente de sesión
     useEffect(() => {
         const checkToken = () => {
-            const token = localStorage.getItem("token");
-            if (!token) return false;
-
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                if (payload.exp && payload.exp * 1000 < Date.now()) {
-                    localStorage.removeItem("token");
-                    return false;
-                }
-                return true;
-            } catch (error) {
+            const datos = leerToken();
+            if (!datos) return false;
+            if (datos.exp && datos.exp * 1000 < Date.now()) {
+                localStorage.removeItem("token");
                 return false;
             }
+            return true;
         };
 
         setIsLoggedIn(checkToken());
+        setNombreDelPanel(etiquetaPanel());
     }, [location]);
 
     // LÓGICA MAESTRA: Controlador de clic para el Inicio
@@ -141,7 +139,7 @@ const Navbar = () => {
                         {isLoggedIn && (
                             <Link to="/admin" className="flex items-center gap-2 border-2 border-red-600 text-red-700 hover:bg-red-600 hover:text-white font-black text-sm px-5 py-2.5 rounded-md transition-all uppercase tracking-wider shadow-sm">
                                 <Settings className="w-4 h-4" />
-                                Panel Admin
+                                {nombreDelPanel}
                             </Link>
                         )}
                     </div>
@@ -190,7 +188,7 @@ const Navbar = () => {
                             <div className="pt-6 mt-4 border-t border-gray-200">
                                 <Link to="/admin" className="flex items-center justify-center gap-2 w-full bg-red-700 text-white font-black py-4 rounded-md uppercase tracking-wider text-lg" onClick={() => setMobileMenuOpen(false)}>
                                     <Settings className="w-5 h-5" />
-                                    Panel Admin
+                                    {nombreDelPanel}
                                 </Link>
                             </div>
                         )}

@@ -9,6 +9,7 @@ import { imagenPlaceholder } from "../constants/placeholders";
 import Reveal from "../components/Reveal";
 import PageHero from "../components/PageHero";
 import { useAvisos } from "../components/Avisos";
+import { usePagina } from "../hooks/usePagina";
 import EscudoMarca from "../components/EscudoMarca";
 
 const formatearFecha = (fecha) =>
@@ -30,6 +31,15 @@ const NoticiaDetalle = () => {
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(false);
     const [copiado, setCopiado] = useState(false);
+
+    usePagina({
+        titulo: noticia?.titulo,
+        descripcion: noticia ? (noticia.resumen || noticia.cuerpo.replace(/\s+/g, " ").slice(0, 200)) : undefined,
+        imagen: noticia?.imagenUrl,
+        tipo: noticia ? "article" : "website",
+        // un borrador o una nota programada, aunque la vea un administrador, no se indexa
+        noindex: Boolean(noticia && (noticia.estado === "borrador" || (noticia.publicarEn && new Date(noticia.publicarEn) > new Date()))),
+    });
 
     // "default" significa que se entró directo al link: no hay página anterior dentro del sitio
     const veniaDelSitio = location.key !== "default";

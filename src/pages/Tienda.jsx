@@ -3,8 +3,10 @@ import { ShoppingBag, ExternalLink, Shirt, Tag, Truck } from "lucide-react";
 import { obtenerProductos } from "../services/productoService";
 import Reveal from "../components/Reveal";
 import PageHero from "../components/PageHero";
+import { usePagina } from "../hooks/usePagina";
 
 const Tienda = () => {
+    usePagina({"titulo": "Santo Store", "descripcion": "Indumentaria oficial, ropa de entrenamiento y accesorios del Club Atlético San Martín de Tucumán."});
     const urlTiendaOficial = "https://marathon.com.ar/collections/casm?filter.v.availability=1";
 
     const [productos, setProductos] = useState([]);

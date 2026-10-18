@@ -16,6 +16,7 @@ import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
 import PlayerCard from "../components/PlayerCard";
+import { usePagina } from "../hooks/usePagina";
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
@@ -48,6 +49,7 @@ const StaffCard = ({ staff }) => (
 
 // --- COMPONENTE PRINCIPAL ---
 const Plantel = () => {
+    usePagina({"titulo": "Plantel Profesional", "descripcion": "Conocé a los jugadores y al cuerpo técnico del Club Atlético San Martín de Tucumán, El Santo."});
     const location = useLocation(); // Hook para leer la URL actual
     const [jugadores, setJugadores] = useState([]);
 

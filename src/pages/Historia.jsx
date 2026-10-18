@@ -3,6 +3,7 @@ import { Calendar, Trophy, Star, ArrowUpCircle, Church } from "lucide-react";
 import Reveal from "../components/Reveal";
 import EscudosFondo from "../components/EscudosFondo";
 import { HITOS_HISTORICOS } from "../data/historia";
+import { usePagina } from "../hooks/usePagina";
 
 const imagenPlaceholder = "https://images.unsplash.com/photo-1574629810360-7efbb1925536?q=80&w=1000&auto=format&fit=crop";
 
@@ -71,6 +72,7 @@ const TarjetaFoto = ({ hito }) => (
 );
 
 const Historia = () => {
+    usePagina({"titulo": "Nuestra historia", "descripcion": "Desde la fundación el 2 de noviembre de 1909 hasta hoy: los hitos del Club Atlético San Martín de Tucumán."});
     const imagenCabecera = "/images/copa-republica-color.jpg";
     const lineaRef = useRef(null);
     const [activos, setActivos] = useState(0);

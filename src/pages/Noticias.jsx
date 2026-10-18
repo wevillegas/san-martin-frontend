@@ -11,11 +11,13 @@ import EscudosFondo from "../components/EscudosFondo";
 import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
+import { usePagina } from "../hooks/usePagina";
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
 const Noticias = () => {
+    usePagina({"titulo": "Noticias", "descripcion": "Toda la actualidad del Club Atlético San Martín de Tucumán: primer equipo, institucionales, juveniles y más."});
     const [noticias, setNoticias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(false);

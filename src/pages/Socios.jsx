@@ -3,6 +3,7 @@ import Reveal from "../components/Reveal";
 import { useDatosClub, añosDeHistoria } from "../data/club";
 import PageHero from "../components/PageHero";
 import { BENEFICIOS } from "../data/socios";
+import { usePagina } from "../hooks/usePagina";
 
 const ICONOS_BENEFICIO = {
     entradas: <Ticket className="w-8 h-8 text-red-700" />,
@@ -12,6 +13,7 @@ const ICONOS_BENEFICIO = {
 };
 
 const Socios = () => {
+    usePagina({"titulo": "Hacete socio", "descripcion": "Beneficios, categorías y valores de la cuota para ser socio del Club Atlético San Martín de Tucumán."});
     const { cantidadSocios, cuotas } = useDatosClub();
     // Foto épica de la hinchada
     const imgHero = "/images/hinchada-socios.JPG"; 

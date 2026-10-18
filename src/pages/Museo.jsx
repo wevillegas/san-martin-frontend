@@ -3,6 +3,7 @@ import Reveal from "../components/Reveal";
 import { RELIQUIAS } from "../data/museo";
 import { useDatosClub } from "../data/club";
 import PageHero from "../components/PageHero";
+import { usePagina } from "../hooks/usePagina";
 
 const ICONOS = {
     trofeo: <Trophy className="w-5 h-5 md:w-6 md:h-6 text-red-700" />,
@@ -11,6 +12,7 @@ const ICONOS = {
 };
 
 const Museo = () => {
+    usePagina({"titulo": "Museo Juan Carlos Carol", "descripcion": "El museo del Club Atlético San Martín de Tucumán: reliquias, horarios y cómo visitarlo."});
     const { horariosMuseo } = useDatosClub();
     // Imágenes (Cargalas en public/images/ con estos nombres)
     const imgHero = "/images/museo-hero.jpg"; 

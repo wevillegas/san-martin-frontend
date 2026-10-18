@@ -1,0 +1,14 @@
+{
+  "name": "Club Atlético San Martín de Tucumán",
+  "short_name": "San Martín",
+  "description": "Página web del Club Atlético San Martín de Tucumán - El más grande del Norte.",
+  "lang": "es-AR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b91c1c",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

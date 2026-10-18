@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Calendar, MapPin, AlertCircle, ShieldCheck, Trophy, Clock } from "lucide-react";
 import Reveal from "../components/Reveal";
 import EscudosFondo from "../components/EscudosFondo";
+import { usePagina } from "../hooks/usePagina";
 
 const Escudo = ({ src, alt, esSanMartin, size = "w-12 h-12" }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -28,6 +29,7 @@ const Escudo = ({ src, alt, esSanMartin, size = "w-12 h-12" }) => {
 };
 
 const Fixture = () => {
+    usePagina({"titulo": "Fixture y resultados", "descripcion": "Fixture, resultados y próximos partidos de San Martín de Tucumán en la Primera Nacional."});
     const [partidos, setPartidos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);

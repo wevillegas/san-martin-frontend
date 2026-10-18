@@ -23,6 +23,7 @@ import Dashboard from './pages/admin/Dashboard';
 import Auditoria from './pages/admin/Auditoria';
 import Usuarios from './pages/admin/Usuarios';
 import Papelera from './pages/admin/Papelera';
+import MiCuenta from './pages/admin/MiCuenta';
 import AutoridadesAdmin from './pages/admin/AutoridadesAdmin';
 import DatosClub from './pages/admin/DatosClub';
 import Noticias from './pages/Noticias';
@@ -93,6 +94,14 @@ function App() {
               element={
                 <RutaProtegida>
                   <Dashboard />
+                </RutaProtegida>
+              }
+            />
+            <Route
+              path="/admin/mi-cuenta"
+              element={
+                <RutaProtegida>
+                  <MiCuenta />
                 </RutaProtegida>
               }
             />

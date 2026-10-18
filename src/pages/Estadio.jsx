@@ -4,8 +4,10 @@ import Reveal from "../components/Reveal";
 import { MOMENTOS_ICONICOS, FOTOS_EVOLUCION } from "../data/estadio";
 import { useDatosClub } from "../data/club";
 import PageHero from "../components/PageHero";
+import { usePagina } from "../hooks/usePagina";
 
 const Estadio = () => {
+    usePagina({"titulo": "La Ciudadela", "descripcion": "El estadio de San Martín de Tucumán, La Ciudadela: su historia y los momentos más inolvidables."});
     const { capacidadCiudadela } = useDatosClub();
     // 1. IMÁGENES
     const imgHero = "/images/portada.jpg";

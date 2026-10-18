@@ -5,9 +5,11 @@ import { AUTORIDADES_POR_DEFECTO } from "../data/autoridades";
 import EscudosFondo from "../components/EscudosFondo";
 
 import PageBanner from "../components/PageBanner";
+import { usePagina } from "../hooks/usePagina";
 
 
 const Autoridades = () => {
+    usePagina({"titulo": "Comisión Directiva", "descripcion": "Las autoridades de la Comisión Directiva del Club Atlético San Martín de Tucumán."});
     const [autoridades, setAutoridades] = useState(AUTORIDADES_POR_DEFECTO);
 
     // La lista se edita desde el panel; si todavía está vacía o falla, se muestra la inicial

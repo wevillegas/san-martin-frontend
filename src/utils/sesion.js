@@ -15,3 +15,6 @@ export const usuarioActual = () => {
 };
 
 export const esAdmin = () => usuarioActual()?.rol === "administrador";
+
+// El editor ve "Panel Editor" y el administrador "Panel Admin" (navbar, pie de página y título de la pestaña)
+export const etiquetaPanel = () => (usuarioActual()?.rol === "editor" ? "Panel Editor" : "Panel Admin");

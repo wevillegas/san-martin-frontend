@@ -11,6 +11,7 @@ import { GiBoxingGlove } from "react-icons/gi";
 import Reveal from "../components/Reveal";
 import { DISCIPLINAS, INFRAESTRUCTURA } from "../data/complejo";
 import PageHero from "../components/PageHero";
+import { usePagina } from "../hooks/usePagina";
 
 const ICONOS_DISCIPLINA = {
     basquet: FaBasketballBall, futbol: FaFutbol, hockey: FaHockeyPuck, karate: FaFistRaised, patin: FaSkating,
@@ -20,6 +21,7 @@ const ICONOS_DISCIPLINA = {
 const ICONOS_INFRA = { piletas: Waves, asadores: Flame, canchas: Construction, naturaleza: Trees };
 
 const Complejo = () => {
+    usePagina({"titulo": "Complejo Natalio Mirkin", "descripcion": "El complejo polideportivo del Club Atlético San Martín de Tucumán: disciplinas, instalaciones y ubicación."});
     // 1. IMAGEN PRINCIPAL (Hero)
     const imgHero = "/images/mirkin.png";
 
