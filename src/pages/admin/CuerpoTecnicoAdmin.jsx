@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { esAdmin } from "../../utils/sesion";
+import { puedeModificar, nombreCreador } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { obtenerCuerpoTecnico, eliminarMiembro } from "../../services/cuerpoTecnicoService";
 import { mensajeDeError } from "../../utils/errores";
+import Paginacion from "../../components/Paginacion";
+import { usePaginacion } from "../../hooks/usePaginacion";
 
 // Función para darle color a las etiquetas según el rol
 const getColorRol = (rol) => {
@@ -23,6 +25,7 @@ const CuerpoTecnicoAdmin = () => {
     const [cuerpoTecnico, setCuerpoTecnico] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
+    const [creador, setCreador] = useState("");
     const [rol, setRol] = useState("");
 
     useEffect(() => {
@@ -55,9 +58,12 @@ const CuerpoTecnicoAdmin = () => {
 
     const visibles = cuerpoTecnico.filter(
         (miembro) =>
+            (!creador || nombreCreador(miembro) === creador) &&
             (!rol || miembro.rol === rol) &&
             (!busqueda || normalizar(`${miembro.nombre} ${miembro.apellido}`).includes(normalizar(busqueda)))
     );
+    const { filas, paginacion } = usePaginacion(visibles, [creador, busqueda, rol]);
+    const creadores = [...new Set(cuerpoTecnico.map(nombreCreador).filter(Boolean))].sort();
     const opciones = [...new Set(cuerpoTecnico.map((m) => m.rol))].sort();
 
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando datos...</div>;
@@ -91,7 +97,7 @@ const CuerpoTecnicoAdmin = () => {
                     placeholder="Buscar por nombre..."
                     mostrados={visibles.length}
                     total={cuerpoTecnico.length}
-                    filtros={[{ etiqueta: "Todos los roles", valor: rol, onChange: setRol, opciones: opciones }]}
+                    filtros={[{ etiqueta: "Todos los roles", valor: rol, onChange: setRol, opciones: opciones }, { etiqueta: "Todos los usuarios", valor: creador, onChange: setCreador, opciones: creadores }]}
                 />
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -101,16 +107,17 @@ const CuerpoTecnicoAdmin = () => {
                                 <tr className="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider border-b border-gray-200">
                                     <th className="p-4 font-bold">Nombre</th>
                                     <th className="p-4 font-bold">Rol</th>
+                                    <th className="p-4 font-bold">Creado por</th>
                                     <th className="p-4 font-bold text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="3" className="p-8 text-center text-gray-500">{cuerpoTecnico.length ? "Nada coincide con la búsqueda." : "No hay miembros registrados aún."}</td>
+                                        <td colSpan="4" className="p-8 text-center text-gray-500">{cuerpoTecnico.length ? "Nada coincide con la búsqueda." : "No hay miembros registrados aún."}</td>
                                     </tr>
                                 ) : (
-                                    visibles.map((miembro) => (
+                                    filas.map((miembro) => (
                                         <tr key={miembro._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4 font-bold text-gray-800">
                                                 {miembro.nombre} {miembro.apellido}
@@ -120,7 +127,9 @@ const CuerpoTecnicoAdmin = () => {
                                                     {miembro.rol}
                                                 </span>
                                             </td>
+                                            <td className="p-4 text-sm font-medium text-gray-700">{nombreCreador(miembro) || "—"}</td>
                                             <td className="p-4 flex items-center justify-center gap-3">
+                                                {puedeModificar(miembro) && (
                                                 <Link
                                                     to={`/admin/cuerpo-tecnico/editar/${miembro._id}`}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
@@ -128,7 +137,8 @@ const CuerpoTecnicoAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
-                                                {esAdmin() && (<button
+                                                )}
+                                                {puedeModificar(miembro) && (<button
                                                     onClick={() => handleBorrar(miembro._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Dar de baja"
@@ -143,6 +153,8 @@ const CuerpoTecnicoAdmin = () => {
                         </table>
                     </div>
                 </div>
+
+                <Paginacion {...paginacion} />
 
             </div>
         </div>

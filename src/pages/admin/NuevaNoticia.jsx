@@ -8,6 +8,7 @@ import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { crearNoticia } from "../../services/noticiaService";
 import EstadoPublicacion, { camposDeEstado, textoBoton } from "../../components/EstadoPublicacion";
 import { mensajeDeError } from "../../utils/errores";
+import { esAdmin, usuarioActual } from "../../utils/sesion";
 
 const NuevaNoticia = () => {
     const navigate = useNavigate();
@@ -148,10 +149,10 @@ const NuevaNoticia = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor</label>
+                                <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor{!esAdmin() && <span className="ml-2 text-xs font-medium normal-case tracking-normal text-gray-500">(firmás con tu nombre)</span>}</label>
                                 <input
-                                    type="text" name="autor" value={formData.autor} onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none transition-all font-bold text-gray-700 bg-gray-50"
+                                    type="text" name="autor" value={esAdmin() ? formData.autor : usuarioActual()?.nombre || ""} onChange={handleChange} disabled={!esAdmin()}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none transition-all font-bold text-gray-700 bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-600"
                                     placeholder="Si lo dejás vacío firma con tu nombre"
                                 />
                             </div>

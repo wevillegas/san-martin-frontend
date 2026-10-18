@@ -16,5 +16,17 @@ export const usuarioActual = () => {
 
 export const esAdmin = () => usuarioActual()?.rol === "administrador";
 
+// El administrador modifica todo; el editor solo lo que creó él (el servidor lo vuelve a comprobar)
+export const puedeModificar = (item) => {
+    const yo = usuarioActual();
+    if (!yo) return false;
+    if (yo.rol === "administrador") return true;
+    const creador = item?.creadoPor?._id ?? item?.creadoPor;
+    return Boolean(creador) && String(creador) === String(yo.id);
+};
+
 // El editor ve "Panel Editor" y el administrador "Panel Admin" (navbar, pie de página y título de la pestaña)
 export const etiquetaPanel = () => (usuarioActual()?.rol === "editor" ? "Panel Editor" : "Panel Admin");
+
+// Nombre de quien creó un elemento (el servidor lo manda para las cuentas con sesión); en noticias viejas, la firma
+export const nombreCreador = (item) => item?.creadoPor?.nombre || item?.autor || "";

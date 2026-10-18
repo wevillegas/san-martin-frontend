@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ClipboardList, Download } from "lucide-react";
 import { obtenerAuditoria, exportarAuditoria } from "../../services/auditoriaService";
+import Paginacion from "../../components/Paginacion";
+import { POR_PAGINA } from "../../utils/paginacion";
 
 const SECCIONES = { jugadores: "Plantel", "cuerpo-tecnico": "Cuerpo técnico", noticias: "Noticias", productos: "Tienda", usuarios: "Usuarios", autoridades: "Autoridades", club: "Datos del club", auth: "Accesos" };
 const ACCIONES = {
@@ -16,7 +18,7 @@ const selectClase = "border border-gray-300 rounded-md px-3 py-2 text-sm font-me
 
 const Auditoria = () => {
     const [datos, setDatos] = useState({ registros: [], paginas: 0, total: 0, usuarios: [] });
-    const [filtros, setFiltros] = useState({ entidad: "", accion: "", usuario: "", desde: "", hasta: "", pagina: 1 });
+    const [filtros, setFiltros] = useState({ entidad: "", accion: "", usuario: "", desde: "", hasta: "", pagina: 1, limite: POR_PAGINA });
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(false);
 
@@ -111,25 +113,7 @@ const Auditoria = () => {
                     )}
                 </div>
 
-                {datos.paginas > 1 && (
-                    <div className="flex items-center justify-between mt-6 text-sm font-bold text-gray-600">
-                        <button
-                            disabled={filtros.pagina <= 1}
-                            onClick={() => setFiltros({ ...filtros, pagina: filtros.pagina - 1 })}
-                            className="px-4 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-40"
-                        >
-                            Anterior
-                        </button>
-                        <span>Página {datos.pagina} de {datos.paginas} · {datos.total} registros</span>
-                        <button
-                            disabled={filtros.pagina >= datos.paginas}
-                            onClick={() => setFiltros({ ...filtros, pagina: filtros.pagina + 1 })}
-                            className="px-4 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-40"
-                        >
-                            Siguiente
-                        </button>
-                    </div>
-                )}
+                <Paginacion total={datos.total} porPagina={POR_PAGINA} pagina={filtros.pagina} onCambio={(pagina) => setFiltros({ ...filtros, pagina })} />
             </div>
         </div>
     );

@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { esAdmin } from "../../utils/sesion";
+import { puedeModificar, nombreCreador } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { obtenerProductos, eliminarProducto } from "../../services/productoService";
 import { mensajeDeError } from "../../utils/errores";
+import Paginacion from "../../components/Paginacion";
+import { usePaginacion } from "../../hooks/usePaginacion";
 
 const TiendaAdmin = () => {
     const { confirmar, avisar } = useAvisos();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
+    const [creador, setCreador] = useState("");
     const [categoria, setCategoria] = useState("");
 
     useEffect(() => {
@@ -44,9 +47,12 @@ const TiendaAdmin = () => {
 
     const visibles = productos.filter(
         (producto) =>
+            (!creador || nombreCreador(producto) === creador) &&
             (!categoria || producto.categoria === categoria) &&
             (!busqueda || normalizar(producto.nombre).includes(normalizar(busqueda)))
     );
+    const { filas, paginacion } = usePaginacion(visibles, [creador, busqueda, categoria]);
+    const creadores = [...new Set(productos.map(nombreCreador).filter(Boolean))].sort();
     const opciones = [...new Set(productos.map((p) => p.categoria))].sort();
 
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando panel de la tienda...</div>;
@@ -83,7 +89,7 @@ const TiendaAdmin = () => {
                     placeholder="Buscar producto..."
                     mostrados={visibles.length}
                     total={productos.length}
-                    filtros={[{ etiqueta: "Todas las categorías", valor: categoria, onChange: setCategoria, opciones: opciones }]}
+                    filtros={[{ etiqueta: "Todas las categorías", valor: categoria, onChange: setCategoria, opciones: opciones }, { etiqueta: "Todos los usuarios", valor: creador, onChange: setCreador, opciones: creadores }]}
                 />
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -95,16 +101,17 @@ const TiendaAdmin = () => {
                                     <th className="p-4 font-bold">Producto</th>
                                     <th className="p-4 font-bold">Categoría</th>
                                     <th className="p-4 font-bold">Precio</th>
+                                    <th className="p-4 font-bold">Creado por</th>
                                     <th className="p-4 font-bold text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="5" className="p-8 text-center text-gray-500">{productos.length ? "Nada coincide con la búsqueda." : "No hay productos publicados aún."}</td>
+                                        <td colSpan="6" className="p-8 text-center text-gray-500">{productos.length ? "Nada coincide con la búsqueda." : "No hay productos publicados aún."}</td>
                                     </tr>
                                 ) : (
-                                    visibles.map((producto) => (
+                                    filas.map((producto) => (
                                         <tr key={producto._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4">
                                                 <div className="w-12 h-12 bg-gray-100 rounded-md overflow-hidden border border-gray-200">
@@ -124,8 +131,10 @@ const TiendaAdmin = () => {
                                             <td className="p-4 font-black text-red-700">
                                                 ${producto.precio.toLocaleString('es-AR')}
                                             </td>
+                                            <td className="p-4 text-sm font-medium text-gray-700">{nombreCreador(producto) || "—"}</td>
                                             <td className="p-4 flex items-center justify-center gap-3">
                                                 {/* El link a editar lo dejamos preparado para cuando armes EditarProducto.jsx */}
+                                                {puedeModificar(producto) && (
                                                 <Link
                                                     to={`/admin/tienda/editar/${producto._id}`}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
@@ -133,7 +142,8 @@ const TiendaAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
-                                                {esAdmin() && (<button
+                                                )}
+                                                {puedeModificar(producto) && (<button
                                                     onClick={() => handleBorrar(producto._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Borrar"
@@ -148,6 +158,8 @@ const TiendaAdmin = () => {
                         </table>
                     </div>
                 </div>
+
+                <Paginacion {...paginacion} />
 
             </div>
         </div>

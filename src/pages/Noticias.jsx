@@ -12,6 +12,10 @@ import { imagenPlaceholder } from "../constants/placeholders";
 
 import PageBanner from "../components/PageBanner";
 import { usePagina } from "../hooks/usePagina";
+import { usePaginacion } from "../hooks/usePaginacion";
+import Paginacion from "../components/Paginacion";
+
+const POR_PAGINA = 9; // 3 filas de 3
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
@@ -38,9 +42,6 @@ const Noticias = () => {
         cargarNoticias();
     }, []);
 
-    if (cargando) return <Loader texto="Cargando el portal de noticias..." />;
-    if (error) return <ErrorState texto="No pudimos cargar las noticias. Probá recargar la página." />;
-
     // Agregamos "Destacados" de forma manual a la lista de categorías
     const categoriasUnicas = ["Todas", "Destacados", ...new Set(noticias.map((n) => n.etiqueta))];
     
@@ -51,6 +52,11 @@ const Noticias = () => {
             : filtroActivo === "Destacados"
                 ? noticias.filter((n) => n.destacado) // Si tocás "Destacados", filtra por el booleano
                 : noticias.filter((n) => n.etiqueta === filtroActivo); // Si tocás otra, filtra por etiqueta
+
+    const { filas, paginacion } = usePaginacion(noticiasMostradas, [filtroActivo], POR_PAGINA);
+
+    if (cargando) return <Loader texto="Cargando el portal de noticias..." />;
+    if (error) return <ErrorState texto="No pudimos cargar las noticias. Probá recargar la página." />;
 
     return (
         <div className="relative flex flex-col min-h-screen bg-gray-50 pb-20 isolate">
@@ -64,7 +70,7 @@ const Noticias = () => {
                 <div className="mx-auto max-w-7xl px-4">
                     
                     {/* BARRA DE FILTROS */}
-                    <div className="flex flex-wrap gap-2 border-b border-gray-300 pb-6 mb-8">
+                    <div id="lista-noticias" className="flex flex-wrap gap-2 scroll-mt-24 border-b border-gray-300 pb-6 mb-8">
                         {categoriasUnicas.map((categoria) => (
                             <button
                                 key={categoria}
@@ -91,7 +97,7 @@ const Noticias = () => {
                         </div>
                     ) : (
                         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                            {noticiasMostradas.map((noticia) => (
+                            {filas.map((noticia) => (
                                 <Reveal key={noticia._id}>
                                 <Link to={`/noticias/${noticia._id}`} className="group flex flex-col h-full relative">
                                     <div className="flex-1 overflow-hidden rounded-2xl border border-gray-200 bg-white card-santo flex flex-col">
@@ -142,6 +148,8 @@ const Noticias = () => {
                             ))}
                         </div>
                     )}
+
+                    <Paginacion {...paginacion} onCambio={(p) => { paginacion.onCambio(p); document.getElementById("lista-noticias")?.scrollIntoView({ behavior: "smooth" }); }} />
                 </div>
             </section>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { esAdmin } from "../../utils/sesion";
+import { puedeModificar, nombreCreador } from "../../utils/sesion";
 import { ArrowLeft, Landmark, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Check, X, Download } from "lucide-react";
 import { obtenerAutoridades, crearAutoridad, actualizarAutoridad, eliminarAutoridad, reordenarAutoridades, importarAutoridades } from "../../services/autoridadService";
 import { useAvisos } from "../../components/Avisos";
@@ -131,9 +131,10 @@ const AutoridadesAdmin = () => {
                                         <div className="min-w-0 flex-1">
                                             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{a.cargo}</p>
                                             <p className="font-black text-gray-900 uppercase break-words">{a.nombre}</p>
+                                            {nombreCreador(a) && <p className="text-xs font-medium text-gray-500">Creado por {nombreCreador(a)}</p>}
                                         </div>
-                                        <button onClick={() => setEditando({ id: a._id, cargo: a.cargo, nombre: a.nombre })} aria-label={`Editar a ${a.nombre}`} className="p-2 text-blue-600 hover:bg-blue-50 rounded-md"><Pencil className="w-4 h-4" /></button>
-                                        {esAdmin() && <button onClick={() => borrar(a)} aria-label={`Eliminar a ${a.nombre}`} className="p-2 text-red-600 hover:bg-red-50 rounded-md"><Trash2 className="w-4 h-4" /></button>}
+                                        {puedeModificar(a) && <button onClick={() => setEditando({ id: a._id, cargo: a.cargo, nombre: a.nombre })} aria-label={`Editar a ${a.nombre}`} className="p-2 text-blue-600 hover:bg-blue-50 rounded-md"><Pencil className="w-4 h-4" /></button>}
+                                        {puedeModificar(a) && <button onClick={() => borrar(a)} aria-label={`Eliminar a ${a.nombre}`} className="p-2 text-red-600 hover:bg-red-50 rounded-md"><Trash2 className="w-4 h-4" /></button>}
                                     </>
                                 )}
                             </li>

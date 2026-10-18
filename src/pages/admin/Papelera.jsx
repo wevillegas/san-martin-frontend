@@ -5,6 +5,8 @@ import { obtenerPapelera, restaurarElemento, eliminarDefinitivo } from "../../se
 import { useAvisos } from "../../components/Avisos";
 import { imagenPlaceholder } from "../../constants/placeholders";
 import { mensajeDeError } from "../../utils/errores";
+import Paginacion from "../../components/Paginacion";
+import { usePaginacion } from "../../hooks/usePaginacion";
 
 const SECCIONES = { noticias: "Noticia", jugadores: "Jugador", "cuerpo-tecnico": "Cuerpo técnico", productos: "Producto", autoridades: "Autoridad" };
 
@@ -44,6 +46,7 @@ const Papelera = () => {
     };
 
     const visibles = filtro ? items.filter((i) => i.tipo === filtro) : items;
+    const { filas, paginacion } = usePaginacion(visibles, [filtro]);
 
     return (
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -81,7 +84,7 @@ const Papelera = () => {
                     {cargando && <p className="p-8 text-center font-bold text-red-700">Cargando...</p>}
                     {!cargando && visibles.length === 0 && <p className="p-8 text-center font-medium text-gray-500">La papelera está vacía.</p>}
                     <ul className="divide-y divide-gray-100">
-                        {visibles.map((item) => (
+                        {filas.map((item) => (
                             <li key={`${item.tipo}-${item.id}`} className="flex flex-wrap items-center gap-4 p-4">
                                 <img src={item.imagenUrl || imagenPlaceholder} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover bg-gray-100" />
                                 <div className="min-w-0 flex-1">
@@ -103,6 +106,8 @@ const Papelera = () => {
                         ))}
                     </ul>
                 </div>
+
+                <Paginacion {...paginacion} />
             </div>
         </div>
     );

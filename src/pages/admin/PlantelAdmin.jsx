@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { esAdmin } from "../../utils/sesion";
+import { puedeModificar, nombreCreador } from "../../utils/sesion";
 import { useAvisos } from "../../components/Avisos";
 import BarraFiltros, { normalizar } from "../../components/BarraFiltros";
 import { Plus, Edit, Trash2, ArrowLeft, Eye } from "lucide-react";
 import { obtenerJugadores, eliminarJugador } from "../../services/jugadorService";
 import FichaJugadorModal from "../../components/FichaJugadorModal";
 import { mensajeDeError } from "../../utils/errores";
+import Paginacion from "../../components/Paginacion";
+import { usePaginacion } from "../../hooks/usePaginacion";
 
 // 1. FUNCIÓN PARA ORDENAR POR POSICIÓN
 const getPesoPosicion = (posicion) => {
@@ -33,6 +35,7 @@ const PlantelAdmin = () => {
     const [jugadores, setJugadores] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
+    const [creador, setCreador] = useState("");
     const [posicion, setPosicion] = useState("");
     const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null);
 
@@ -79,9 +82,12 @@ const PlantelAdmin = () => {
 
     const visibles = jugadores.filter(
         (jugador) =>
+            (!creador || nombreCreador(jugador) === creador) &&
             (!posicion || jugador.posicion === posicion) &&
             (!busqueda || normalizar(`${jugador.nombre} ${jugador.apellido} ${jugador.numeroCamiseta}`).includes(normalizar(busqueda)))
     );
+    const { filas, paginacion } = usePaginacion(visibles, [creador, busqueda, posicion]);
+    const creadores = [...new Set(jugadores.map(nombreCreador).filter(Boolean))].sort();
     const opciones = ["Arquero", "Defensor", "Volante", "Delantero"];
 
     if (cargando) return <div className="text-center mt-20 font-bold text-red-700">Cargando plantel...</div>;
@@ -115,7 +121,7 @@ const PlantelAdmin = () => {
                     placeholder="Buscar por nombre o dorsal..."
                     mostrados={visibles.length}
                     total={jugadores.length}
-                    filtros={[{ etiqueta: "Todas las posiciones", valor: posicion, onChange: setPosicion, opciones: opciones }]}
+                    filtros={[{ etiqueta: "Todas las posiciones", valor: posicion, onChange: setPosicion, opciones: opciones }, { etiqueta: "Todos los usuarios", valor: creador, onChange: setCreador, opciones: creadores }]}
                 />
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative z-0">
@@ -126,16 +132,17 @@ const PlantelAdmin = () => {
                                     <th className="p-4 font-bold w-20 text-center">Dorsal</th>
                                     <th className="p-4 font-bold">Nombre</th>
                                     <th className="p-4 font-bold">Posición</th>
+                                    <th className="p-4 font-bold">Creado por</th>
                                     <th className="p-4 font-bold text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {visibles.length === 0 ? (
                                     <tr>
-                                        <td colSpan="4" className="p-8 text-center text-gray-500">{jugadores.length ? "Nada coincide con la búsqueda." : "No hay jugadores registrados aún."}</td>
+                                        <td colSpan="5" className="p-8 text-center text-gray-500">{jugadores.length ? "Nada coincide con la búsqueda." : "No hay jugadores registrados aún."}</td>
                                     </tr>
                                 ) : (
-                                    visibles.map((jugador) => (
+                                    filas.map((jugador) => (
                                         <tr key={jugador._id} className="hover:bg-gray-50 transition-colors">
                                             <td className="p-4 flex justify-center">
                                                 <span className="bg-red-700 text-white text-sm font-black w-9 h-9 flex items-center justify-center rounded-full shadow-md border-2 border-white">
@@ -151,6 +158,7 @@ const PlantelAdmin = () => {
                                                     {jugador.posicion}
                                                 </span>
                                             </td>
+                                            <td className="p-4 text-sm font-medium text-gray-700">{nombreCreador(jugador) || "—"}</td>
                                             <td className="p-4 flex items-center justify-center gap-3">
 
                                                 <button
@@ -161,6 +169,7 @@ const PlantelAdmin = () => {
                                                     <Eye className="w-5 h-5" />
                                                 </button>
 
+                                                {puedeModificar(jugador) && (
                                                 <Link
                                                     to={`/admin/plantel/editar/${jugador._id}`}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
@@ -168,8 +177,9 @@ const PlantelAdmin = () => {
                                                 >
                                                     <Edit className="w-5 h-5" />
                                                 </Link>
+                                                )}
 
-                                                {esAdmin() && (<button
+                                                {puedeModificar(jugador) && (<button
                                                     onClick={() => handleBorrar(jugador._id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Dar de baja"
@@ -184,6 +194,8 @@ const PlantelAdmin = () => {
                         </table>
                     </div>
                 </div>
+
+                <Paginacion {...paginacion} />
 
             </div>
 

@@ -8,6 +8,7 @@ import VistaPreviaFoto from "../../components/VistaPreviaFoto";
 import { obtenerNoticiaPorId, actualizarNoticia } from "../../services/noticiaService";
 import EstadoPublicacion, { camposDeEstado, textoBoton, modoInicial, aInputLocal } from "../../components/EstadoPublicacion";
 import { mensajeDeError } from "../../utils/errores";
+import { esAdmin, usuarioActual } from "../../utils/sesion";
 
 const EditarNoticia = () => {
     const navigate = useNavigate();
@@ -146,8 +147,8 @@ const EditarNoticia = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor</label>
-                                <input type="text" name="autor" value={formData.autor} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none" />
+                                <label className="block text-sm font-black text-gray-700 uppercase tracking-widest mb-2">Autor{!esAdmin() && <span className="ml-2 text-xs font-medium normal-case tracking-normal text-gray-500">(no se puede cambiar)</span>}</label>
+                                <input type="text" name="autor" value={formData.autor} onChange={handleChange} disabled={!esAdmin()} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-red-500 outline-none disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-600" />
                             </div>
                         </div>
 
