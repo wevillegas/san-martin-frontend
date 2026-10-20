@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, MapPin, RotateCw } from "lucide-react";
 
 const calcularEdad = (fechaString) => {
@@ -177,7 +178,7 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
     const hayDatos = cifras.length > 0 || jugador.lugarNacimiento;
     const hayTrayectoria = jugador.procedencia || jugador.debutEnClub;
 
-    return (
+    return createPortal(
         <div
             className="ficha-fondo fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 md:p-4 backdrop-blur-sm"
             style={{ perspective: "1600px" }}
@@ -371,7 +372,8 @@ const FichaJugadorModal = ({ jugador, onClose }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body // fuera del `isolate` de la página, que dejaba el modal debajo del navbar
     );
 };
 

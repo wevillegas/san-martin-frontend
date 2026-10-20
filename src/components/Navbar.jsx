@@ -73,11 +73,11 @@ const Navbar = () => {
         <header className="sticky top-0 z-50 w-full shadow-md">
             {/* Top bar (Barrita roja fina arriba) */}
             <div className="bg-red-800 text-white">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-sm font-semibold uppercase tracking-wider">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1 text-xs lg:text-sm font-semibold uppercase tracking-wider">
                     <div className="hidden items-center gap-4 md:flex">
                         <span>02 de Noviembre de 1909</span>
                     </div>
-                    <div className="flex items-center gap-6 ml-auto">
+                    <div className="flex items-center gap-4 lg:gap-6 ml-auto">
                         <Link to="/socios" className="flex items-center gap-1.5 hover:text-red-200 transition-colors">
                             <User className="h-4 w-4" />
                             <span>Hacete Socio</span>
@@ -92,27 +92,27 @@ const Navbar = () => {
 
             {/* Main navigation (Barra principal blanca) */}
             <nav className="bg-white border-b border-gray-200">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1 lg:py-1.5">
 
                     {/* Logo con el handler de scroll suave */}
                     <Link to="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
-                        <div className="relative h-20 w-20 flex items-center justify-center p-0 transition-transform group-hover:scale-105 duration-300">
+                        <div className="relative h-12 w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 flex items-center justify-center p-0 transition-transform group-hover:scale-105 duration-300">
                             <img src="/images/escudo.png" alt="Escudo San Martín" className="w-full h-full object-contain" />
                         </div>
                         <div className="hidden flex-col sm:flex">
-                            <span className="text-2xl font-black leading-tight text-red-700 uppercase tracking-wide">San Martín</span>
-                            <span className="text-sm text-gray-500 font-bold uppercase tracking-widest">Tucumán</span>
+                            <span className="text-xl lg:text-xl xl:text-2xl font-black leading-tight text-red-700 uppercase tracking-wide">San Martín</span>
+                            <span className="text-xs xl:text-sm text-gray-500 font-bold uppercase tracking-widest">Tucumán</span>
                         </div>
                     </Link>
 
                     {/* Menú de Escritorio */}
-                    <div className="hidden items-center gap-3 lg:flex">
+                    <div className="hidden items-center gap-1 xl:gap-3 lg:flex">
                         {navigation.map((item) =>
                             item.children ? (
                                 <div key={item.name} className="relative group">
-                                    <button className="flex items-center gap-1 rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 hover:text-red-700 transition-colors focus:outline-none">
+                                    <button className="flex items-center gap-1 rounded-md px-2 xl:px-3 py-1.5 text-sm xl:text-base font-bold uppercase tracking-wide xl:tracking-wider text-gray-700 hover:text-red-700 transition-colors focus:outline-none">
                                         {item.name}
-                                        <ChevronDown className="h-5 w-5 transition-transform group-hover:rotate-180" />
+                                        <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
                                     </button>
                                     <div className="absolute left-0 top-full hidden w-56 bg-white shadow-xl border border-gray-100 rounded-b-md py-3 group-hover:block z-50 mt-[-5px]">
                                         {item.children.map((child) => (
@@ -127,7 +127,7 @@ const Navbar = () => {
                                     key={item.name} 
                                     to={item.href} 
                                     onClick={item.href === "/" ? handleHomeClick : undefined}
-                                    className="rounded-md px-3 py-2 text-base font-bold uppercase tracking-wider text-gray-700 transition-colors hover:text-red-700"
+                                    className="rounded-md px-2 xl:px-3 py-1.5 text-sm xl:text-base font-bold uppercase tracking-wide xl:tracking-wider text-gray-700 transition-colors hover:text-red-700"
                                 >
                                     {item.name}
                                 </Link>
@@ -138,7 +138,7 @@ const Navbar = () => {
                     {/* Botón Ingresar (Condicional para Administradores) */}
                     <div className="hidden items-center gap-2 lg:flex">
                         {isLoggedIn && (
-                            <Link to="/admin" className="flex items-center gap-2 border-2 border-red-600 text-red-700 hover:bg-red-600 hover:text-white font-black text-sm px-5 py-2.5 rounded-md transition-all uppercase tracking-wider shadow-sm">
+                            <Link to="/admin" className="flex items-center gap-2 border-2 border-red-600 text-red-700 hover:bg-red-600 hover:text-white font-black text-xs xl:text-sm px-3 xl:px-5 py-1.5 xl:py-2 rounded-md transition-all uppercase tracking-wider shadow-sm">
                                 <Settings className="w-4 h-4" />
                                 {nombreDelPanel}
                             </Link>
@@ -147,10 +147,10 @@ const Navbar = () => {
 
                     {/* Botón Menú Celular */}
                     <button
-                        className="lg:hidden p-2 text-gray-600 hover:text-red-700 focus:outline-none"
+                        className="lg:hidden p-1.5 text-gray-600 hover:text-red-700 focus:outline-none"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        {mobileMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+                        {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                     </button>
                 </div>
 
@@ -159,12 +159,12 @@ const Navbar = () => {
                 <div className={cn("transition-all duration-300 lg:hidden bg-gray-50", mobileMenuOpen ? "max-h-[85vh] overflow-y-auto border-b" : "max-h-0 overflow-hidden")}>
                     
                     {/* ARREGLO: pb-24 para dejar un buen margen abajo y que no quede pegado */}
-                    <div className="space-y-1 px-4 pt-6 pb-6">
+                    <div className="space-y-1 px-4 pt-3 pb-4">
                         {navigation.map((item) => (
                             <div key={item.name}>
                                 <Link 
                                     to={item.href} 
-                                    className="block rounded-md px-3 py-2 text-lg font-bold text-gray-800 hover:bg-red-100 hover:text-red-700 uppercase" 
+                                    className="block rounded-md px-3 py-1.5 text-base font-bold text-gray-800 hover:bg-red-100 hover:text-red-700 uppercase" 
                                     onClick={(e) => {
                                         if (item.href === "/") handleHomeClick(e);
                                         setMobileMenuOpen(false);
@@ -186,8 +186,8 @@ const Navbar = () => {
 
                         {/* Botón Celular Condicional */}
                         {isLoggedIn && (
-                            <div className="pt-6 mt-4 border-t border-gray-200">
-                                <Link to="/admin" className="flex items-center justify-center gap-2 w-full bg-red-700 text-white font-black py-4 rounded-md uppercase tracking-wider text-lg" onClick={() => setMobileMenuOpen(false)}>
+                            <div className="pt-3 mt-2 border-t border-gray-200">
+                                <Link to="/admin" className="flex items-center justify-center gap-2 w-full bg-red-700 text-white font-black py-2.5 rounded-md uppercase tracking-wider text-base" onClick={() => setMobileMenuOpen(false)}>
                                     <Settings className="w-5 h-5" />
                                     {nombreDelPanel}
                                 </Link>
